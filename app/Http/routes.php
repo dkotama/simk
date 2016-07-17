@@ -19,9 +19,11 @@ Route::group(['middleware' => ['web']], function () {
 
   Route::get('/admin', ['as' => 'admin', 'uses' => 'AdminsController@index']);
   Route::get('/admin/conferences', ['as' => 'admin.conf.all', 'uses' => 'AdminsController@showAllConferences']);
-  Route::get('/admin/conferences/{confId}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
-  // Route::get('/admin/conferences', ['as' => 'admin.conf.new', 'uses' => 'AdminsController@showNewConferenceForm']);
   Route::post('/admin/conferences', ['as' => 'admin.conf.post', 'uses' => 'AdminsController@storeNewConference']);
+  Route::post('/admin/conferences/{confUrl}', ['as' => 'admin.conf.update', 'uses' => 'AdminsController@updateConference']);
+
+  Route::get('/admin/conferences/new', ['as' => 'admin.conf.new', 'uses' => 'AdminsController@showNewConferenceForm']);
+  Route::get('/admin/conferences/{confUrl}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
   //Administrator
 
   // Conferences

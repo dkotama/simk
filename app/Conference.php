@@ -16,6 +16,13 @@ class Conference extends Model
     'end_submit'
   ];
 
+  protected $dates = [
+    'start_date',
+    'end_date',
+    'start_submit',
+    'end_submit'
+  ];
+
   public function authors()
   {
     return $this->belongsToMany('App\User', 'authors', 'conference_id', 'user_id');

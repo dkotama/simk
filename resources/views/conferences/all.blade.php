@@ -8,15 +8,15 @@
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          @foreach($confs as $conf) 
+          @foreach($confs as $conf)
           <div class="list-group">
             <a href="/{{$conf->url }}" class="list-group-item">
               <h4 class="list-group-item-heading">{{ $conf->name }}</h4>
               <p class="list-group-item-text">{{ $conf->description }}</p>
             </a>
-          </div>      
+          </div>
           @endforeach
-        </div> 
+        </div>
       </div>
     </div>
   </div>

@@ -4,7 +4,12 @@
   <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">All Conferences</div>
+            <div class="panel-heading">
+              <strong>All Conferences</strong>
+              <a href="{{ route('admin.conf.new') }}">
+                <button type="button" class="btn btn-success btn-xs">Add Conference</button>
+              </a>
+            </div>
             <div class="panel-body">
               <table class="table table-bordered conferences">
                 <thead>
@@ -25,32 +30,33 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      1
-                    </td>
-                    <td class="title">
-                      <a href="#"  data-toggle="tooltip" data-placement="top" title="
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua">
-                        International Electrical And Informatics Conferences
-                      </a>
-                    </td>
-                    <td class="center">
-                      <a href="/admin/conferences/eic">satu</a>
-                    </td>
-                    <td class="date">
-                      3 June 2016
-                    </td>
-                    <td class="date">
-                      3 June 2016
-                    </td>
-                    <td class="date">
-                      3 June 2016
-                    </td>
-                    <td class="date">
-                      3 June 2016
-                    </td>
-                  </tr>
+                  @foreach ($confs as $conf) {
+                    <tr>
+                      <td>
+                        {{ $conf->id }}
+                      </td>
+                      <td class="title">
+                        <a href="#"  data-toggle="tooltip" data-placement="top" title="{{$conf->description}}">
+                          {{$conf->name}}
+                        </a>
+                      </td>
+                      <td class="center">
+                        <a href="{{ route('admin.conf.show', $conf->url) }}">{{$conf->url}}</a>
+                      </td>
+                      <td class="date">
+                        {{ null !== $conf->start_submit ? date('d F Y', strtotime($conf->start_submit)) : null }}
+                      </td>
+                      <td class="date">
+                        {{ null !== $conf->end_submit ? date('d F Y', strtotime($conf->end_submit)) : null }}
+                      </td>
+                      <td class="date">
+                        {{ null !== $conf->start_date ? date('d F Y', strtotime($conf->start_date)) : null }}
+                      </td>
+                      <td class="date">
+                        {{ null !== $conf->end_date ? date('d F Y', strtotime($conf->end_date)) : null }}
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>

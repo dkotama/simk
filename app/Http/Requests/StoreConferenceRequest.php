@@ -27,6 +27,10 @@ class StoreConferenceRequest extends Request
         return [
             'name' => 'required',
             'url' => 'required',
+            'start_submit' => 'required',
+            'end_submit' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
             'description' => 'required'
             //
         ];
