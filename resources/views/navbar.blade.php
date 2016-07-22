@@ -15,7 +15,7 @@
             <li><a href="/register">Register</a></li>
             <li><a href="/login">Login</a></li>
             @elseif (isset($user) && $user->isAdmin());
-              <li><a href="/admin">Admin Dashboard</a></li>
+              <li><a href="/admin/conferences">Admin Dashboard</a></li>
             @endif
             @if (isset($user) && isset($allowed) && $allowed);
               <li><a href="{{ $conf->url }}/dashboard">Conference Dashboard</a></li>

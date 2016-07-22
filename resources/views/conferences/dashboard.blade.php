@@ -11,7 +11,7 @@
 
   </head>
   <body>
-    @include('navbar');
+    @include('navbar')
 
     <div class="container-fluid container-content">
     <div class="row">

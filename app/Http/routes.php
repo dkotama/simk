@@ -2,6 +2,7 @@
 Route::group(['middleware' => ['web']], function () {
   Route::get('/', ['as' => 'home', 'uses' => 'PagesController@home']);
 
+  Route::get('testmail', 'MailsController@sendMail');
   Route::get('login', 'Auth\AuthController@showLoginForm');
   Route::post('login', 'Auth\AuthController@login');
   Route::get('logout', 'Auth\AuthController@logout');
@@ -9,6 +10,7 @@ Route::group(['middleware' => ['web']], function () {
   // Registration Routes...
   Route::get('register', 'RegistrationsController@showRegistrationForm');
   Route::post('register', 'RegistrationsController@register');
+  Route::get('/activate/{token}', ['as' => 'user.activate', 'uses' => 'RegistrationsController@activateUser']);
 
   // Password Reset Routes...
   Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
@@ -17,6 +19,7 @@ Route::group(['middleware' => ['web']], function () {
 
   Route::get('/all', 'ConferencesController@all');
 
+  //Administrator::Conferences
   Route::get('/admin', ['as' => 'admin', 'uses' => 'AdminsController@index']);
   Route::get('/admin/conferences', ['as' => 'admin.conf.all', 'uses' => 'AdminsController@showAllConferences']);
   Route::post('/admin/conferences', ['as' => 'admin.conf.post', 'uses' => 'AdminsController@storeNewConference']);
@@ -24,7 +27,9 @@ Route::group(['middleware' => ['web']], function () {
 
   Route::get('/admin/conferences/new', ['as' => 'admin.conf.new', 'uses' => 'AdminsController@showNewConferenceForm']);
   Route::get('/admin/conferences/{confUrl}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
-  //Administrator
+
+  //Users
+  Route::get('/admin/users', ['as' => 'admin.user.all', 'uses' => 'AdminsUserController@showAllUsers']);
 
   // Conferences
   Route::get('/{confUrl}', 'HomepageController@home');
@@ -37,4 +42,6 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/adm/users', ['as' => 'enrolls', 'uses' => 'EnrollsController@showManagesUser']);
   Route::get('/{confUrl}/adm/users/{user}/det/{mode}', ['as' => 'enrolls.detachroles', 'uses' => 'EnrollsController@detachRoles']);
   Route::get('/{confUrl}/adm/users/{user}/att/{mode}', ['as' => 'enrolls.attachroles', 'uses' => 'EnrollsController@attachRoles']);
+
+
 });

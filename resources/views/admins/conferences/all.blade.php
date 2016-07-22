@@ -30,7 +30,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($confs as $conf) {
+                  @foreach ($confs as $conf)
                     <tr>
                       <td>
                         {{ $conf->id }}
@@ -53,7 +53,7 @@
                         {{ null !== $conf->start_date ? date('d F Y', strtotime($conf->start_date)) : null }}
                       </td>
                       <td class="date">
-                        {{ null !== $conf->end_date ? date('d F Y', strtotime($conf->end_date)) : null }}
+                        {{ null !== $conf->start_submit ? date('d F Y', strtotime($conf->start_submit)) : null }}
                       </td>
                     </tr>
                   @endforeach

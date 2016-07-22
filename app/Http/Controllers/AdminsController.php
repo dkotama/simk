@@ -36,15 +36,14 @@ class AdminsController extends Controller
     // $this->viewData['conf'] = $this->getConf($confUrl);
     $this->viewData['conf'] = $confUrl;
 
-    // dd($this->viewData['conf']->start_date->format('Y-m-d'));
+    // dd($this->viewData['conf']->start_submit->format('Y-m-d'));
 
     return view('admins.conferences.edit', $this->viewData);
-    //FIXME edit date all error, should be showing posted value first and then original value
-
   }
 
   public function showAllConferences()
   {
+    // FIXME add pagination for all conferences
     $this->viewData['confs'] = Conference::all();
 
     return view('admins.conferences.all', $this->viewData);
@@ -52,8 +51,7 @@ class AdminsController extends Controller
 
   public function storeNewConference(StoreConferenceRequest $request)
   {
-    // dd($request->all());
-    // Conference::create($request->all()); //
+    //FIXME please add validation date
     flash()->success('Create New Conference Success');
 
     return redirect()->back();
@@ -71,9 +69,5 @@ class AdminsController extends Controller
     if ($this->user === null || !$this->user->isAdmin()) {
       abort(404);
     }
-  }
-
-  protected function getConf($url) {
-    return Conference::where('url', $url)->first();
   }
 }
