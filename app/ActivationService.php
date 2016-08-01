@@ -31,13 +31,17 @@ class ActivationService
         }
 
         $token = $this->activationRepo->createActivation($user);
+        $userData = [
+          'name'  => $user->last_name . ', ' . $user->first_name,
+          'title' => $user->title,
+          'email' => $user->email,
+          'token' => $token
+        ];
 
-
-        Mail::send('emails.register', ['token' => $token], function ($message) {
-
-          $message->from('simk.noreply@domain.com', 'Registration Laravel');
-
-          $message->to('cruslaem@incognitomail.org')->subject('SIMK Registration');
+        Mail::send('emails.register', $userData, function ($message) use ($userData) {
+          $message->from('simk.noreply@domain.com', 'SIMK Automail');
+          
+          $message->to($userData['email'])->subject('SIMK Registration');
         });
 
     }

@@ -1,4 +1,7 @@
           <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-success" style="text-align: center">Sign Up Now !</a>
+          </div>
+          <div class="list-group">
             <a href="/{{ $conf->url }}" class="list-group-item {{ $active == 'home' ? 'active' : null}}">
               <i class="fa fa-home fa-fw"></i> {{$conf->name }} Home
             </a>
@@ -20,4 +23,4 @@
             <a href="#" class="list-group-item">
               <i class="fa fa-list-ol fa-fw"></i>Timeline
             </a>
-          </div>    
+          </div>
