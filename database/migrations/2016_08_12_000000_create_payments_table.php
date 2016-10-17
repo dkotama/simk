@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterUsersTable extends Migration
+class CreatePaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,10 @@ class AlterUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('activated')->default(false);
+        Schema::create('payments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->boolean('settled')->default(false);
+            $table->timestamps();
         });
     }
 
@@ -24,8 +26,6 @@ class AlterUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('activated');
-        });
+        Schema::drop('payments');
     }
 }

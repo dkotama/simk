@@ -25,7 +25,7 @@ class RegistrationsController extends Controller
     if (!Auth::check()) {
       return view('auth.register');
     } else {
-      return redirect('/');
+      return redirect('/users/home');
     }
   }
 

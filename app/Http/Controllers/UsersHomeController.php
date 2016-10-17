@@ -3,55 +3,127 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Conference;
 use App\Http\Requests;
+use App\Http\Requests\StoreConferenceRequest;
+use App\Http\Requests\SubmitPaperRequest;
+use App\User;
+use App\Conference;
+use Illuminate\Support\Facades\Input;
+use Response;
+use App\RoleWriter;
+// use App\Http\Requests;
 
 class UsersHomeController extends Controller
 {
+
   protected $viewData = [];
 
-  public function home(Conference $confUrl)
+  public function __construct()
   {
-   $this->setInit($confUrl, 'home');
+    $this->middleware('auth');
+    parent::__construct();
 
-   return view('conferences.shows.home', $this->viewData);
+    $this->viewData['conferences'] = $this->user->authoring()->get();
   }
 
-  public function callPaper(Conference $confUrl)
+  public function index()
   {
-   $this->setInit($confUrl, 'callpaper');
-
-   return view('conferences.shows.callpaper', $this->viewData);
+    return view('users.home.index', $this->viewData);
   }
 
-  public function policies(Conference $confUrl)
+  public function addPaper(Conference $confUrl)
   {
-    $this->setInit($confUrl, 'policies');
-
-   return view('conferences.shows.policies', $this->viewData);
+    $this->viewData['conf'] = $confUrl;
+    
+    return view('users.home.add', $this->viewData);
+  }
+  
+  public function manage(Conference $confUrl)
+  {
+    $this->viewData['conf'] = $confUrl;
+    
+    return view('users.home.manage', $this->viewData);
   }
 
-  protected function setInit($conf, $active) {
-    $this->viewData['conf'] = $conf;
-    $this->canAccessDasboard($conf);
-    $this->setActive($active);
+  public function join(Conference $confUrl)
+  {
+    $this->viewData['conf'] = $confUrl;
+
+    $writer = new RoleWriter($confUrl, $this->user, 'author');
+
+    // if ($writer->attach()) {
+    //   flash()->success('Succes joining, now you can submit paper');
+    // } else {
+    //   flash()->error('You are already joined');
+    // }
+
+    return view('users.home.manage', $this->viewData);
+    // return view('welcome');
+  } 
+
+  public function submitPaper(SubmitPaperRequest $request) { 
+      $paper = $request->file('paper');
+
+      // // setting up rules
+      // $rules = array('image' => 'required',); //mimes:jpeg,bmp,png and for max size max:10000
+      // // doing the validation, passing post data, rules and the messages
+      // $validator = Validator::make($file, $rules);
+
+      // if ($validator->fails()) {
+      //   // send back to the page with the input data and errors
+      //   return Redirect::to('upload')->withInput()->withErrors($validator);
+      // } else {
+      //   // checking file is valid.
+      //TODO : ADD INSERT TO SUBMISSION
+      if ($paper->isValid()) {
+          // dd($paper);
+          $destinationPath = 'uploads'; // upload path
+          $extension = $paper->getClientOriginalExtension(); // getting image extension
+          $fileName = rand(11111,99999).'.'.$extension; // renameing image
+          $paper->move($destinationPath, $fileName); // uploading file to given path
+
+          flash()->success('Succes upload');
+      } else {
+          flash()->error('Error Uploading');
+      }
+
+    return redirect()->back();
   }
 
-  protected function setActive($string)
+  public function showSingleConference(Conference $confUrl)
   {
-    $this->viewData['active'] = $string;
+    $this->viewData['conf'] = $confUrl;
+
+    return view('admins.conferences.edit', $this->viewData);
   }
 
-  protected function canAccessDasboard($conf)
+  public function showAllConferences()
   {
-    if (isset($this->user) &&
-       ($this->user->isAdmin() ||
-        $this->user->isAuthoring($conf) ||
-        $this->user->isReviewing($conf) ||
-        $this->user->isOrganizing($conf))) {
-      $this->viewData['allowed'] = true;
-    } else {
-      $this->viewData['allowed'] = false;
+    // FIXME add pagination for all conferences
+    $this->viewData['confs'] = Conference::all();
+
+    return view('admins.conferences.all', $this->viewData);
+  }
+
+  public function storeNewConference(StoreConferenceRequest $request)
+  {
+    //FIXME please add validation date
+    flash()->success('Create New Conference Success');
+
+    return redirect()->back();
+  }
+
+  public function updateConference(StoreConferenceRequest $request, Conference $confUrl)
+  {
+    $confUrl->update($request->all());
+    flash()->success('Conferece Succesfully Updated');
+
+    return redirect()->back();
+  }
+
+  protected function checkAllowed() {
+    if ($this->user === null || !$this->user->isAdmin()) {
+      abort(404);
     }
   }
 }

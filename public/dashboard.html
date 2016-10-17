@@ -1,182 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-		<meta charset="utf-8">
-		<title>Bootstrap 3 Admin</title>
-		<meta name="generator" content="Bootply" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<!--[if lt IE 9]>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Bootstrap 3 Admin</title>
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="css/styles.css" rel="stylesheet">
-	</head>
-	<body>
-<!-- header -->
-<div id="top-nav" class="navbar navbar-inverse navbar-static-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Dashboard</a>
-        </div>
-    </div>
-    <!-- /container -->
-</div>
-<!-- /Header -->
-
-<!-- Main -->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3">
-            <!-- Left column -->
-            <a href="#"><strong><i class="glyphicon glyphicon-th-large"></i> Menu</strong></a>
-
-            <hr>
-
-            <ul class="nav nav-pills nav-stacked">
-                <li class="nav-header"></li>
-                <li><a href="#"><i class="glyphicon glyphicon-list"></i> Layouts &amp; Templates</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-briefcase"></i> Toolbox</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-link"></i> Widgets</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Reports</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-book"></i> Pages</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-star"></i> Social Media</a></li>
-            </ul>
-
-            <hr>
-
-            <a href="#"><strong><i class="glyphicon glyphicon-link"></i> Resources</strong></a>
-
-            <hr>
-
-            <ul class="nav nav-pills nav-stacked">
-                <li class="nav-header"></li>
-                <li><a href="#"><i class="glyphicon glyphicon-list"></i> Layouts &amp; Templates</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-briefcase"></i> Toolbox</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-link"></i> Widgets</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Reports</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-book"></i> Pages</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-star"></i> Social Media</a></li>
-            </ul>
-
-            <hr>
-            <ul class="nav nav-stacked">
-                <li class="active"><a href="http://bootply.com" title="The Bootstrap Playground" target="ext">Playground</a></li>
-                <li><a href="/tagged/bootstrap-3">Bootstrap 3</a></li>
-                <li><a href="/61518" title="Bootstrap 3 Panel">Panels</a></li>
-                <li><a href="/61521" title="Bootstrap 3 Icons">Glyphicons</a></li>
-                <li><a href="/62603">Layout</a></li>
-            </ul>
-
-            <hr>
-
-            <a href="#"><strong><i class="glyphicon glyphicon-list"></i> More Templates</strong></a>
-
-            <hr>
-
-            <ul class="nav nav-stacked">
-                <li class="active"><a rel="nofollow" href="http://goo.gl/pQoXEh" target="ext">Premium Themes</a></li>
-                <li><a rel="nofollow" href="https://wrapbootstrap.com/?ref=bootply">Wrap Bootstrap</a></li>
-                <li><a rel="nofollow" href="http://bootstrapzero.com">BootstrapZero</a></li>
-            </ul>
-        </div>
-        <!-- /col-3 -->
-        <div class="col-sm-9">
-
-            <!-- column 2 -->
-            <ul class="list-inline pull-right">
-                <li><a href="#"><i class="glyphicon glyphicon-user"></i> Mr. Sumpalitan</a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
-            </ul>
-            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i> Administrator Dashboard</strong></a>
-            <hr>
-
-            <div class="row">
-                <!-- center left-->
-                <div class="col-md-8">
-                   <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                <i class="glyphicon glyphicon-wrench pull-right"></i>
-                                <h4>Post Request</h4>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <form class="form form-vertical">
-                                <div class="control-group">
-                                    <label>Name</label>
-                                    <div class="controls">
-                                        <input type="text" class="form-control" placeholder="Enter Name">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label>Message</label>
-                                    <div class="controls">
-                                        <textarea class="form-control"></textarea>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label>Category</label>
-                                    <div class="controls">
-                                        <select class="form-control">
-                                            <option>options</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label></label>
-                                    <div class="controls">
-                                        <button type="submit" class="btn btn-primary">
-                                            Post
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <!--/panel content-->
-                    </div> 
-
+        <link href="css/styles.css" rel="stylesheet">
+    </head>
+    <body>
+        <!-- header -->
+        <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
                 </div>
-                <!--/col-span-6-->
-
             </div>
-            <!--/row-->
+            <!-- /container -->
         </div>
-        <!--/col-span-9-->
-    </div>
-</div>
-<!-- /Main -->
-
-<footer class="text-center">This Bootstrap 3 dashboard layout is compliments of <a href="http://www.bootply.com/85850"><strong>Bootply.com</strong></a></footer>
-
-<div class="modal" id="addWidgetModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add Widget</h4>
-            </div>
-            <div class="modal-body">
-                <p>Add a widget stuff here..</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#" data-dismiss="modal" class="btn">Close</a>
-                <a href="#" class="btn btn-primary">Save changes</a>
+        <!-- /Header -->
+        <!-- Main -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3">
+                    <!-- Left column -->
+                    <a href="#"><strong><i class="glyphicon glyphicon-th-large"></i> Menu</strong></a>
+                    <hr>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-header"></li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-list"></i> Layouts &amp; Templates</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-briefcase"></i> Toolbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-link"></i> Widgets</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Reports</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-book"></i> Pages</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-star"></i> Social Media</a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <a href="#"><strong><i class="glyphicon glyphicon-link"></i> Resources</strong></a>
+                    <hr>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="nav-header"></li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-list"></i> Layouts &amp; Templates</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-briefcase"></i> Toolbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-link"></i> Widgets</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Reports</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-book"></i> Pages</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-star"></i> Social Media</a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <ul class="nav nav-stacked">
+                        <li class="active">
+                            <a href="http://bootply.com" title="The Bootstrap Playground" target="ext">Playground</a>
+                        </li>
+                        <li>
+                            <a href="/tagged/bootstrap-3">Bootstrap 3</a>
+                        </li>
+                        <li>
+                            <a href="/61518" title="Bootstrap 3 Panel">Panels</a>
+                        </li>
+                        <li>
+                            <a href="/61521" title="Bootstrap 3 Icons">Glyphicons</a>
+                        </li>
+                        <li>
+                            <a href="/62603">Layout</a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <a href="#"><strong><i class="glyphicon glyphicon-list"></i> More Templates</strong></a>
+                    <hr>
+                    <ul class="nav nav-stacked">
+                        <li class="active">
+                            <a rel="nofollow" href="http://goo.gl/pQoXEh" target="ext">Premium Themes</a>
+                        </li>
+                        <li>
+                            <a rel="nofollow" href="https://wrapbootstrap.com/?ref=bootply">Wrap Bootstrap</a>
+                        </li>
+                        <li>
+                            <a rel="nofollow" href="http://bootstrapzero.com">BootstrapZero</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /col-3 -->
+                <div class="col-sm-9">
+                    <!-- column 2 -->
+                    <ul class="list-inline pull-right">
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-user"></i> Mr. Sumpalitan</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="glyphicon glyphicon-log-out"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i> Administrator Dashboard</strong></a>
+                    <hr>
+                    <div class="row">
+                        <!-- center left-->
+                        <div class="col-md-8">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <i class="glyphicon glyphicon-wrench pull-right"></i>
+                                        <h4>Upload Paper</h4>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form form-vertical">
+                                        <div class="control-group">
+                                            <label>Title
+                                                <br>
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" placeholder="Enter Paper Title">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label>Abstract</label>
+                                            <div class="controls">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label>Keywords</label>
+                                            <div class="controls">
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label>Category</label>
+                                            <div class="controls">
+                                                <select class="form-control" id="paper-cat">
+                                                    <option>options</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <hr />
+                                            <label>Title
+                                                <br>
+                                            </label>
+                                            <div class="controls">
+                                                <input type="text" class="form-control" placeholder="Enter Paper Title">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label></label>
+                                            <div class="controls">
+                                                <button type="submit" class="btn btn-primary">Upload Paper</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!--/panel content-->
+                            </div>                             
+                        </div>
+                        <!--/col-span-6-->
+                    </div>
+                    <!--/row-->
+                </div>
+                <!--/col-span-9-->
             </div>
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dalog -->
-</div>
-<!-- /.modal -->
-	<!-- script references -->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/scripts.js"></script>
-	</body>
+        <!-- /Main -->
+        <footer class="text-center">This Bootstrap 3 dashboard layout is compliments of 
+            <a href="http://www.bootply.com/85850"><strong>Bootply.com</strong></a>
+        </footer>
+        <div class="modal" id="addWidgetModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Add Widget</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Add a widget stuff here..</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" data-dismiss="modal" class="btn">Close</a>
+                        <a href="#" class="btn btn-primary">Save changes</a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dalog -->
+        </div>
+        <!-- /.modal -->
+        <!-- script references -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/scripts.js"></script>
+    </body>
 </html>

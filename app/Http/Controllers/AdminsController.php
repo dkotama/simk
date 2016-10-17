@@ -52,8 +52,9 @@ class AdminsController extends Controller
   public function storeNewConference(StoreConferenceRequest $request)
   {
     //FIXME please add validation date
-    flash()->success('Create New Conference Success');
-
+    Conference::create($request->all());
+    flash()->success('Create New Conference Success');         
+    
     return redirect()->back();
   }
 

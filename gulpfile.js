@@ -1,5 +1,7 @@
 var elixir = require('laravel-elixir');
 
+require('laravel-elixir-vueify')
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -12,5 +14,24 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    var npmDir = 'node_modules/',
+        jsDir  = 'resources/assets/js',
+        sassDir  = 'resources/assets/sass',
+        cssDir  = 'resources/assets/css',
+        publicCssDir  = 'public/css';
+        publicJsDir  = 'public/js';
+                
+    mix.copy(npmDir + 'vue/dist/vue.min.js', jsDir);
+    mix.copy(npmDir + 'vue-resource/dist/vue-resource.min.js', jsDir);
+    mix.copy(npmDir + 'sweetalert/dist/sweetalert.min.js', jsDir);
+    mix.copy(npmDir + 'sweetalert/dist/sweetalert.min.js', publicJsDir);
+    
+    mix.scripts([
+        'vue.min.js',
+        'vue-resource.min.js'
+    ], 'public/js/vendor.js');
+
+    // mix.copy(npmDir + 'sweetalert/dist/sweetalert.css', cssDir);
+    // mix.copy(npmDir + 'sweetalert/dist/sweetalert.css', publicCssDir);
+    // mix.sass('app.scss');    
 });

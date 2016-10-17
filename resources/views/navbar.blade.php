@@ -14,11 +14,15 @@
             @if (isset($signedIn) && !$signedIn)
             <li><a href="/register">Register</a></li>
             <li><a href="/login">Login</a></li>
-            @elseif (isset($user) && $user->isAdmin());
+            @elseif (isset($user) && $user->isAdmin())
               <li><a href="/admin/conferences">Admin Dashboard</a></li>
             @endif
-            @if (isset($user) && isset($allowed) && $allowed);
-              <li><a href="{{ $conf->url }}/dashboard">Conference Dashboard</a></li>
+            @if (isset($user))
+              @if (isset($allowed) && $allowed)
+                <li><a href="{{ $conf->url }}/dashboard">Conference Dashboard</a></li>
+              @else
+                <li><a href="/users/home">User Dashboard</a></li>
+              @endif
             @endif
           </ul>
 

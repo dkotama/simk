@@ -30,6 +30,13 @@ Route::group(['middleware' => ['web']], function () {
 
   //Users
   Route::get('/admin/users', ['as' => 'admin.user.all', 'uses' => 'AdminsUserController@showAllUsers']);
+  
+  // Users Home
+  Route::get('/users/home', ['as' => 'user.home.index', 'uses' => 'UsersHomeController@index']);
+  Route::get('/users/home/manage/{confUrl}', ['as' => 'user.home.manage', 'uses' => 'UsersHomeController@manage']);
+  Route::get('/users/home/manage/{confUrl}/add', ['as' => 'user.home.addPaper', 'uses' => 'UsersHomeController@addPaper']);
+  Route::post('/users/home/manage/{confUrl}/submit', ['as' => 'user.home.submit', 'uses' => 'UsersHomeController@submitPaper']);
+  Route::get('/users/join/{confUrl}', ['as' => 'user.join.conf', 'uses' => 'UsersHomeController@join']);
 
   // Conferences
   Route::get('/{confUrl}', 'HomepageController@home');

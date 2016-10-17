@@ -1,5 +1,5 @@
           <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-success" style="text-align: center">Sign Up Now !</a>
+            <a href="{{ $joinUrl }}" class="list-group-item list-group-item-success" style="text-align: center">{{ $joinText }}</a>
           </div>
           <div class="list-group">
             <a href="/{{ $conf->url }}" class="list-group-item {{ $active == 'home' ? 'active' : null}}">

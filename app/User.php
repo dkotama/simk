@@ -13,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'title', 'first_name', 'last_name', 'email', 'password',
+        'title', 'first_name', 'last_name', 'email', 'password', 'activated'
     ];
 
     /**
@@ -36,10 +36,26 @@ class User extends Authenticatable
     public function organizing() {
         return $this->belongsToMany('App\Conference', 'organizers', 'user_id', 'conference_id');
     } 
+    
+    public function submissions() {
+        return $this->hasMany('App\Submission');
+    } 
 
     public function isAuthoring(Conference $conf)
     {
         return $this->authoring()->whereId($conf->id)->exists();
+    }
+
+    public function isActivatedAuthor(Conference $conf)
+    {
+        return null;
+        // return $this->authoring()->where('conference_id', $conf->id)->first()->pivot->activated;
+    } 
+
+    public function getPayment(Conference $conf)
+    {
+        return null;
+        // return $this->authoring()->where('conference_id', $conf->id)->first()->pivot; 
     }
 
     public function isReviewing(Conference $conf)
