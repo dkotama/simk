@@ -62,7 +62,9 @@ class UsersHomeController extends Controller
   } 
 
   public function submitPaper(SubmitPaperRequest $request) { 
-      $paper = $request->file('paper');
+      dd($request->all());
+      return view('user.home.manage', $this->viewData);
+      // $paper = $request->file('paper');
 
       // // setting up rules
       // $rules = array('image' => 'required',); //mimes:jpeg,bmp,png and for max size max:10000
@@ -75,19 +77,19 @@ class UsersHomeController extends Controller
       // } else {
       //   // checking file is valid.
       //TODO : ADD INSERT TO SUBMISSION
-      if ($paper->isValid()) {
-          // dd($paper);
-          $destinationPath = 'uploads'; // upload path
-          $extension = $paper->getClientOriginalExtension(); // getting image extension
-          $fileName = rand(11111,99999).'.'.$extension; // renameing image
-          $paper->move($destinationPath, $fileName); // uploading file to given path
+      // if ($paper->isValid()) {
+      //     // dd($paper);
+      //     $destinationPath = 'uploads'; // upload path
+      //     $extension = $paper->getClientOriginalExtension(); // getting image extension
+      //     $fileName = rand(11111,99999).'.'.$extension; // renameing image
+      //     $paper->move($destinationPath, $fileName); // uploading file to given path
 
-          flash()->success('Succes upload');
-      } else {
-          flash()->error('Error Uploading');
-      }
+      //     flash()->success('Succes upload');
+      // } else {
+      //     flash()->error('Error Uploading');
+      // }
 
-    return redirect()->back();
+    // return redirect()->back();
   }
 
   public function showSingleConference(Conference $confUrl)

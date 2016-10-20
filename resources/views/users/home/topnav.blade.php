@@ -1,2 +1,2 @@
-            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i> Administrator Dashboard</strong></a>
+            <a href="#"><strong><i class="glyphicon glyphicon-dashboard"></i> User Dashboard</strong></a>
             <hr>

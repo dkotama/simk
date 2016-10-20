@@ -35,41 +35,63 @@
                 </div>
             </div>
             <div class="panel-body">
-                <form class="form form-vertical" @submit.prevent="">
-                    <div class="control-group">
-                        <label>Title
-                            <br>
-                        </label>
+                <form class="form form-vertical" method="post" action="{{ route('user.home.addPaper.submit', $conf->url) }}">
+                    {{ csrf_field() }}
+                    <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                        <label>Title</label>
+
                         <div class="controls">
-                            <input type="text" class="form-control" placeholder="Enter Paper Title">
+                            <input type="text" class="form-control" name="title" value="{{ old('title') }}">
+
+                            @if ($errors->has('title'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('title') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="control-group">
-                        <label>Abstract</label>
-                        <div class="controls">
-                            <textarea class="form-control"></textarea>
+                        <div class="form-group{{ $errors->has('abstract') ? ' has-error' : '' }}">
+                            <label>Abstract</label>
+                            <div class="controls">
+                                <textarea class="form-control" name="abstract">{{ old('abstract') }}</textarea>
+
+                                @if ($errors->has('abstract'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('abstract') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label>Keywords</label>
-                        <div class="controls">
-                            <textarea class="form-control"></textarea>
-                        </div>
+                        <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
+                            <label>Keywords</label>
+                            <div class="controls">
+                                <textarea class="form-control" name="keywords">{{ old('keywords') }}</textarea>
+                                <span class="help-block">
+                                    @if ($errors->has('keywords'))
+                                       <strong>{{ $errors->first('keywords') }}</strong>
+                                    @else
+                                        <i>separate keywords by comma; e.g: Clean Energy, New Energy</i>
+                                    @endif
+                                </span>
+                            </div>
+                        <div> 
                     </div>
                     <div class="control-group">
-                        <label>Category</label>
-                        <div class="controls">
-                            <select class="form-control" id="paper-cat">
-                                <option>options</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label>File Upload
-                            <br>
-                        </label>
-                        <div class="controls">
-                            <input type="file" class="form-control input-sm">
+                        <div class="form-group{{ $errors->has('paper') ? ' has-error' : '' }}">
+                            <label>File Upload
+                                <br>
+                            </label>
+                            <div class="controls">
+                                <input type="file" class="form-control input-sm" name="paper">
+                                @if ($errors->has('paper'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('paper') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <hr />
@@ -81,25 +103,25 @@
                                 <br>
                             </label>
                             <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Author Name" value="@{{ author.name }}">
+                                <input type="text" class="form-control" placeholder="Enter Author Name" name="author-name">
                             </div>
                         </div>
                         <div class="control-group">
                             <label>Institution</label>
                             <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Institution">
+                                <input type="text" class="form-control" placeholder="Enter Institution" name="author-institution">
                             </div>
                         </div>
                         <div class="control-group">
                             <label>Email</label>
                             <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Email">
+                                <input type="text" class="form-control" placeholder="Enter Email" name="author-email">
                             </div>
                         </div>
                         <div class="control-group">
                             <label>Phone Number</label>
                             <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Phone Number">
+                                <input type="text" class="form-control" placeholder="Enter Phone Number" name="author-phone">
                             </div>
                         </div>       
                     <hr /> 
@@ -108,9 +130,6 @@
                         <label></label>
                         <div class="controls">
                             <button type="submit" class="btn btn-primary">Upload Paper</button>
-                            <button class="btn pull-right btn-info"
-                                @click="addAuthor" 
-                            >Add More Author</button>
                         </div>
                     </div>
                 </form>

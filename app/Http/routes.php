@@ -35,7 +35,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/users/home', ['as' => 'user.home.index', 'uses' => 'UsersHomeController@index']);
   Route::get('/users/home/manage/{confUrl}', ['as' => 'user.home.manage', 'uses' => 'UsersHomeController@manage']);
   Route::get('/users/home/manage/{confUrl}/add', ['as' => 'user.home.addPaper', 'uses' => 'UsersHomeController@addPaper']);
-  Route::post('/users/home/manage/{confUrl}/submit', ['as' => 'user.home.submit', 'uses' => 'UsersHomeController@submitPaper']);
+  Route::post('/users/home/manage/{confUrl}/submit', ['as' => 'user.home.addPaper.submit', 'uses' => 'UsersHomeController@submitPaper']);
   Route::get('/users/join/{confUrl}', ['as' => 'user.join.conf', 'uses' => 'UsersHomeController@join']);
 
   // Conferences
