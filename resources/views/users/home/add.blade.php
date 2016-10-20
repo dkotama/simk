@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                <form class="form form-vertical" method="post" action="{{ route('user.home.addPaper.submit', $conf->url) }}">
+                   <form class="form form-vertical" role="form" method="POST" action="{{ route('test.addPaper.submit', $conf->url) }}">
                     {{ csrf_field() }}
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                         <label>Title</label>
@@ -94,46 +94,14 @@
                             </div>
                         </div>
                     </div>
-                    <hr />
-                      <h4 class="text-center">Author</h4>
-                    <hr /> 
-                    <div v-for="author in authors">
-                       <div class="control-group">
-                            <label>Name
-                                <br>
-                            </label>
-                            <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Author Name" name="author-name">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label>Institution</label>
-                            <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Institution" name="author-institution">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label>Email</label>
-                            <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Email" name="author-email">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label>Phone Number</label>
-                            <div class="controls">
-                                <input type="text" class="form-control" placeholder="Enter Phone Number" name="author-phone">
-                            </div>
-                        </div>       
-                    <hr /> 
-                    </div>
+
                     <div class="control-group">
                         <label></label>
                         <div class="controls">
-                            <button type="submit" class="btn btn-primary">Upload Paper</button>
+                            <button type="submit" class="btn btn-primary pull-right">Upload Paper</button>
                         </div>
-                    </div>
+                    </div
                 </form>
-            </div>
         <!--/panel content-->
     </div>
 </div>

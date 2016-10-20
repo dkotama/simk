@@ -63,7 +63,6 @@ class UsersHomeController extends Controller
 
   public function submitPaper(SubmitPaperRequest $request) { 
       dd($request->all());
-      return view('user.home.manage', $this->viewData);
       // $paper = $request->file('paper');
 
       // // setting up rules

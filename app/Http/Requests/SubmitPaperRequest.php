@@ -29,7 +29,6 @@ class SubmitPaperRequest extends Request
             'abstract' => 'required',
             'keywords' => 'required',
             'description' => 'required',
-            'paper' => 'required|mimes:pdf'
         ];
     }
 
@@ -40,8 +39,6 @@ class SubmitPaperRequest extends Request
             'description.required' => 'Description is required',
             'abstract.required' => 'Please fill abstract',
             'keywords.required' => 'Please fill keywords, 1 is minimum',
-            'paper.required' => 'Please attach file',
-            'paper.mimes' => 'Please only upload .pdf file'
         ];
     } 
 }

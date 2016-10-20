@@ -32,8 +32,6 @@
     <script src="/js/jquery-1.12.2.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/sweetalert.min.js"></script>
-    <script src="/js/vendor.js"></script>
-    <script src="/js/user/scripts.js"></script>
     <script src="/js/scripts.js"></script>
     @yield('scripts.footer')
 

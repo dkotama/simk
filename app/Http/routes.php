@@ -19,6 +19,10 @@ Route::group(['middleware' => ['web']], function () {
 
   Route::get('/all', 'ConferencesController@all');
 
+  //Test Post Fail
+  Route::get('/test/{confUrl}/add', ['as' => 'test.addPaper', 'uses' => 'UsersHomeController@addPaper']);
+  Route::post('/test/{confUrl}/submit', ['as' => 'test.addPaper.submit', 'uses' => 'UsersHomeController@submitPaper']);
+
   //Administrator::Conferences
   Route::get('/admin', ['as' => 'admin', 'uses' => 'AdminsController@index']);
   Route::get('/admin/conferences', ['as' => 'admin.conf.all', 'uses' => 'AdminsController@showAllConferences']);
@@ -32,10 +36,10 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/admin/users', ['as' => 'admin.user.all', 'uses' => 'AdminsUserController@showAllUsers']);
   
   // Users Home
+  Route::post('/users/home/manage/{confUrl}/submit', ['as' => 'user.home.addPaper.submit', 'uses' => 'UsersHomeController@submitPaper']);
   Route::get('/users/home', ['as' => 'user.home.index', 'uses' => 'UsersHomeController@index']);
   Route::get('/users/home/manage/{confUrl}', ['as' => 'user.home.manage', 'uses' => 'UsersHomeController@manage']);
   Route::get('/users/home/manage/{confUrl}/add', ['as' => 'user.home.addPaper', 'uses' => 'UsersHomeController@addPaper']);
-  Route::post('/users/home/manage/{confUrl}/submit', ['as' => 'user.home.addPaper.submit', 'uses' => 'UsersHomeController@submitPaper']);
   Route::get('/users/join/{confUrl}', ['as' => 'user.join.conf', 'uses' => 'UsersHomeController@join']);
 
   // Conferences
