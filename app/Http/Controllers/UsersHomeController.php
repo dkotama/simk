@@ -10,6 +10,7 @@ use App\User;
 use App\Conference;
 use Illuminate\Support\Facades\Input;
 use Response;
+use Validator;
 use App\RoleWriter;
 // use App\Http\Requests;
 
@@ -61,9 +62,21 @@ class UsersHomeController extends Controller
     // return view('welcome');
   } 
 
-  public function submitPaper(SubmitPaperRequest $request) { 
-      dd($request->all());
-      // $paper = $request->file('paper');
+  public function submitPaper(Request $request) { 
+    $validator = Validator::make($request->all(), [
+      'title' => 'required',
+      'abstract' => 'required',
+      'keywords' => 'required',
+      'paper' => 'required|mimes:pdf|max:5000'
+    ]);
+
+    if ($validator->fails()) {
+      return redirect()
+      ->back()
+      ->withErrors($validator)
+      ->withInput();
+    }
+      $paper = $request->file('paper');
 
       // // setting up rules
       // $rules = array('image' => 'required',); //mimes:jpeg,bmp,png and for max size max:10000

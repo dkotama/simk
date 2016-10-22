@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="panel-body">
-                   <form class="form form-vertical" role="form" method="POST" action="{{ route('test.addPaper.submit', $conf->url) }}">
+                   <form class="form form-vertical" role="form" method="POST" action="{{ route('test.addPaper.submit', $conf->url) }}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                         <label>Title</label>
