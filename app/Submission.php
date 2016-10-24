@@ -10,16 +10,41 @@ class Submission extends Model
   protected $fillable =[
     'user_id',
     'conference_id',
-    'status'
+    'status',
+    'title',
+    'abstract',
+    'keywords',
+    'active_version'
   ];
 
-  public function paperAuthors()
+  public function authors()
   {
     return $this->hasMany('App\SubmissionAuthor');
   }
 
-  public function author()
+  public function versions()
   {
-    return $this->belongsTo('App\User');
+    return $this->hasMany('App\SubmissionPaper');
+  }
+
+  public function uploader()
+  {
+    return $this->belongsTo('App\User', 'user_id');
+  }
+
+  public function conference()
+  {
+    return $this->belongsTo('App\Conference', 'conference_id');
+  }
+
+  public function getCurrentActivePath()
+  {
+    $activeVersion = $this->versions->where('version', $this->active_version)->first();
+
+    if (!is_null($activeVersion)) {
+      return $activeVersion->path;
+    } else {
+      return null;
+    }
   }
 }

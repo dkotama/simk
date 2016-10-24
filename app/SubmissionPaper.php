@@ -4,18 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SubmissionAuthor extends Model
+class SubmissionPaper extends Model
 {
-  protected $table = 'submissions_authors';
+  protected $table = 'submissions_papers';
 
   protected $fillable =[
     'submission_id',
-    'author_no',
-    'name',
-    'email',
-    'phone',
-    'address',
-    'is_primary'
+    'path',
+    'version'
   ];
 
   public function submission()

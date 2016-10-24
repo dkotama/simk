@@ -42,4 +42,8 @@ class Conference extends Model
   {
     return static::whereUrl($url)->firstOrFail();
   }
+
+  public function submissions() {
+    return $this->hasMany('App\Submission');
+  } 
 }
