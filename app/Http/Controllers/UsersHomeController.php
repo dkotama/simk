@@ -45,6 +45,7 @@ class UsersHomeController extends Controller
   public function manage(Conference $confUrl)
   {
     $this->viewData['conf'] = $confUrl;
+    $this->viewData['submissions'] = $this->user->submissions->where('conference_id', $confUrl->id)->all();
 
     return view('users.home.manage', $this->viewData);
   }
@@ -54,10 +55,11 @@ class UsersHomeController extends Controller
     $this->viewData['conf'] = $confUrl;
 
     $writer = new RoleWriter($confUrl, $this->user, 'author');
-
+    
+    $writer->attach();
     //TODO : EDIT AUTHOR
 
-    return view('users.home.manage', $this->viewData);
+    return redirect()->route('user.home.manage', ['confUrl' => $confUrl->url]);
     // return view('welcome');
   }
 
@@ -130,12 +132,14 @@ class UsersHomeController extends Controller
       ->withInput();
     }
 
+    $author = SubmissionAuthor::create($request->all());
     $submission = Submission::findOrFail($paperId);
 
-    $author = SubmissionAuthor::create($request->all());
-    if ($submission->authors()->save($author)) {
-    } else {
+    if ($submission->authors->count() === 0) {
+      $author->is_primary = 1;
     }
+
+    $submission->authors()->save($author);
 
     return redirect()->back();
   }
@@ -157,13 +161,75 @@ class UsersHomeController extends Controller
     return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $paperId]);
   }
 
-  public function updateConference(StoreConferenceRequest $request, Conference $confUrl)
+  public function removeAuthor(Conference $confUrl, $paperId, $authorId)
   {
-    $confUrl->update($request->all());
-    flash()->success('Conferece Succesfully Updated');
 
-    return redirect()->back();
+    $submission = Submission::findOrFail($paperId);
+    $author = SubmissionAuthor::findOrFail($authorId);
+    //
+    if ($author->is_primary === 0) {
+      $author->delete();
+    }
+
+
+    return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $paperId]);
   }
+
+  public function editAuthor(Conference $confUrl, $paperId, $authorId)
+  {
+    $submission = Submission::findOrFail($paperId);
+
+    $this->viewData['conf'] = $confUrl;
+    $this->viewData['submission'] = $submission;
+    $this->viewData['authors'] = $submission->authors->sortByDesc('is_primary');
+
+    $this->viewData['singleAuthor'] = SubmissionAuthor::findOrFail($authorId);
+    $this->viewData['edit']   = true;
+    //
+
+    return view('users.home.single', $this->viewData);
+  }
+
+  public function updateAuthor(Request $request, Conference $confUrl, $paperId, $authorId)
+  {
+    $validator = Validator::make($request->all(), [
+      'name' => 'required',
+      'email' => 'required|email',
+      'phone' => 'required'
+    ]);
+
+    if ($validator->fails()) {
+      return redirect()
+      ->back()
+      ->withErrors($validator)
+      ->withInput();
+    }
+
+    $author = SubmissionAuthor::findOrFail($authorId);
+    $author->update($request->all());
+
+    // $submission = Submission::findOrFail($paperId);
+    //
+    // if ($submission->authors->count() === 0) {
+    //   $author->is_primary = 1;
+    // }
+    //
+    // $submission->authors()->save($author);
+    //
+    return redirect()->route('user.home.single.show', ['confUrl' => $confUrl->url, 'paperId' => $paperId]);
+    // $submission = Submission::findOrFail($paperId);
+    //
+    // $this->viewData['conf'] = $confUrl;
+    // $this->viewData['submission'] = $submission;
+    // $this->viewData['authors'] = $submission->authors->sortByDesc('is_primary');
+    //
+    // $this->viewData['author'] = SubmissionAuthor::findOrFail($authorId);
+    // $this->viewData['edit']   = true;
+    // //
+    //
+    // return view('users.home.single', $this->viewData);
+  }
+
 
   protected function checkAllowed() {
     if ($this->user === null || !$this->user->isAdmin()) {

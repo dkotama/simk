@@ -22,23 +22,41 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <?php $count = 1 ?>
+                  @forelse($submissions as $subs)
                     <tr>
                       <td>
-                        1
+                        {{ $count++ }}
                       </td>
                       <td class="title">
-                        <a href="#"  data-toggle="tooltip" data-placement="top" title="Lorem ipsum dolor sit lisuor amor">
-                          Analisa Tegangan Pada Sutet yang Mempengaruhi Probabilitas Kekuatan Arus 
+                        <a href="{{ route('user.home.single.show', ['conf' => $conf->url, 'paperId' => $subs->id]) }}"  data-toggle="tooltip" data-placement="top" title="{{ str_limit($subs->abstract, 100) }}">
+                          {{ str_limit($subs->title, 70) }}
                         </a>
                       </td>
                       <td>
-                        Jonathan, Pardede; Christina, Aguilera; Richard, Mathew; Albert, Santoso
+                        @foreach ($subs->authors as $author)
+                          {{ $author->name }} ,
+                        @endforeach
                       </td>
                       <td class="center"> Review Process</td>
                       <td>
-                        <button class="btn btn-danger btn-xs">Delete</button>
+                        <button class="btn btn-danger btn-xs">Cancel</button>
                       </td>
                     </tr>
+                  @empty
+                    <tr>
+                      <td>
+                      </td>
+                      <td class="title">
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                    </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>

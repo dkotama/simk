@@ -38,7 +38,10 @@ Route::group(['middleware' => ['web']], function () {
   // Users Home
   Route::get('/users/join/{confUrl}', ['as' => 'user.join.conf', 'uses' => 'UsersHomeController@join']);
   Route::post('/users/home/manage/{confUrl}/{paperId}/add-author', ['as' => 'user.home.single.addAuthor', 'uses' => 'UsersHomeController@addAuthor']);
-  Route::get('/users/home/manage/{confUrl}/{paperId}/change-author/{authorId}', ['as' => 'user.home.single.changeContact', 'uses' => 'UsersHomeController@changeContact']);
+  Route::get('/users/home/manage/{confUrl}/{paperId}/change/{authorId}', ['as' => 'user.home.single.changeContact', 'uses' => 'UsersHomeController@changeContact']);
+  Route::get('/users/home/manage/{confUrl}/{paperId}/remove/{authorId}', ['as' => 'user.home.single.removeAuthor', 'uses' => 'UsersHomeController@removeAuthor']);
+  Route::get('/users/home/manage/{confUrl}/{paperId}/edit/{authorId}', ['as' => 'user.home.single.editAuthor', 'uses' => 'UsersHomeController@editAuthor']);
+  Route::post('/users/home/manage/{confUrl}/{paperId}/update/{authorId}', ['as' => 'user.home.single.updateAuthor', 'uses' => 'UsersHomeController@updateAuthor']);
   Route::post('/users/home/manage/{confUrl}/submit', ['as' => 'user.home.addPaper.submit', 'uses' => 'UsersHomeController@submitPaper']);
   Route::get('/users/home', ['as' => 'user.home.index', 'uses' => 'UsersHomeController@index']);
   Route::get('/users/home/manage/{confUrl}', ['as' => 'user.home.manage', 'uses' => 'UsersHomeController@manage']);
