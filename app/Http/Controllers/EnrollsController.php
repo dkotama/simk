@@ -78,10 +78,7 @@ class EnrollsController extends ConferencesController
       abort(404);
     }
   }
-
-
-
-
+  
   protected function isAllowed() {
     return ($this->user->isAdmin() || $this->user->organizing);
   }

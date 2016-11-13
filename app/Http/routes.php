@@ -54,7 +54,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/callpaper', 'HomepageController@callPaper');
   Route::get('/{confUrl}/policies', 'HomepageController@policies');
 
-  Route::get('/{confUrl}/dashboard', 'ConferencesController@dashboard');
+  Route::get('/{confUrl}/dashboard', ['as' => 'organizer.manage', 'uses' => 'ConferencesController@dashboard']);
 
   //Enroll User
   Route::get('/{confUrl}/adm/users', ['as' => 'enrolls', 'uses' => 'EnrollsController@showManagesUser']);

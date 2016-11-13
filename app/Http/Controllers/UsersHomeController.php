@@ -28,6 +28,7 @@ class UsersHomeController extends Controller
     parent::__construct();
 
     $this->viewData['conferences'] = $this->user->authoring()->get();
+    $this->viewData['conferencesOrganized'] = $this->user->organizing()->get();
   }
 
   public function index()
