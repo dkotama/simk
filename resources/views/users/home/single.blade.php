@@ -37,6 +37,7 @@
                   <table class="table table-condensed">
                   <thead>
                     <tr>
+                      <th>No</th>
                       <th>Name</th>
                       <th>E-mail</th>
                       <th>Phone</th>
@@ -46,6 +47,9 @@
                   <tbody>
                     @foreach($authors as $author)
                       <tr>
+                        <td>
+                          {{ $author->author_no}}
+                        </td>
                         <td>
                           {{ $author->name }}
                           @if($author->is_primary)
@@ -59,20 +63,37 @@
                               'conf' => $conf->url,
                               'paperId' => $submission->id,
                               'authorId' => $author->id
-                          ])}}" class="btn btn-xs btn-primary">Edit</a>
+                          ])}}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
 
                           @if(!$author->is_primary)
                             <a href="{{ route('user.home.single.changeContact', [
                               'conf' => $conf->url,
                               'paperId' => $submission->id,
                               'authorId' => $author->id
-                            ])}}" class="btn btn-xs btn-success">Set as Contact</a>
+                            ])}}" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-earphone"></span></a>
 
                             <a href="{{ route('user.home.single.removeAuthor', [
                               'conf' => $conf->url,
                               'paperId' => $submission->id,
                               'authorId' => $author->id
-                            ])}}" class="btn btn-xs btn-danger">Delete</a>
+                            ])}}" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                          @endif
+
+                          @if($author->author_no != 1)
+                            <a href="{{ route('user.home.moveAuthor', [
+                              'conf' => $conf->url,
+                              'paperId' => $submission->id,
+                              'from' => $author->author_no,
+                              'to' => ($author->author_no - 1)
+                            ])}}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                          @endif
+                          @if($author->author_no != $authorCount)
+                            <a href="{{ route('user.home.moveAuthor', [
+                              'conf' => $conf->url,
+                              'paperId' => $submission->id,
+                              'from' => $author->author_no,
+                              'to' => ($author->author_no + 1)
+                            ])}}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-arrow-down"></span></a>
                           @endif
                         </td>
                       </tr>

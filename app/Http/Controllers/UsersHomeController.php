@@ -55,7 +55,7 @@ class UsersHomeController extends Controller
     $this->viewData['conf'] = $confUrl;
 
     $writer = new RoleWriter($confUrl, $this->user, 'author');
-    
+
     $writer->attach();
     //TODO : EDIT AUTHOR
 
@@ -112,7 +112,8 @@ class UsersHomeController extends Controller
 
     $this->viewData['conf'] = $confUrl;
     $this->viewData['submission'] = $submission;
-    $this->viewData['authors'] = $submission->authors->sortByDesc('is_primary');
+    $this->viewData['authors'] = $submission->authors->sortBy('author_no');
+    $this->viewData['authorCount'] = $submission->authors->count();
 
     return view('users.home.single', $this->viewData);
   }
@@ -135,6 +136,8 @@ class UsersHomeController extends Controller
     $author = SubmissionAuthor::create($request->all());
     $submission = Submission::findOrFail($paperId);
 
+    $author->author_no = $submission->authors->count() + 1;
+
     if ($submission->authors->count() === 0) {
       $author->is_primary = 1;
     }
@@ -142,6 +145,22 @@ class UsersHomeController extends Controller
     $submission->authors()->save($author);
 
     return redirect()->back();
+  }
+
+  public function moveAuthor(Conference $confUrl, Request $request, $paperId, $from, $to)
+  {
+    $submission = Submission::findOrFail($paperId);
+    $authors = $submission->authors;
+
+    $fromNum = $authors->where('author_no', intval($from))->first();
+    $toNum = $authors->where('author_no', intval($to))->first();
+
+    if (!is_null($fromNum) && !is_null($toNum)) {
+      $fromNum->update(['author_no' => $to]);
+      $toNum->update(['author_no' => $from]);
+    }
+
+    return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $paperId]);
   }
 
   public function changeContact(Conference $confUrl, $paperId, $authorId)
