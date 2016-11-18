@@ -1,19 +1,19 @@
-@extends('admins.dashboard')
+@extends('organizers.dashboard')
 
 @section('content')
   <div class="row">
         <div class="col-md-10">
             <div class="panel panel-default">
-                <div class="panel-heading">Create New User</div>
+                <div class="panel-heading">Create New Conference</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.conf.post') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.conf.update', $conf->url) }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Name</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                <input type="text" class="form-control" name="name" value="{{ $conf->name }}">
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -26,7 +26,7 @@
                             <label class="col-md-4 control-label">URL</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="url" value="{{ old('url') }}">
+                                <input type="text" class="form-control" name="url" value="{{ $conf->url }}">
 
                                 @if ($errors->has('url'))
                                     <span class="help-block">
@@ -38,8 +38,7 @@
                         <div class="form-group{{ $errors->has('start_submit') ? ' has-error' : '' }}">
                           <label class="col-md-4 control-label">Start Submit</label>
                           <div class="col-md-6">
-                              <input type="date" class="form-control" name="start_submit" value="{{ old('start_submit') }}">
-
+                              <input type="date" class="form-control" name="start_submit" value="@if(old('start_submit')){{ old('start_submit') }}@elseif(isset($conf->start_submit)){{ $conf->start_submit->format('Y-m-d') }}@endif">
                               @if ($errors->has('start_submit'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('start_submit') }}</strong>
@@ -50,7 +49,7 @@
                         <div class="form-group{{ $errors->has('end_submit') ? ' has-error' : '' }}">
                           <label class="col-md-4 control-label">End Submit</label>
                           <div class="col-md-6">
-                              <input type="date" class="form-control" name="end_submit" value="{{ old('end_submit') }}">
+                              <input type="date" class="form-control" name="end_submit" value="@if(old('end_submit')){{ old('end_submit') }}@elseif(isset($conf->end_submit)){{ $conf->end_submit->format('Y-m-d') }}@endif">
 
                               @if ($errors->has('end_submit'))
                                   <span class="help-block">
@@ -62,7 +61,7 @@
                         <div class="form-group{{ $errors->has('start_date') ? ' has-error' : '' }}">
                           <label class="col-md-4 control-label">Start Date</label>
                           <div class="col-md-6">
-                              <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}">
+                              <input type="date" class="form-control" name="start_date" value="@if(old('start_date')){{ old('start_date') }}@elseif(isset($conf->start_date)){{ $conf->start_date->format('Y-m-d') }}@endif">
 
                               @if ($errors->has('start_date'))
                                   <span class="help-block">
@@ -74,7 +73,7 @@
                         <div class="form-group{{ $errors->has('end_date') ? ' has-error' : '' }}">
                           <label class="col-md-4 control-label">End Date</label>
                           <div class="col-md-6">
-                              <input type="date" class="form-control" name="end_date" value="{{ old('end_date') }}">
+                              <input type="date" class="form-control" name="end_date" value="@if(old('end_date')){{ old('end_date') }}@elseif(isset($conf->end_date)){{ $conf->end_date->format('Y-m-d') }}@endif">
 
                               @if ($errors->has('end_date'))
                                   <span class="help-block">
@@ -87,7 +86,7 @@
                             <label class="col-md-4 control-label">Description</label>
 
                             <div class="col-md-6">
-                                <textarea name="description" id="description" class="form-control" rows="3">{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" class="form-control" rows="3">{{ null !== old('description') ? old('description') : $conf->description }}</textarea>
 
                                 @if ($errors->has('description'))
                                     <span class="help-block">
@@ -100,7 +99,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fa fa-btn fa-user"></i>Register
+                                    <i class="fa fa-btn fa-user"></i>Update Conference
                                 </button>
                                 <a href="{{ route('admin.conf.all') }}"<button type="submit" class="btn btn-primary">
                                     <i class="fa fa-btn fa-user"></i>Back

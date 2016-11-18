@@ -54,12 +54,16 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/callpaper', 'HomepageController@callPaper');
   Route::get('/{confUrl}/policies', 'HomepageController@policies');
 
-  Route::get('/{confUrl}/dashboard', ['as' => 'organizer.manage', 'uses' => 'ConferencesController@dashboard']);
+  Route::get('/{confUrl}/organizer/', ['as' => 'organizer.manage', 'uses' => 'OrgHomeController@dashboard']);
 
   //Enroll User
-  Route::get('/{confUrl}/adm/users', ['as' => 'enrolls', 'uses' => 'EnrollsController@showManagesUser']);
-  Route::get('/{confUrl}/adm/users/{user}/det/{mode}', ['as' => 'enrolls.detachroles', 'uses' => 'EnrollsController@detachRoles']);
-  Route::get('/{confUrl}/adm/users/{user}/att/{mode}', ['as' => 'enrolls.attachroles', 'uses' => 'EnrollsController@attachRoles']);
+  Route::get('/{confUrl}/org/users', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);
+  Route::get('/{confUrl}/org/users/{user}/det/{mode}', ['as' => 'organizer.detachroles', 'uses' => 'OrgHomeController@detachRoles']);
+  Route::get('/{confUrl}/org/users/{user}/att/{mode}', ['as' => 'organizer.attachroles', 'uses' => 'OrgHomeController@attachRoles']);
+
+  //Register User
+  Route::get('/{confUrl}/org/users/add', ['as' => 'organizer.addUser', 'uses' => 'OrgHomeController@showAddUser']);
+  Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
 
 
 });

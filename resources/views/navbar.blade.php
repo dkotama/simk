@@ -19,7 +19,7 @@
             @endif
             @if (isset($user))
               @if (isset($allowed) && $allowed)
-                <li><a href="{{ $conf->url }}/dashboard">Organizer Dashboard</a></li>
+                <li><a href="{{ route('organizer.manage', $conf->url) }}">Organizer Dashboard</a></li>
               @else
                 <li><a href="/users/home">User Dashboard</a></li>
               @endif

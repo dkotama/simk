@@ -1,10 +1,10 @@
-@extends('admins.dashboard')
+@extends('organizers.dashboard')
 
 @section('content')
   <div class="row">
         <div class="col-md-10">
             <div class="panel panel-default">
-                <div class="panel-heading">Create New User</div>
+                <div class="panel-heading">Create New Conference</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.conf.post') }}">
                         {!! csrf_field() !!}
