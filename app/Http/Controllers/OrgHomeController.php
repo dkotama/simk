@@ -38,10 +38,27 @@ class OrgHomeController extends Controller
   public function showAddUser(Conference $confUrl)
   {
     $this->setConf($confUrl);
-    
+
     return view('organizers.users.new', $this->viewData);
   }
 
+  public function showEditUser(Conference $confUrl, $userId)
+  {
+    $this->setConf($confUrl);
+    $this->viewData['editedUser'] = User::findOrFail($userId);
+    // dd($this->viewData['editedUser']->first_name);
+
+    return view('organizers.users.edit', $this->viewData);
+  }
+
+  public function updateUser(RegisterUserRequest $request, Conference $confUrl)
+  {
+    dd($request->all());
+    // $this->setConf($confUrl);
+
+    return redirect()->route('organizer.allUser', ['conf' => $confUrl->url]);
+    // return view('organizers.users.edit', $this->viewData);
+  }
 
   public function registerUser(RegisterUserRequest $request, Conference $confUrl)
   {

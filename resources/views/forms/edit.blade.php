@@ -1,3 +1,4 @@
+
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -21,11 +22,7 @@
                             <label class="col-md-4 control-label">First Name</label>
 
                             <div class="col-md-6">
-                                @if (isset($editedUser))
-                                  <input type="text" class="form-control" name="first_name" value="{{ $editedUser->first_name }}">
-                                @else
-                                  <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}">
-                                @endif
+                                <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}">
 
                                 @if ($errors->has('first_name'))
                                     <span class="help-block">
@@ -38,11 +35,7 @@
                             <label class="col-md-4 control-label">Last Name</label>
 
                             <div class="col-md-6">
-                                @if (isset($editedUser))
-                                  <input type="text" class="form-control" name="first_name" value="{{ $editedUser->last_name}}">
-                                @else
-                                  <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}">
-                                @endif
+                                <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}">
 
                                 @if ($errors->has('last_name'))
                                     <span class="help-block">
@@ -56,11 +49,7 @@
                             <label class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                @if (isset($editedUser))
-                                  <input type="text" class="form-control" name="first_name" value="{{ $editedUser->email}}">
-                                @else
-                                  <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-                                @endif
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">

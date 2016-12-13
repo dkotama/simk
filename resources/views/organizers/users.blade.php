@@ -17,7 +17,8 @@
               <tr class="text-center">
                 <th>#</th>
                 <th>Name</th>
-                <th colspan="3">Actions</th>
+                <th>Enrolls</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -61,6 +62,13 @@
                       @endif
                     @endif
                   </td>
+                  <td>
+                    @if (!$usr->isAdmin())
+                     <a href="{{ route('organizer.editUser', ['confUrl' => $conf->url, 'userId' => $usr->id])}}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                     <a href="{{ route('organizer.attachroles', [$conf->url, $usr->id, 'reviewer'])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                    @endif
+                  </td>
+                </tr>
                 </tr>
                 <?php $i++; ?>
               @endforeach

@@ -64,6 +64,7 @@ Route::group(['middleware' => ['web']], function () {
   //Register User
   Route::get('/{confUrl}/org/users/add', ['as' => 'organizer.addUser', 'uses' => 'OrgHomeController@showAddUser']);
   Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
-
+  Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
+  Route::get('/{confUrl}/org/user/{userId}/update', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
 
 });
