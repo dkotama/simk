@@ -53,8 +53,8 @@ class AdminsController extends Controller
   {
     //FIXME please add validation date
     Conference::create($request->all());
-    flash()->success('Create New Conference Success');         
-    
+    flash()->success('Create New Conference Success');
+
     return redirect()->back();
   }
 

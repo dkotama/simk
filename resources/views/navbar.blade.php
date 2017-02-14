@@ -20,7 +20,7 @@
             @if (isset($user))
               @if (isset($allowed) && $allowed)
                 <li><a href="{{ route('organizer.manage', $conf->url) }}">Organizer Dashboard</a></li>
-              @else
+              @elseif (!$user->isAdmin())
                 <li><a href="/users/home">User Dashboard</a></li>
               @endif
             @endif

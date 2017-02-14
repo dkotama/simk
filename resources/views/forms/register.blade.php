@@ -1,22 +1,63 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Title</label>
+                        <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Country</label>
 
                             <div class="col-md-6">
-                                <select class="form-control" name="title" id="title">
-                                    <option value="Mr.">Mr.</option>
-                                    <option value="Mrs.">Mrs.</option>
-                                    <option value="Miss.">Miss.</option>
+                                <select class="form-control" name="country" id="country">
+                                  @foreach($countryList as $countryKey => $countryValue)
+                                    <option value="{{ $countryKey }}">{{ $countryValue }}</option>
+                                  @endforeach
                                 </select>
 
-                                @if ($errors->has('title'))
+                                @if ($errors->has('country'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('title') }}</strong>
+                                        <strong>{{ $errors->first('country') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group{{ $errors->has('salutation') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Salutation</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control" name="salutation" id="salutation">
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Mrs.">Mrs.</option>
+                                    <option value="Ms.">Ms.</option>
+                                    <option value="Dr.">Dr.</option>
+                                    <option value="Prof.">Prof.</option>
+                                </select>
+
+                                @if ($errors->has('salutation'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('salutation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Status</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control" name="status" id="status">
+                                    <option value="Student">Student</option>
+                                    <option value="Academia">Academia</option>
+                                    <option value="Industry">Industry</option>
+                                    <option value="Goverment">Goverment</option>
+                                    <option value="Other">Other</option>
+                                </select>
+
+                                @if ($errors->has('status'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">First Name</label>
 

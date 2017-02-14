@@ -25,6 +25,11 @@ class Authenticate
             }
         }
 
+        if (Auth::guard($guard)->check() && Auth::user()->deleted_at !== null) {
+            return redirect()->guest('logout');
+            // return redirect('/unconfirmed-view');
+        }
+
         return $next($request);
     }
 }

@@ -33,6 +33,7 @@ class UsersHomeController extends Controller
 
   public function index()
   {
+    $this->viewData['isAdmin'] = $this->user->isAdmin();
     return view('users.home.index', $this->viewData);
   }
 

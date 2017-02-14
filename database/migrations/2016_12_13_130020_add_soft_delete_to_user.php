@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterSubmissionTable extends Migration
+class AddSoftDeleteToUser extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,9 @@ class AlterSubmissionTable extends Migration
      */
     public function up()
     {
-        // Schema::table('submissions', function (Blueprint $table) {
-        //     $table->renameColumn('version', 'active_version');
-        // });
+        Schema::table('users', function (Blueprint $table) {
+          $table->softDeletes();
+        });
     }
 
     /**
@@ -24,8 +24,8 @@ class AlterSubmissionTable extends Migration
      */
     public function down()
     {
-        Schema::table('submissions', function (Blueprint $table) {
-            $table->renameColumn('active_version', 'version');
+        Schema::table('users', function (Blueprint $table) {
+          $table->dropColumn('deleted_at');
         });
     }
 }

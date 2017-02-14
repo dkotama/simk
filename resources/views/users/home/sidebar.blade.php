@@ -1,4 +1,6 @@
-            <a href="/all" class="list-group-item list-group-item-success" style="text-align: center">Join New Conference</a>
+            @if($isAdmin == null && $isAdmin)
+              <a href="/all" class="list-group-item list-group-item-success" style="text-align: center">Join New Conference</a>
+            @endif
 
             @if(count($conferences) > 0)
               <hr>
@@ -34,8 +36,8 @@
 
             <hr>
 
+
             <ul class="nav nav-pills nav-stacked">
               <li><a href="{{ route('admin.user.all') }}"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
             </ul>
-
             <hr>

@@ -32,8 +32,14 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/admin/conferences/new', ['as' => 'admin.conf.new', 'uses' => 'AdminsController@showNewConferenceForm']);
   Route::get('/admin/conferences/{confUrl}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
 
-  //Users
-  Route::get('/admin/users', ['as' => 'admin.user.all', 'uses' => 'AdminsUserController@showAllUsers']);
+  //Admin Users
+  Route::post('/admin/users', ['as' => 'admin.user.refresh', 'uses' => 'AdminsUserController@refreshUsers']);
+  Route::get('/admin/users/all', ['as' => 'admin.user.all', 'uses' => 'AdminsUserController@showAllUsers']);
+  Route::get('/admin/users/manage/{confUrl}', ['as' => 'admin.user.conf', 'uses' => 'AdminsUserController@showConferenceUsers']);
+  Route::get('/admin/users/{userId}/', ['as' => 'admin.user.show', 'uses' => 'AdminsUserController@showSingleUser']);
+  Route::get('/admin/users/{userId}/edit', ['as' => 'admin.user.edit', 'uses' => 'AdminsUserController@editUser']);
+  Route::post('/admin/users/{userId}/edit', ['as' => 'admin.user.update', 'uses' => 'AdminsUserController@updateUser']);
+  Route::get('/admin/users/{userId}/delete', ['as' => 'admin.user.delete', 'uses' => 'AdminsUserController@softDeleteUser']);
 
   // Users Home
   Route::get('/users/join/{confUrl}', ['as' => 'user.join.conf', 'uses' => 'UsersHomeController@join']);
@@ -64,7 +70,7 @@ Route::group(['middleware' => ['web']], function () {
   //Register User
   Route::get('/{confUrl}/org/users/add', ['as' => 'organizer.addUser', 'uses' => 'OrgHomeController@showAddUser']);
   Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
-  Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
-  Route::get('/{confUrl}/org/user/{userId}/update', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
+  Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@editUser
+  ']);
 
 });

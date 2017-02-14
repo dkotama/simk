@@ -6,6 +6,7 @@ use Auth;
 use App\User;
 use Illuminate\Http\Request;
 use App\ActivationService;
+use App\CountryList;
 
 use App\Http\Requests\RegisterUserRequest;
 
@@ -15,6 +16,7 @@ class RegistrationsController extends Controller
 {
   protected $activationService;
 
+
   public function __construct(ActivationService $activationService)
   {
     $this->activationService = $activationService;
@@ -22,8 +24,10 @@ class RegistrationsController extends Controller
 
   public function showRegistrationForm()
   {
+    $countryList = new CountryList();
+
     if (!Auth::check()) {
-      return view('auth.register');
+      return view('auth.register', ['countryList' => $countryList->getList()]);
     } else {
       return redirect('/users/home');
     }

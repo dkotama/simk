@@ -15,7 +15,7 @@ class SuperuserRegisterService
 {
   public function create($userData, $confId)
   {
-    $userData['password'] = bcrypt($userData['password']);
+    $userData['password']  = bcrypt($userData['password']);
     $userData['activated'] = true;
 
     $user = User::create($userData);

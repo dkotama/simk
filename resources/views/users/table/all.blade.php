@@ -2,39 +2,62 @@
                 <thead>
                   <tr class="text-center">
                     <th>#</th>
-                    <th>ID</th>
+                    <th>User ID</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Submission</th>
-                    <th>Action</th>
+                    <th>Institution</th>
+                    @if (!empty($showAction) && $showAction)
+                      <th>Action</th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
+                  <?php $count = 0 ?>
+                  @foreach ($users as $user)
+                  <?php $count++ ?>
                     <tr>
-                      <td class="center">
-                        1
+                      <td class="sm-size">
+
                       </td>
-                      <td class="center">
-                        1
+                      <td class="sm-size">
+                        {{ $user->id }}
+                      </td>
+                      <td class="name">
+                        <a href="{{ route($showRoute, $user->id) }}">
+                          {{  $user->title . ' ' . $user->first_name . ' ' . $user->title }}
+                        </a>
                       </td>
                       <td class="med-size">
-                        Mr. Ankhar, Punjabi
+                        Udayana University
                       </td>
-                      <td class="med-size">
-                        ankhar.punjabi@mail.com
+                    @if (!empty($showAction) && $showAction)
+                      <td class="action">
+                        <a href="#" class="btn btn-primary btn-xs">Edit</a>
+                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
                       </td>
-                      <td class="large-size">
-                        TBD
-                      </td>
-                      <td>
-                        <a href="#"><button type="button" name="btn-xs btn-danger">Delete</button></a>
-                      </td>
+                    @endif
                     </tr>
+                  @endforeach
                 </tbody>
               </table>
 
+              <center>
+                {{ $users->links() }}
+              </center>
+
               <style media="screen">
                 table.users th {
+                  text-align: center;
+                }
+                table.users td.sm-size{
+                  width: 5%;
+                  text-align: center;
+                }
+                table.users td.name {
+                  /*width: 25%;*/
+                  text-align: left;
+                }
+                table.users td.action{
+                  width: 15%;
                   text-align: center;
                 }
                 table.users td.med-size{
