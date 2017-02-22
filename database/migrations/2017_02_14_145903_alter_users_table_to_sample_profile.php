@@ -14,8 +14,10 @@ class AlterUsersTableToSampleProfile extends Migration
     {
       Schema::table('users', function ($table) {
         $table->renameColumn('title', 'salutation');
-        //TODO : lanjutin alter table users
-
+        $table->string('country');
+        $table->string('status');
+        $table->string('address');
+        $table->string('phone');
       });
     }
 
@@ -26,6 +28,9 @@ class AlterUsersTableToSampleProfile extends Migration
      */
     public function down()
     {
-        //
+      Schema::table('users', function ($table) {
+        $table->renameColumn('salutation', 'title');
+        $table->dropColumn(['country', 'status', 'address', 'phone']);
+      });
     }
 }

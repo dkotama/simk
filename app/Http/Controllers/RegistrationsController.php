@@ -33,17 +33,11 @@ class RegistrationsController extends Controller
     }
   }
 
-  // public function register(RegisterUserRequest $request)
-  // {
-  //   User::create($this->generateUserData($request->all()));
-  //
-  //   flash()->success('Registration Succesful.');
-  //
-  //   return redirect()->back();
-  // }
-
   public function register(RegisterUserRequest $request) {
     // $user = $this->create($request->all());
+
+    // TODO :berhubung sakit perut, besok terusin validasi dan buat class User Management
+
     $user = User::create($this->generateUserData($request->all()));
 
     $this->activationService->sendActivationMail($user);

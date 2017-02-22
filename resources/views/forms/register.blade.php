@@ -5,8 +5,15 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="country" id="country">
+                                    <option selected disabled>Please Choose Country</option>
                                   @foreach($countryList as $countryKey => $countryValue)
-                                    <option value="{{ $countryKey }}">{{ $countryValue }}</option>
+                                    @if (isset($editedUser))
+                                      <option {{ ($countryKey === $editedUser->country) ? 'selected ' : NULL }} value="{{ $countryKey }}">{{ $countryValue }}</option>
+                                    @elseif (old('country') !== NULL)
+                                      <option {{ ($countryKey === old('country')) ? 'selected ' : NULL }} value="{{ $countryKey }}">{{ $countryValue }}</option>
+                                    @else
+                                      <option value="{{ $countryKey }}">{{ $countryValue }}</option>
+                                    @endif
                                   @endforeach
                                 </select>
 
@@ -23,6 +30,7 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="salutation" id="salutation">
+                                    <option selected disabled>Please Choose Salutation</option>
                                     <option value="Mr.">Mr.</option>
                                     <option value="Mrs.">Mrs.</option>
                                     <option value="Ms.">Ms.</option>
@@ -43,6 +51,7 @@
 
                             <div class="col-md-6">
                                 <select class="form-control" name="status" id="status">
+                                    <option selected disabled>Please Choose Status</option>
                                     <option value="Student">Student</option>
                                     <option value="Academia">Academia</option>
                                     <option value="Industry">Industry</option>
@@ -75,12 +84,13 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Last Name</label>
 
                             <div class="col-md-6">
                                 @if (isset($editedUser))
-                                  <input type="text" class="form-control" name="first_name" value="{{ $editedUser->last_name}}">
+                                  <input type="text" class="form-control" name="last_name" value="{{ $editedUser->last_name}}">
                                 @else
                                   <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}">
                                 @endif
@@ -88,6 +98,24 @@
                                 @if ($errors->has('last_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('last_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Address</label>
+
+                            <div class="col-md-6">
+                                @if (isset($editedUser))
+                                  <textarea class="form-control" rows="3">{{ $editedUser->address}}</textarea>
+                                @else
+                                  <textarea class="form-control" rows="3">{{ old('last_name') }}</textarea>
+                                @endif
+
+                                @if ($errors->has('address'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('address') }}</strong>
                                     </span>
                                 @endif
                             </div>
