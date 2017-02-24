@@ -9,7 +9,7 @@ Route::group(['middleware' => ['web']], function () {
 
   // Registration Routes...
   Route::get('register', 'RegistrationsController@showRegistrationForm');
-  Route::post('register', 'RegistrationsController@register');
+  Route::post('register', ['as' => 'user.register' , 'uses' => 'RegistrationsController@register'] );
   Route::get('/activate/{token}', ['as' => 'user.activate', 'uses' => 'RegistrationsController@activateUser']);
 
   // Password Reset Routes...
