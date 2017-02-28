@@ -29,7 +29,6 @@ class RegisterUserRequest extends Request
             'first_name' => 'required',
             'last_name' => 'required',
             'status' => 'required',
-            'address' => 'required',
             'country' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',

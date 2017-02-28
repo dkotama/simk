@@ -34,14 +34,11 @@ class RegistrationsController extends Controller
   }
 
   public function register(RegisterUserRequest $request) {
-    // $user = $this->create($request->all());
-
-    // TODO :berhubung sakit perut, besok terusin validasi dan buat class User Management
-
+    // dd($this->generateUserData($request->all()));
     $user = User::create($this->generateUserData($request->all()));
 
     $this->activationService->sendActivationMail($user);
-
+    //
     return redirect('/login')->with('status', 'We sent you an activation code. Check your email.');
   }
 
