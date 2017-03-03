@@ -38,6 +38,18 @@ class SuperuserRegisterService
     // dd('CONTOLAN');
     // return view('organizers.users.new', $this->viewData);    return
   }
+
+  public function update($userData, $confId)
+  {
+    if (isset($userData['password'])) {
+      $userData['password']  = bcrypt($userData['password']);
+    }
+
+    $user = User::findOrFail($userData->id);
+    $user = User::update($userData);
+
+    return $user;
+  }
 //   protected $uploadFolder = 'upload';
 //   protected $file = NULL;
 //   protected $filename = NULL;

@@ -7,7 +7,7 @@ use App\Http\Requests;
 use App\Conference;
 use App\User;
 use App\SuperuserRegisterService;
-
+use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
 
 class OrgHomeController extends Controller
@@ -37,6 +37,9 @@ class OrgHomeController extends Controller
 
   public function showAddUser(Conference $confUrl)
   {
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
     $this->setConf($confUrl);
 
     return view('organizers.users.new', $this->viewData);
@@ -44,8 +47,12 @@ class OrgHomeController extends Controller
 
   public function showEditUser(Conference $confUrl, $userId)
   {
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
     $this->setConf($confUrl);
     $this->viewData['editedUser'] = User::findOrFail($userId);
+    dd($this->viewData['editedUser']);
     // dd($this->viewData['editedUser']->first_name);
 
     return view('organizers.users.edit', $this->viewData);
@@ -53,10 +60,10 @@ class OrgHomeController extends Controller
 
   public function updateUser(RegisterUserRequest $request, Conference $confUrl)
   {
-    dd($request->all());
-    // $this->setConf($confUrl);
-
-    return redirect()->route('organizer.allUser', ['conf' => $confUrl->url]);
+    // dd($request->all());
+    $this->setConf($confUrl);
+    //TODO: lanjutin update
+    // return redirect()->route('organizer.allUser', ['conf' => $confUrl->url]);
     // return view('organizers.users.edit', $this->viewData);
   }
 

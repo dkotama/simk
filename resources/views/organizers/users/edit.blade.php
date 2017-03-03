@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Edit User</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('organizer.registerUser', ['confUrl' => $conf->url]) }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('organizer.updateUser', ['confUrl' => $conf->url]) }}">
 
                         @include('forms.register')
 

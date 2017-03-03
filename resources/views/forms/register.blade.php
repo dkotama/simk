@@ -108,9 +108,9 @@
 
                             <div class="col-md-6">
                                 @if (isset($editedUser))
-                                  <textarea class="form-control" rows="3">{{ $editedUser->address}}</textarea>
+                                  <textarea name="address" id="address" class="form-control" rows="3">{{ $editedUser->address}}</textarea>
                                 @else
-                                  <textarea class="form-control" rows="3">{{ old('address') }}</textarea>
+                                  <textarea name="address" id="address" class="form-control" rows="3">{{ old('address') }}</textarea>
                                 @endif
 
                                 @if ($errors->has('address'))
