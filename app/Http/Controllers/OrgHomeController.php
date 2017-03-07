@@ -9,6 +9,7 @@ use App\User;
 use App\SuperuserRegisterService;
 use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
+use Validator;
 
 class OrgHomeController extends Controller
 {
@@ -52,19 +53,61 @@ class OrgHomeController extends Controller
 
     $this->setConf($confUrl);
     $this->viewData['editedUser'] = User::findOrFail($userId);
-    dd($this->viewData['editedUser']);
-    // dd($this->viewData['editedUser']->first_name);
+    // dd($this->viewData['editedUser']);
 
     return view('organizers.users.edit', $this->viewData);
   }
 
-  public function updateUser(RegisterUserRequest $request, Conference $confUrl)
+  public function updateUser(Request $request, Conference $confUrl, $userId)
   {
-    // dd($request->all());
     $this->setConf($confUrl);
-    //TODO: lanjutin update
-    // return redirect()->route('organizer.allUser', ['conf' => $confUrl->url]);
-    // return view('organizers.users.edit', $this->viewData);
+    //
+    $editedUser = User::findOrFail($userId);
+    //
+    $rules = [
+      'salutation' => 'required',
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'status' => 'required',
+      'country' => 'required'
+    ];
+    //
+    $userData = $request->all();
+
+    if ($editedUser->email !== $userData['email'] && $userData['email'] !== "") {
+      $rules['email'] = 'email|unique:users';
+    } else {
+      unset($userData['email']);
+    }
+
+    if ($userData['password'] === '') {
+      unset($userData['password']);
+      unset($userData['password_confirmation']);
+    } else {
+      $rules['password'] = 'required|confirmed';
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+    //
+    if ($validator->fails()) {
+      return redirect()
+            ->route('organizer.editUser', ['confUrl' => $confUrl->url, 'userId' => $editedUser->id])
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
+    $update = $editedUser->update($userData);
+    //
+    if ($update) {
+      flash()->success('Success register user');
+    }
+    //
+    $this->viewData['editedUser'] = $editedUser;
+    //
+    return view('organizers.users.edit', $this->viewData);
   }
 
   public function registerUser(RegisterUserRequest $request, Conference $confUrl)
@@ -72,6 +115,10 @@ class OrgHomeController extends Controller
     $userData = $request->all();
     $register = new SuperuserRegisterService();
     $user = $register->create($userData, $confUrl->id);
+
+    if ($user) {
+      flash()->success('Success register user');
+    }
 
     return redirect()->route('organizer.allUser', ['conf' => $confUrl->url]);
   }

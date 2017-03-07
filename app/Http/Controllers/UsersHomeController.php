@@ -29,11 +29,11 @@ class UsersHomeController extends Controller
 
     $this->viewData['conferences'] = $this->user->authoring()->get();
     $this->viewData['conferencesOrganized'] = $this->user->organizing()->get();
+    $this->viewData['isAdmin'] = $this->user->isAdmin();
   }
 
   public function index()
   {
-    $this->viewData['isAdmin'] = $this->user->isAdmin();
     return view('users.home.index', $this->viewData);
   }
 
