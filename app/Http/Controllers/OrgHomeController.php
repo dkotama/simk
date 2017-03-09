@@ -38,10 +38,11 @@ class OrgHomeController extends Controller
 
   public function showAddUser(Conference $confUrl)
   {
+    $this->setConf($confUrl);
+
     $countryList = new CountryList();
     $this->viewData['countryList'] = $countryList->getList();
 
-    $this->setConf($confUrl);
 
     return view('organizers.users.new', $this->viewData);
   }
@@ -98,6 +99,11 @@ class OrgHomeController extends Controller
 
     $countryList = new CountryList();
     $this->viewData['countryList'] = $countryList->getList();
+
+    if (isset($userData['password'])) {
+      $userData['password'] = bcrypt($userData['password']);
+    }
+
 
     $update = $editedUser->update($userData);
     //

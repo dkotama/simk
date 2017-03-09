@@ -32,11 +32,11 @@
                                 <select class="form-control" name="salutation" id="salutation">
                                     <option selected disabled>Please Choose Salutation</option>
                                     @if (isset($editedUser->salutation) || old('salutation') !== NULL)
-                                      <option value="Mr." {{ ($editedUser->salutation === 'Mr.'|| old('salutation') === 'Mr.') ? 'selected' : Null}}>Mr.</option>
-                                      <option value="Mrs." {{ ($editedUser->salutation === 'Mrs.'|| old('salutation') === 'Mrs.') ? 'selected' : Null}}>Mrs.</option>
-                                      <option value="Ms." {{ ($editedUser->salutation === 'Ms.'|| old('salutation') === 'Ms.') ? 'selected' : Null}}>Ms.</option>
-                                      <option value="Dr." {{ ($editedUser->salutation === 'Dr.'|| old('salutation') === 'Dr.') ? 'selected' : Null}}>Dr.</option>
-                                      <option value="Prof." {{ ($editedUser->salutation === 'Prof.'|| old('salutation') === 'Prof.') ? 'selected' : Null}}>Prof.</option>
+                                      <option value="Mr." {{ ($editedUser->salutation === 'Mr.'|| old('salutation') === 'Mr.') ? 'selected' : null }}>Mr.</option>
+                                      <option value="Mrs." {{ ($editedUser->salutation === 'Mrs.'|| old('salutation') === 'Mrs.') ? 'selected' : null }}>Mrs.</option>
+                                      <option value="Ms." {{ ($editedUser->salutation === 'Ms.'|| old('salutation') === 'Ms.') ? 'selected' : null }}>Ms.</option>
+                                      <option value="Dr." {{ ($editedUser->salutation === 'Dr.'|| old('salutation') === 'Dr.') ? 'selected' : null }}>Dr.</option>
+                                      <option value="Prof." {{ ($editedUser->salutation === 'Prof.'|| old('salutation') === 'Prof.') ? 'selected' : null }}>Prof.</option>
                                     @else
                                       <option value="Mr.">Mr.</option>
                                       <option value="Mrs.">Mrs.</option>
