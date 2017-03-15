@@ -7,7 +7,7 @@
             <div class="panel-heading">
               <strong>All Users Registered In System</strong>
 
-              <a href="#">
+              <a href="{{ route('admin.user.new') }}">
                 <button type="button" class="btn btn-success btn-xs">Add User</button>
               </a>
             </div>

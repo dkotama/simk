@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\RegisterUserRequest;
 use App\User;
 use App\Conference;
+use App\CountryList;
 // use App\Http\Requests;
 
 class AdminsUserController extends Controller
@@ -24,7 +25,11 @@ class AdminsUserController extends Controller
 
   public function showNewUserForm()
   {
-    // return view('admins.conferences.new');
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
+
+    return view('admins.users.new', $this->viewData);
   }
 
   public function showSingleUser($userId)
@@ -100,8 +105,9 @@ class AdminsUserController extends Controller
     // return view('admins.users.all', $this->viewData);
   }
 
-  public function storeNewUser(RegisterUserRequest $request)
+  public function registerUser(RegisterUserRequest $request)
   {
+    dd($request->all());
     // flash()->success('Create New Conference Success');
 
     // return redirect()->back();
