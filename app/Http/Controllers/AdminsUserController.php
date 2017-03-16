@@ -110,7 +110,8 @@ class AdminsUserController extends Controller
     dd($request->all());
     // flash()->success('Create New Conference Success');
 
-    // return redirect()->back();
+    //redirect to add to conference
+    return redirect()->back();
   }
 
   public function updateConference(StoreConferenceRequest $request, Conference $confUrl)

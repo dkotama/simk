@@ -7,10 +7,10 @@
                                 <select class="form-control" name="country" id="country">
                                     <option selected disabled>Please Choose Country</option>
                                   @foreach($countryList as $countryKey => $countryValue)
-                                    @if (isset($editedUser))
-                                      <option {{ ($countryKey === $editedUser->country) ? 'selected ' : NULL }} value="{{ $countryKey }}">{{ $countryValue }}</option>
-                                    @elseif (old('country') !== NULL)
+                                    @if (old('country') !== NULL)
                                       <option {{ ($countryKey === old('country')) ? 'selected ' : NULL }} value="{{ $countryKey }}">{{ $countryValue }}</option>
+                                    @elseif (isset($editedUser))
+                                      <option {{ ($countryKey === $editedUser->country) ? 'selected ' : NULL }} value="{{ $countryKey }}">{{ $countryValue }}</option>
                                     @else
                                       <option value="{{ $countryKey }}">{{ $countryValue }}</option>
                                     @endif
@@ -31,12 +31,18 @@
                             <div class="col-md-6">
                                 <select class="form-control" name="salutation" id="salutation">
                                     <option selected disabled>Please Choose Salutation</option>
-                                    @if (isset($editedUser->salutation) || old('salutation') !== NULL)
-                                      <option value="Mr." {{ ($editedUser->salutation === 'Mr.'|| old('salutation') === 'Mr.') ? 'selected' : null }}>Mr.</option>
-                                      <option value="Mrs." {{ ($editedUser->salutation === 'Mrs.'|| old('salutation') === 'Mrs.') ? 'selected' : null }}>Mrs.</option>
-                                      <option value="Ms." {{ ($editedUser->salutation === 'Ms.'|| old('salutation') === 'Ms.') ? 'selected' : null }}>Ms.</option>
-                                      <option value="Dr." {{ ($editedUser->salutation === 'Dr.'|| old('salutation') === 'Dr.') ? 'selected' : null }}>Dr.</option>
-                                      <option value="Prof." {{ ($editedUser->salutation === 'Prof.'|| old('salutation') === 'Prof.') ? 'selected' : null }}>Prof.</option>
+                                    @if (!empty(old('salutation')))
+                                      <option value="Mr." {{ (old('salutation') === 'Mr.') ? ' selected' : NULL }}>Mr.</option>
+                                      <option value="Mrs." {{ (old('salutation') === 'Mrs.') ? ' selected' : NULL }}>Mrs.</option>
+                                      <option value="Ms." {{ (old('salutation') === 'Ms.') ? ' selected' : NULL }}>Ms.</option>
+                                      <option value="Dr." {{ (old('salutation') === 'Dr.') ? ' selected' : NULL }}>Dr.</option>
+                                      <option value="Prof." {{ (old('salutation') === 'Prof') ? ' selected' : NULL }}>Prof</option>
+                                    @elseif(isset($editedUser->salutation))
+                                      <option value="Mr." {{ ($editedUser->salutation === 'Mr.') ? ' selected' : NULL }}>Mr.</option>
+                                      <option value="Mrs." {{ ($editedUser->salutation === 'Mrs.') ? ' selected' : NULL }}>Mrs.</option>
+                                      <option value="Ms." {{ ($editedUser->salutation === 'Ms.') ? ' selected' : NULL }}>Ms.</option>
+                                      <option value="Dr." {{ ($editedUser->salutation === 'Dr.') ? ' selected' : NULL }}>Dr.</option>
+                                      <option value="Prof." {{ ($editedUser->salutation === 'Prof') ? ' selected' : NULL }}>Prof</option>
                                     @else
                                       <option value="Mr.">Mr.</option>
                                       <option value="Mrs.">Mrs.</option>
@@ -56,22 +62,28 @@
 
                         <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Status</label>
-
+                            @ddd()
                             <div class="col-md-6">
                                 <select class="form-control" name="status" id="status">
                                     <option selected disabled>Please Choose Status</option>
-                                    @if (isset($editedUser->status) || old('salutation') !== NULL)
-                                      <option value="Student" {{ ($editedUser->status === 'Student' || old('status') === 'Student') ? 'selected' : Null}}>Student</option>
-                                      <option value="Academia" {{ ($editedUser->status === 'Academia' || old('status') === 'Academia') ? 'selected' : Null}}>Academia</option>
-                                      <option value="Industry" {{ ($editedUser->status === 'Industry' || old('status') === 'Industry') ? 'selected' : Null}}>Industry</option>
-                                      <option value="Goverment" {{ ($editedUser->status === 'Goverment'|| old('status') === 'Goverment') ? 'selected' : Null}}>Goverment</option>
-                                      <option value="Other" {{ ($editedUser->status === 'Other'|| old('status') === 'Other') ? 'selected' : Null}}>Other</option>
+                                    @if (!empty(old('status')))
+                                      <option value="Academia" {{ (old('status') === 'Academia') ? ' selected' : NULL }}>Academia</option>
+                                      <option value="Student" {{ (old('status') === 'Student') ? ' selected' : NULL }}>Student</option>
+                                      <option value="Industry" {{ (old('status') === 'Industry') ? ' selected' : NULL }}>Industry</option>
+                                      <option value="Goverment" {{ (old('status') === 'Goverment') ? ' selected' : NULL }}>Goverment</option>
+                                      <option value="Other" {{ (old('status') === 'Other') ? ' selected' : NULL }}>Other</option>
+                                    @elseif(isset($editedUser->status))
+                                      <option value="Acedemia" {{ ($editedUser->status === 'Academia') ? ' selected' : NULL }}>Academia</option>
+                                      <option value="Student" {{ ($editedUser->status === 'Student') ? ' selected' : NULL }}>Student</option>
+                                      <option value="Industry" {{ ($editedUser->status === 'Industry') ? ' selected' : NULL }}>Industry</option>
+                                      <option value="Goverment" {{ ($editedUser->status === 'Goverment') ? ' selected' : NULL }}>Goverment</option>
+                                      <option value="Other" {{ ($editedUser->status === 'Other') ? ' selected' : NULL }}>Other</option>
                                     @else
-                                    <option value="Student">Student</option>
-                                    <option value="Academia">Academia</option>
-                                    <option value="Industry">Industry</option>
-                                    <option value="Goverment">Goverment</option>
-                                    <option value="Other">Other</option>
+                                      <option value="Student">Student</option>
+                                      <option value="Academia">Academia</option>
+                                      <option value="Industry">Industry</option>
+                                      <option value="Goverment">Goverment</option>
+                                      <option value="Other">Other</option>
                                     @endif
                                 </select>
 

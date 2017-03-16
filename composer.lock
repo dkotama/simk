@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3adf1db435c8f6035746b89bef562ed9",
-    "content-hash": "16d2e0967536ba421038de7d04b5e43a",
+    "hash": "9326d24848f43192657d853847bd43c5",
+    "content-hash": "fb14ce9a42bd232f1d1455615fd2c76e",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1429,6 +1429,100 @@
                 "shell"
             ],
             "time": "2016-03-09 05:03:14"
+        },
+        {
+            "name": "raveren/kint",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kint-php/kint.git",
+                "reference": "a8549198558560b24e2879c6bac2875de5371483"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kint-php/kint/zipball/a8549198558560b24e2879c6bac2875de5371483",
+                "reference": "a8549198558560b24e2879c6bac2875de5371483",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "Kint.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rokas Šleinius",
+                    "homepage": "https://github.com/kint-php"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/kint-php/kint/contributors"
+                }
+            ],
+            "description": "Kint - debugging helper for PHP developers",
+            "homepage": "https://github.com/kint-php/kint",
+            "keywords": [
+                "debug",
+                "kint",
+                "php"
+            ],
+            "time": "2017-01-15 14:23:43"
+        },
+        {
+            "name": "rtconner/laravel-kint",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rtconner/laravel-kint.git",
+                "reference": "dcc120d99c8d896841a81bfd37db9743b27d64b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rtconner/laravel-kint/zipball/dcc120d99c8d896841a81bfd37db9743b27d64b3",
+                "reference": "dcc120d99c8d896841a81bfd37db9743b27d64b3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "raveren/kint": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Conner\\Kint\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Conner",
+                    "email": "rtconner@smarter.bz"
+                }
+            ],
+            "description": "Seamless integration between Laravel and Kint.",
+            "homepage": "https://smartersoftware.net/packages/laravel-kint",
+            "keywords": [
+                "kint",
+                "laravel",
+                "laravel5"
+            ],
+            "time": "2015-10-12 00:45:35"
         },
         {
             "name": "swiftmailer/swiftmailer",
