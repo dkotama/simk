@@ -1,10 +1,9 @@
               <table class="table table-bordered users">
                 <thead>
                   <tr class="text-center">
-                    <th>#</th>
                     <th>User ID</th>
                     <th>Name</th>
-                    <th>Institution</th>
+                    <th>Status</th>
                     @if (!empty($showAction) && $showAction)
                       <th>Action</th>
                     @endif
@@ -16,23 +15,21 @@
                   <?php $count++ ?>
                     <tr>
                       <td class="sm-size">
-
-                      </td>
-                      <td class="sm-size">
                         {{ $user->id }}
                       </td>
                       <td class="name">
                         <a href="{{ route($showRoute, $user->id) }}">
-                          {{  $user->title . ' ' . $user->first_name . ' ' . $user->title }}
+                          {{  $user->salutation. ' ' . $user->last_name . ' ' . $user->first_name}}
                         </a>
                       </td>
-                      <td class="med-size">
-                        Udayana University
+                      <td class="sm-size">
+                          {{ $user->status }}
                       </td>
                     @if (!empty($showAction) && $showAction)
                       <td class="action">
-                        <a href="#" class="btn btn-primary btn-xs">Edit</a>
-                        <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                        <a href="{{ route($showRoute, ['userId' => $user->id]) }}" class="btn btn-success btn-xs">Show</a>
+                        <a href="{{ route($editRoute, ['userId' => $user->id]) }}" class="btn btn-primary btn-xs">Edit</a>
+                        <a href="{{ route($deleteRoute, ['userId' => $user->id]) }}" class="btn btn-danger btn-xs">Delete</a>
                       </td>
                     @endif
                     </tr>
@@ -53,7 +50,7 @@
                   text-align: center;
                 }
                 table.users td.name {
-                  /*width: 25%;*/
+                  width: 40%;
                   text-align: left;
                 }
                 table.users td.action{

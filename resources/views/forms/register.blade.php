@@ -62,7 +62,6 @@
 
                         <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Status</label>
-                            @ddd()
                             <div class="col-md-6">
                                 <select class="form-control" name="status" id="status">
                                     <option selected disabled>Please Choose Status</option>

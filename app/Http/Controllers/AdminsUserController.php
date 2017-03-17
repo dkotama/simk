@@ -34,27 +34,27 @@ class AdminsUserController extends Controller
 
   public function showSingleUser($userId)
   {
-    dd(User::findOrFail($userId)->first_name);
+    // $editedUser =User::findOrFail($userId); 
+
     // $this->viewData['conf'] = $this->getConf($confUrl);
     // $this->viewData['conf'] = $confUrl;
 
     // dd($this->viewData['conf']->start_submit->format('Y-m-d'));
 
-    // return view('admins.conferences.edit', $this->viewData);
+    return view('admins.users.single', $this->viewData);
 
   }
 
   public function showAllUsers()
   {
-    // dd('im showing all users');
     $paginator = User::where('deleted_at', '=', NULL)->paginate(10);
 
     $this->viewData['confs'] = Conference::all();
     $this->viewData['users'] = $paginator;
     $this->viewData['showAction'] = true;
     $this->viewData['showRoute'] = 'admin.user.show';
-    $this->viewData['editRoute'] = 'admin.user.show';
-    $this->viewData['deleteRoute'] = 'admin.user.show';
+    $this->viewData['editRoute'] = 'admin.user.edit';
+    $this->viewData['deleteRoute'] = 'admin.user.delete';
     // lanjutin nge link ke add, edit , update, delete
 
     return view('admins.users.all', $this->viewData);
