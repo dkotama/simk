@@ -34,26 +34,27 @@ class AdminsUserController extends Controller
 
   public function showSingleUser($userId)
   {
-    // $editedUser =User::findOrFail($userId); 
+    $showUser = User::findOrFail($userId);
 
-    // $this->viewData['conf'] = $this->getConf($confUrl);
-    // $this->viewData['conf'] = $confUrl;
+    $this->viewData['showUser']    = $showUser;
+    $this->viewData['conferences'] = Conference::all();
 
-    // dd($this->viewData['conf']->start_submit->format('Y-m-d'));
+    $countryList = new CountryList();
+
+    $this->viewData['userCountry'] = $countryList->getById($showUser->country);
 
     return view('admins.users.single', $this->viewData);
-
   }
 
   public function showAllUsers()
   {
     $paginator = User::where('deleted_at', '=', NULL)->paginate(10);
 
-    $this->viewData['confs'] = Conference::all();
-    $this->viewData['users'] = $paginator;
-    $this->viewData['showAction'] = true;
-    $this->viewData['showRoute'] = 'admin.user.show';
-    $this->viewData['editRoute'] = 'admin.user.edit';
+    $this->viewData['confs']       = Conference::all();
+    $this->viewData['users']       = $paginator;
+    $this->viewData['showAction']  = true;
+    $this->viewData['showRoute']   = 'admin.user.show';
+    $this->viewData['editRoute']   = 'admin.user.edit';
     $this->viewData['deleteRoute'] = 'admin.user.delete';
     // lanjutin nge link ke add, edit , update, delete
 
