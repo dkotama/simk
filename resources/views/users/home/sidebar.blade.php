@@ -1,4 +1,4 @@
-            @if($isAdmin == null && $isAdmin)
+            @if(!$user->isAdmin())
               <a href="/all" class="list-group-item list-group-item-success" style="text-align: center">Join New Conference</a>
             @endif
 
@@ -8,11 +8,9 @@
               <hr>
 
               <ul class="nav nav-pills nav-stacked">
-                  <li class="nav-header"></li>
-                      @foreach($conferences as $single)
-                        <li><a href="{{ route('user.home.manage', $single->url) }}"><i class="glyphicon glyphicon-book"></i> {{ strtoupper($single->url) }}<span class="badge"></li>
-                      @endforeach
-
+                @foreach($conferences as $authoring)
+                  <li><a href="{{ route('user.home.manage', $authoring->url)}}"><i class="glyphicon glyphicon-briefcase"></i> {{ strtoupper($authoring->url) }}</a></li>
+                @endforeach
   <!--  -->   </ul>
 
             @endif
@@ -23,10 +21,9 @@
               <hr>
 
               <ul class="nav nav-pills nav-stacked">
-                  <li class="nav-header"></li>
-                      @foreach($conferencesOrganized as $single)
-                        <li><a href="{{ route('organizer.manage', $single->url) }}"><i class="glyphicon glyphicon-book"></i> {{ strtoupper($single->url) }}<span class="badge"></li>
-                      @endforeach
+                @foreach($conferencesOrganized as $single)
+                  <li><a href="{{ route('organizer.manage', $single->url)}}"><i class="glyphicon glyphicon-briefcase"></i> {{ strtoupper($single->url) }}</a></li>
+                @endforeach
 
   <!--  -->   </ul>
             @endif

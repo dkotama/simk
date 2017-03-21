@@ -42,7 +42,11 @@
                         <a href="{{ route('organizer.detachroles', [$conf->url, $usr->id, 'reviewer']) }}"><span class="label label-success">reviewer</span></a>
                       @endif
                       @if ($usr->isOrganizing($conf))
-                        <a href="{{ route('organizer.detachroles', [$conf->url, $usr->id, 'organizer']) }}"><span class="label label-info">organizer</span></a>
+                        @if($user->id === $usr->id)
+                          <span class="label label-info">organizer</span>
+                        @else
+                          <a href="{{ route('organizer.detachroles', [$conf->url, $usr->id, 'organizer']) }}"><span class="label label-info">organizer</span></a>
+                        @endif
                       @endif
                     @endif
                   </td>
@@ -74,9 +78,6 @@
               @endforeach
             </tbody>
           </table>
-          <center>
-            <div class="pagination"> {!! $users->render() !!}</div>
-          </center>
         </div>
       </div>
     </div>

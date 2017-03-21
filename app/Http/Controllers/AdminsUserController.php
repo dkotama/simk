@@ -10,7 +10,7 @@ use App\User;
 use App\Conference;
 use App\CountryList;
 // use App\Http\Requests;
-
+// TODO: BUAT EDIT USER DARI ADMIN, BUAT EDIT PROFILE DARI USER
 class AdminsUserController extends Controller
 {
   protected $viewData    = [];

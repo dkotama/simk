@@ -11,6 +11,7 @@ use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
 use Validator;
 
+// TODO: RAPIHIN IS ALLOWEDNYA ANJING, DOUBLE2 DIPANGGIL. 1 di SETCONF , 2 DI MASING2 METHOD .
 class OrgHomeController extends Controller
 {
   protected $viewData = [];
@@ -129,15 +130,39 @@ class OrgHomeController extends Controller
     return redirect()->route('organizer.allUser', ['conf' => $confUrl->url]);
   }
 
-  public function showManagesUser(Conference $confUrl)
+  public function showManagesUser(Conference $confUrl, $mode = null)
   {
     if ($this->isAllowed($confUrl)) {
+      $this->viewData['userSelected'] = 'registered';
+
       $this->setConf($confUrl);
-      $authors = $confUrl->authors;
+      $temp = collect([]);
 
-      dd($authors);
+      if (isset($mode) && $mode === 'nonregistered') {
+        $this->viewData['userSelected'] = 'nonregistered';
+        $users = User::all();
+        $users->keyBy('id');
 
-      $this->viewData['users'] = User::paginate(15);
+
+        foreach ($users as $usr) {
+          if (!$usr->isAdmin() && !$usr->isAuthoring($confUrl) && !$usr->isReviewing($confUrl) && !$usr->isOrganizing($confUrl)) {
+
+            $temp->prepend($usr);
+          }
+        }
+
+        $this->viewData['users'] = $temp;
+      } else {
+        $authors    = $confUrl->authors;
+        $reviewers  = $confUrl->reviewers;
+        $organizers = $confUrl->organizers;
+
+        $temp = $authors->merge($reviewers);
+        $temp = $temp->merge($organizers);
+        $temp->unique();
+
+        $this->viewData['users'] = $temp;
+      }
 
       return view('organizers.users', $this->viewData);
     } else {
@@ -202,7 +227,7 @@ class OrgHomeController extends Controller
   }
 
   protected function isAllowed(Conference $confUrl) {
-    return ($this->user->isAdmin() || $this->user->isAuthoring($confUrl));
+    return ($this->user->isAdmin() || $this->user->isOrganizing($confUrl));
   }
 
   protected function setConf(Conference $confUrl) {

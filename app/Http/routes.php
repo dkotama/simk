@@ -65,7 +65,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/organizer/', ['as' => 'organizer.manage', 'uses' => 'OrgHomeController@dashboard']);
 
   //Enroll User
-  Route::get('/{confUrl}/org/users', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);
+  Route::get('/{confUrl}/org/users/{mode?}', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);
   Route::get('/{confUrl}/org/users/{user}/det/{mode}', ['as' => 'organizer.detachroles', 'uses' => 'OrgHomeController@detachRoles']);
   Route::get('/{confUrl}/org/users/{user}/att/{mode}', ['as' => 'organizer.attachroles', 'uses' => 'OrgHomeController@attachRoles']);
 
