@@ -38,6 +38,7 @@ class AdminsUserController extends Controller
 
     $this->viewData['showUser']    = $showUser;
     $this->viewData['conferences'] = Conference::all();
+    $this->viewData['conf'] = Conference::first();
 
     $countryList = new CountryList();
 

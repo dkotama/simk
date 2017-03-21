@@ -133,6 +133,9 @@ class OrgHomeController extends Controller
   {
     if ($this->isAllowed($confUrl)) {
       $this->setConf($confUrl);
+      $authors = $confUrl->authors;
+
+      dd($authors);
 
       $this->viewData['users'] = User::paginate(15);
 
