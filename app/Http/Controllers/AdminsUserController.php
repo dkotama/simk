@@ -109,7 +109,43 @@ class AdminsUserController extends Controller
 
   public function registerUser(RegisterUserRequest $request)
   {
-    dd($request->all());
+    $user = User::create($request->all());
+
+    if ($user) {
+      flash()->success('Create New User Success');
+    } else{
+      flash()->error('Error Occured.');
+      return redirect()->back();
+    }
+
+    return redirect()->route('admin.user.show', ['userId' => $user->id]);
+  }
+
+  public function updateUser(RegisterUserRequest $request)
+  {
+    //TODO : Lanjutin Dari sini -> Super User Register Service buat update, bawa ke Org Update
+    $user = User::create($request->all());
+
+    if ($user) {
+      flash()->success('Create New User Success');
+    } else{
+      flash()->error('Error Occured.');
+      return redirect()->back();
+    }
+
+    return redirect()->route('admin.user.show', ['userId' => $user->id]);
+  }
+
+  public function editUser($userId)
+  {
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
+    $this->setConf($confUrl);
+    $this->viewData['editedUser'] = User::findOrFail($userId);
+    // dd($this->viewData['editedUser']);
+
+    return view('admins.users.edit', $this->viewData);
     // flash()->success('Create New Conference Success');
 
     //redirect to add to conference

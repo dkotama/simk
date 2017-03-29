@@ -15,7 +15,7 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="fa fa-btn fa-user"></i>Register
                                 </button>
-                                <!-- <a href=""<button type="submit" class="btn btn-primary"> -->
+                                <a href="{{ route('admin.user.all')}}"><button type="submit" class="btn btn-primary">
                                     <i class="fa fa-btn fa-user"></i>Back
                                 </button></a>
                             </div>

@@ -63,7 +63,7 @@ class OrgHomeController extends Controller
   public function updateUser(Request $request, Conference $confUrl, $userId)
   {
     $this->setConf($confUrl);
-    //
+  
     $editedUser = User::findOrFail($userId);
     //
     $rules = [
