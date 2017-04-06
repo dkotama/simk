@@ -9,6 +9,7 @@ use App\Http\Requests\RegisterUserRequest;
 use App\User;
 use App\Conference;
 use App\CountryList;
+use Validator;
 // use App\Http\Requests;
 // TODO: BUAT EDIT USER DARI ADMIN, BUAT EDIT PROFILE DARI USER
 class AdminsUserController extends Controller
@@ -121,19 +122,58 @@ class AdminsUserController extends Controller
     return redirect()->route('admin.user.show', ['userId' => $user->id]);
   }
 
-  public function updateUser(RegisterUserRequest $request)
+  public function updateUser(Request $request, $userId)
   {
-    //TODO : Lanjutin Dari sini -> Super User Register Service buat update, bawa ke Org Update
-    $user = User::create($request->all());
+    $editedUser = User::findOrFail($userId);
+    //
+    $rules = [
+      'salutation' => 'required',
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'status' => 'required',
+      'country' => 'required'
+    ];
+    //
+    $userData = $request->all();
 
-    if ($user) {
-      flash()->success('Create New User Success');
-    } else{
-      flash()->error('Error Occured.');
-      return redirect()->back();
+    if ($editedUser->email !== $userData['email'] && $userData['email'] !== "") {
+      $rules['email'] = 'email|unique:users';
+    } else {
+      unset($userData['email']);
     }
 
-    return redirect()->route('admin.user.show', ['userId' => $user->id]);
+    if ($userData['password'] === '') {
+      unset($userData['password']);
+      unset($userData['password_confirmation']);
+    } else {
+      $rules['password'] = 'required|confirmed';
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+    //
+    if ($validator->fails()) {
+      return redirect()
+            ->route('admins.users.edit', ['userId' => $editedUser->id])
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
+    if (isset($userData['password'])) {
+      $userData['password'] = bcrypt($userData['password']);
+    }
+
+    $update = $editedUser->update($userData);
+    //
+    if ($update) {
+      flash()->success('Success updating user data');
+    }
+    //
+    $this->viewData['editedUser'] = $editedUser;
+    //
+    return view('admins.users.single', $this->viewData);
   }
 
   public function editUser($userId)
@@ -141,7 +181,6 @@ class AdminsUserController extends Controller
     $countryList = new CountryList();
     $this->viewData['countryList'] = $countryList->getList();
 
-    $this->setConf($confUrl);
     $this->viewData['editedUser'] = User::findOrFail($userId);
     // dd($this->viewData['editedUser']);
 
@@ -154,6 +193,7 @@ class AdminsUserController extends Controller
 
   public function updateConference(StoreConferenceRequest $request, Conference $confUrl)
   {
+    // TODO: edit conference credentials
     // $confUrl->update($request->all());
     // flash()->success('Conferece Succesfully Updated');
 

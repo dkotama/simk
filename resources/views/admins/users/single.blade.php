@@ -6,7 +6,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <strong>Show Single User</strong>
-                <button type="button" class="btn btn-success btn-xs">Edit User Data</button>
+                <a href="{{ route('admin.user.edit', ['userId' => $showUser->id ]) }}"><button type="button" class="btn btn-success btn-xs">Edit User Data</button></a>
                 @if ($showUser->isAdmin())
                   <a href="{{ route('organizer.detachroles', [$conf->url, $showUser->id, 'admin'])}}" class="btn btn-danger btn-xs pull-right">Revoke Admin Access</a>
                 @else

@@ -11,7 +11,6 @@ use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
 use Validator;
 
-// TODO: RAPIHIN IS ALLOWEDNYA ANJING, DOUBLE2 DIPANGGIL. 1 di SETCONF , 2 DI MASING2 METHOD .
 class OrgHomeController extends Controller
 {
   protected $viewData = [];
@@ -63,7 +62,7 @@ class OrgHomeController extends Controller
   public function updateUser(Request $request, Conference $confUrl, $userId)
   {
     $this->setConf($confUrl);
-  
+
     $editedUser = User::findOrFail($userId);
     //
     $rules = [

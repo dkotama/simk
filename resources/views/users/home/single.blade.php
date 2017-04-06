@@ -105,7 +105,11 @@
         </div>
         <div class="col-md-10">
             <div class="panel panel-default">
-              <div class="panel-heading">Add More Author</div>
+              @if (isset($edit))
+                <div class="panel-heading">Edit Author</div>
+              @else
+                <div class="panel-heading">Add More Author</div>
+              @endif
                 <div class="panel-body">
                   @if (isset($edit))
                    <form class="form-horizontal" role="form" method="POST" action="{{ route('user.home.single.updateAuthor', ['conf' => $conf->url, 'paperId' => $submission->id, 'authorId' => $author->id]) }}">

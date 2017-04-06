@@ -12,8 +12,8 @@ use App\Submission;
 use App\SubmissionAuthor;
 use App\SubmissionPaper;
 use Illuminate\Support\Facades\Input;
-use Response;
 use Validator;
+use App\CountryList;
 use App\RoleWriter;
 // use App\Http\Requests;
 
@@ -27,8 +27,14 @@ class UsersHomeController extends Controller
     $this->middleware('auth');
     parent::__construct();
 
-    $this->viewData['conferences'] = $this->user->authoring()->get();
-    $this->viewData['conferencesOrganized'] = $this->user->organizing()->get();
+    $authoring = $this->user->authoring()->get();
+    $reviewing = $this->user->reviewing()->get();
+    $organizing = $this->user->organizing()->get();
+
+    $this->viewData['authoring'] = $authoring;
+    $this->viewData['reviewing'] = $reviewing;
+    $this->viewData['organizing'] = $organizing;
+
     $this->viewData['isAdmin'] = $this->user->isAdmin();
   }
 
@@ -94,17 +100,14 @@ class UsersHomeController extends Controller
     $paper = $request->file('paper');
 
     if ($paper->isValid()) {
-    //     // dd($paper);
         $extension = $paper->getClientOriginalExtension(); // getting image extension
-        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renameing image
+        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renaming image
         $paper->move($this->uploadFolder, $fileName); // uploading file to given path
         $submissionPaper->path = $fileName;
         $submissionPaper->save();
     } else {
     }
 
-    //TODO : show uploaded pdf
-    // return redirect()->route('user.home.manage', $this->conf);
     return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $submission->id]);
   }
 
@@ -112,9 +115,9 @@ class UsersHomeController extends Controller
   {
     $submission = Submission::findOrFail($paperId);
 
-    $this->viewData['conf'] = $confUrl;
-    $this->viewData['submission'] = $submission;
-    $this->viewData['authors'] = $submission->authors->sortBy('author_no');
+    $this->viewData['conf']        = $confUrl;
+    $this->viewData['submission']  = $submission;
+    $this->viewData['authors']     = $submission->authors->sortBy('author_no');
     $this->viewData['authorCount'] = $submission->authors->count();
 
     return view('users.home.single', $this->viewData);
@@ -203,10 +206,10 @@ class UsersHomeController extends Controller
     $this->viewData['conf'] = $confUrl;
     $this->viewData['submission'] = $submission;
     $this->viewData['authors'] = $submission->authors->sortByDesc('is_primary');
+    $this->viewData['authorCount'] = $submission->authors->count();
 
     $this->viewData['singleAuthor'] = SubmissionAuthor::findOrFail($authorId);
     $this->viewData['edit']   = true;
-    //
 
     return view('users.home.single', $this->viewData);
   }
@@ -251,6 +254,83 @@ class UsersHomeController extends Controller
     // return view('users.home.single', $this->viewData);
   }
 
+  public function showProfile($userId) {
+    $showUser = User::findOrFail($userId);
+
+    $this->viewData['showUser']    = $showUser;
+    $this->viewData['conferences'] = Conference::all();
+    $this->viewData['conf'] = Conference::first();
+
+    $countryList = new CountryList();
+
+    $this->viewData['userCountry'] = $countryList->getById($showUser->country);
+
+    return view('users.home.profile', $this->viewData);
+  }
+
+  public function editProfile($userId) {
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
+    $this->viewData['editedUser'] = User::findOrFail($userId);
+    // dd($this->viewData['editedUser']);
+
+    return view('users.home.edit', $this->viewData);
+  }
+
+  public function updateProfile(Request $request, $userId) {
+    $editedUser = User::findOrFail($userId);
+    //
+    $rules = [
+      'salutation' => 'required',
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'status' => 'required',
+      'country' => 'required'
+    ];
+    //
+    $userData = $request->all();
+
+    if ($editedUser->email !== $userData['email'] && $userData['email'] !== "") {
+      $rules['email'] = 'email|unique:users';
+    } else {
+      unset($userData['email']);
+    }
+
+    if ($userData['password'] === '') {
+      unset($userData['password']);
+      unset($userData['password_confirmation']);
+    } else {
+      $rules['password'] = 'required|confirmed';
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+    //
+    if ($validator->fails()) {
+      return redirect()
+            ->route('user.profile.edit', ['userId' => $editedUser->id])
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    $countryList = new CountryList();
+    $this->viewData['countryList'] = $countryList->getList();
+
+    if (isset($userData['password'])) {
+      $userData['password'] = bcrypt($userData['password']);
+    }
+
+
+    $update = $editedUser->update($userData);
+    //
+    if ($update) {
+      flash()->success('Success Updating Your Profile');
+    }
+    //
+    $this->viewData['editedUser'] = $editedUser;
+    //
+    return redirect()->route('user.profile', ['userId' => $editedUser->id]);
+  }
 
   protected function checkAllowed() {
     if ($this->user === null || !$this->user->isAdmin()) {

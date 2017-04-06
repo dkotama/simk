@@ -16,7 +16,7 @@ class CreateSubmissionTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('conference_id');
-            $table->tinyInteger('status');
+            $table->string('status');
             $table->timestamps();
         });
     }
