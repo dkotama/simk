@@ -22,4 +22,16 @@ class Controller extends BaseController
       view()->share('signedIn', Auth::check());
       view()->share('user', $this->user);
     }
+
+    protected function isAllowedAuthor($confUrl) {
+      if (!$this->user->authoring->contains('url', $confUrl->url)) {
+        abort(404);
+      }
+    }
+
+    protected function isAllowedOrganizer($confUrl) {
+      if (!$this->user->organizing->contains('url', $confUrl->url)) {
+        abort(404);
+      }
+    }
 }

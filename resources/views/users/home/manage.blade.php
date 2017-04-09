@@ -40,7 +40,7 @@
                       </td>
                       <td class="center"> Review Process</td>
                       <td>
-                        <button class="btn btn-danger btn-xs">Cancel</button>
+                        <a href="{{ route('user.home.cancelpaper',  ['conf' => $conf->url, 'paperId' => $subs->id] ) }}"><button class="btn btn-danger btn-xs">Cancel</button></a>
                       </td>
                     </tr>
                   @empty

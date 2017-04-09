@@ -17,11 +17,6 @@ class AlterSubmissionsPapersTable extends Migration
           $table->datetime('checked');
           $table->float('score');
         });
-
-        Schema::table('submissions', function (Blueprint $table) {
-          $table->dropColumn('status');
-          $table->string('status');
-        });
     }
 
     /**

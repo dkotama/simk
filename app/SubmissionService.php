@@ -33,6 +33,7 @@ class SubmissionService
     return $this->aliases;
   }
 
+
   public function isAllowedToUpload($alias) {
     if (!in_array($alias, $this->aliasNotAllowed)) {
       return false;
@@ -40,6 +41,7 @@ class SubmissionService
       return false;
     }
   }
+
 
     protected function makeAliases() {
     $this->aliases = [

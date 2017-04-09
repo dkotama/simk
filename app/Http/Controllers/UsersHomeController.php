@@ -38,11 +38,6 @@ class UsersHomeController extends Controller
     $this->viewData['isAdmin'] = $this->user->isAdmin();
   }
 
-  public function index()
-  {
-    return view('users.home.index', $this->viewData);
-  }
-
   public function addPaper(Conference $confUrl)
   {
     $this->viewData['conf'] = $confUrl;
@@ -52,6 +47,8 @@ class UsersHomeController extends Controller
 
   public function manage(Conference $confUrl)
   {
+    $this->isAllowedAuthor($confUrl);
+
     $this->viewData['conf'] = $confUrl;
     $this->viewData['submissions'] = $this->user->submissions->where('conference_id', $confUrl->id)->all();
 
@@ -60,18 +57,21 @@ class UsersHomeController extends Controller
 
   public function join(Conference $confUrl)
   {
-    $this->viewData['conf'] = $confUrl;
+    if (!$this->user->authoring->contains('url', $confUrl->url)) {
+      $this->viewData['conf'] = $confUrl;
 
-    $writer = new RoleWriter($confUrl, $this->user, 'author');
+      $writer = new RoleWriter($confUrl, $this->user, 'author');
 
-    $writer->attach();
-    //TODO : EDIT AUTHOR
+      $writer->attach();
+    }
 
     return redirect()->route('user.home.manage', ['confUrl' => $confUrl->url]);
     // return view('welcome');
   }
 
   public function submitPaper(Request $request, Conference $confUrl) {
+    $this->isAllowedAuthor($confUrl);
+
     $validator = Validator::make($request->all(), [
       'title' => 'required',
       'abstract' => 'required',
@@ -113,6 +113,8 @@ class UsersHomeController extends Controller
 
   public function showSinglePaper(Conference $confUrl, $paperId)
   {
+    $this->isAllowedAuthor($confUrl);
+
     $submission = Submission::findOrFail($paperId);
 
     $this->viewData['conf']        = $confUrl;
@@ -125,6 +127,7 @@ class UsersHomeController extends Controller
 
   public function addAuthor(Conference $confUrl, Request $request, $paperId)
   {
+    $this->isAllowedAuthor($confUrl);
     $validator = Validator::make($request->all(), [
       'name' => 'required',
       'email' => 'required|email',
@@ -152,8 +155,23 @@ class UsersHomeController extends Controller
     return redirect()->back();
   }
 
+  public function cancelPaper($confUrl, $paperId)
+  {
+    $this->isAllowedAuthor($confUrl);
+
+    $submission = submission::findOrFail($paperId);
+    
+    dd($submission);
+
+    //2.tambahin deleted_at
+    //3. jangan lupa update di see all papers
+
+    // return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $paperId]);
+  }
+
   public function moveAuthor(Conference $confUrl, Request $request, $paperId, $from, $to)
   {
+    $this->isAllowedAuthor($confUrl);
     $submission = Submission::findOrFail($paperId);
     $authors = $submission->authors;
 
@@ -171,6 +189,7 @@ class UsersHomeController extends Controller
   public function changeContact(Conference $confUrl, $paperId, $authorId)
   {
 
+    $this->isAllowedAuthor($confUrl);
     $submission = Submission::findOrFail($paperId);
     //
     if ($submission->authors->sortByDesc('is_primary')->first()->update(['is_primary' => 0])) {
@@ -188,6 +207,7 @@ class UsersHomeController extends Controller
   public function removeAuthor(Conference $confUrl, $paperId, $authorId)
   {
 
+    $this->isAllowedAuthor($confUrl);
     $submission = Submission::findOrFail($paperId);
     $author = SubmissionAuthor::findOrFail($authorId);
     //
@@ -201,6 +221,7 @@ class UsersHomeController extends Controller
 
   public function editAuthor(Conference $confUrl, $paperId, $authorId)
   {
+    $this->isAllowedAuthor($confUrl);
     $submission = Submission::findOrFail($paperId);
 
     $this->viewData['conf'] = $confUrl;
@@ -216,6 +237,8 @@ class UsersHomeController extends Controller
 
   public function updateAuthor(Request $request, Conference $confUrl, $paperId, $authorId)
   {
+    $this->isAllowedAuthor($confUrl);
+
     $validator = Validator::make($request->all(), [
       'name' => 'required',
       'email' => 'required|email',

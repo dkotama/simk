@@ -56,6 +56,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/users/home/manage/{confUrl}/add', ['as' => 'user.home.addPaper', 'uses' => 'UsersHomeController@addPaper']);
   Route::get('/users/home/manage/{confUrl}/{paperId}', ['as' => 'user.home.single.show', 'uses' => 'UsersHomeController@showSinglePaper']);
   Route::get('/users/home/manage/{confUrl}/{paperId}/move-author/{from}/{to}', ['as' => 'user.home.moveAuthor', 'uses' => 'UsersHomeController@moveAuthor']);
+  Route::get('/users/home/manage/{confUrl}/{paperId}/cancel', ['as' => 'user.home.cancelpaper', 'uses' => 'UsersHomeController@cancelPaper']);
+
+  //User Profile
   Route::get('/users/{userId}/profile', ['as' => 'user.profile', 'uses' => 'UsersHomeController@showProfile']);
   Route::get('/users/{userId}/edit', ['as' => 'user.profile.edit', 'uses' => 'UsersHomeController@editProfile']);
   Route::post('/users/{userId}/update', ['as' => 'user.profile.update', 'uses' => 'UsersHomeController@updateProfile']);
@@ -65,6 +68,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/callpaper', 'HomepageController@callPaper');
   Route::get('/{confUrl}/policies', 'HomepageController@policies');
 
+  /*================
+  Organizer Section
+  ==================*/
   Route::get('/{confUrl}/organizer/', ['as' => 'organizer.manage', 'uses' => 'OrgHomeController@dashboard']);
 
   //Enroll User
@@ -77,5 +83,10 @@ Route::group(['middleware' => ['web']], function () {
   Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
   Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
   Route::post('/{confUrl}/org/users/{userId}/edit', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
+
+  Route::get('/{confUrl}/org/papers', ['as' => 'organizer.showPapers', 'uses' => 'OrgHomeController@showPapers']);
+  // Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
+  // Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
+  // Route::post('/{confUrl}/org/users/{userId}/edit', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
 
 });
