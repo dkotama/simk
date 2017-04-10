@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Input;
 use Validator;
 use App\CountryList;
 use App\RoleWriter;
+use Carbon\Carbon;
 // use App\Http\Requests;
 
 class UsersHomeController extends Controller
@@ -45,12 +46,20 @@ class UsersHomeController extends Controller
     return view('users.home.add', $this->viewData);
   }
 
+  public function index()
+  {
+      return view('users.home.index', $this->viewData);
+  }
+
   public function manage(Conference $confUrl)
   {
     $this->isAllowedAuthor($confUrl);
 
     $this->viewData['conf'] = $confUrl;
-    $this->viewData['submissions'] = $this->user->submissions->where('conference_id', $confUrl->id)->all();
+    // $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
+    $submissions = $this->user->submissions->where('deleted_at', '0000-00-00 00:00:00')->where('conference_id', $confUrl->id)->all();
+    $this->viewData['submissions'] = $submissions;
+
 
     return view('users.home.manage', $this->viewData);
   }
@@ -157,11 +166,21 @@ class UsersHomeController extends Controller
 
   public function cancelPaper($confUrl, $paperId)
   {
-    $this->isAllowedAuthor($confUrl);
+    //LINK DI VIEW STATIC VIA JAVASCRIPT, KALO UBAH FUNGSI INI INGET GANTI ROUTENYA
 
-    $submission = submission::findOrFail($paperId);
-    
-    dd($submission);
+    $this->isAllowedAuthor($confUrl);
+    $dateNow = new Carbon();
+
+    $submission = Submission::findOrFail($paperId);
+
+    if ($submission->uploader->id === $this->user->id) {
+      $submission->deleted_at = $dateNow;
+      if ($submission->save()) {
+        dd($submission->deleted_at);
+      }
+      // if($submission->update(['deleted_at' => $dateNow])) {
+      // }
+    }
 
     //2.tambahin deleted_at
     //3. jangan lupa update di see all papers

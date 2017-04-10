@@ -40,7 +40,7 @@
                       </td>
                       <td class="center"> Review Process</td>
                       <td>
-                        <a href="{{ route('user.home.cancelpaper',  ['conf' => $conf->url, 'paperId' => $subs->id] ) }}"><button class="btn btn-danger btn-xs">Cancel</button></a>
+                        <button class="btn btn-danger btn-xs" onclick="confirmDelete({{ $subs->id }})">Cancel</button>
                       </td>
                     </tr>
                   @empty
@@ -77,4 +77,16 @@
       text-align: center;
     }
   </style>
+@endsection
+
+@section('scripts.footer')
+<script>
+  function confirmDelete(submissionId) {
+    if (confirm('Are you sure want to delete ?')) {
+      // console.log(true);
+      window.location.href = "{{ asset('/') }}users/home/manage/{{ $conf->url }}/" + submissionId + "/cancel";
+    }
+  }
+
+</script>
 @endsection
