@@ -24,13 +24,17 @@ class Controller extends BaseController
     }
 
     protected function isAllowedAuthor($confUrl) {
-      if (!$this->user->authoring->contains('url', $confUrl->url)) {
+      if ($this->user->authoring->contains('url', $confUrl->url)) {
+        return true;
+      } else {
         abort(404);
       }
     }
 
     protected function isAllowedOrganizer($confUrl) {
-      if (!$this->user->organizing->contains('url', $confUrl->url)) {
+      if ($this->user->organizing->contains('url', $confUrl->url)) {
+        return true;
+      } else {
         abort(404);
       }
     }

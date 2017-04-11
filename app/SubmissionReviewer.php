@@ -4,16 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SubmissionPaper extends Model
+class SubmissionReviewer extends Model
 {
   protected $table = 'submissions_reviewers';
 
   protected $fillable =[
     'submission_id',
     'path',
-    'version'
+    'version',
+
   ];
-  
+
   public function submission()
   {
     return $this->belongsTo('App\Submission', 'submission_id');

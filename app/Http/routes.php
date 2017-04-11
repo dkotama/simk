@@ -84,7 +84,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
   Route::post('/{confUrl}/org/users/{userId}/edit', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
 
-  Route::get('/{confUrl}/org/papers', ['as' => 'organizer.showPapers', 'uses' => 'OrgHomeController@showPapers']);
+  //Manage Papers
+  Route::get('/{confUrl}/org/papers/', ['as' => 'organizer.allPapers', 'uses' => 'OrgPaperController@allPapers']);
+  Route::get('/{confUrl}/org/papers/{paperId}', ['as' => 'organizer.paper.showSingle', 'uses' => 'OrgPaperController@singlePaper']);
   // Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
   // Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
   // Route::post('/{confUrl}/org/users/{userId}/edit', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);

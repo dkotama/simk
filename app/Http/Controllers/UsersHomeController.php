@@ -28,6 +28,7 @@ class UsersHomeController extends Controller
     $this->middleware('auth');
     parent::__construct();
 
+
     $authoring = $this->user->authoring()->get();
     $reviewing = $this->user->reviewing()->get();
     $organizing = $this->user->organizing()->get();
@@ -57,7 +58,7 @@ class UsersHomeController extends Controller
 
     $this->viewData['conf'] = $confUrl;
     // $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
-    $submissions = $this->user->submissions->where('deleted_at', '0000-00-00 00:00:00')->where('conference_id', $confUrl->id)->all();
+    $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
     $this->viewData['submissions'] = $submissions;
 
 
@@ -137,6 +138,7 @@ class UsersHomeController extends Controller
   public function addAuthor(Conference $confUrl, Request $request, $paperId)
   {
     $this->isAllowedAuthor($confUrl);
+
     $validator = Validator::make($request->all(), [
       'name' => 'required',
       'email' => 'required|email',
@@ -169,23 +171,16 @@ class UsersHomeController extends Controller
     //LINK DI VIEW STATIC VIA JAVASCRIPT, KALO UBAH FUNGSI INI INGET GANTI ROUTENYA
 
     $this->isAllowedAuthor($confUrl);
-    $dateNow = new Carbon();
 
     $submission = Submission::findOrFail($paperId);
 
     if ($submission->uploader->id === $this->user->id) {
-      $submission->deleted_at = $dateNow;
-      if ($submission->save()) {
-        dd($submission->deleted_at);
+      if ($submission->delete()) {
+        flash()->success('You Submission has canceled. Please contact organizer to restore this submission');
       }
-      // if($submission->update(['deleted_at' => $dateNow])) {
-      // }
     }
 
-    //2.tambahin deleted_at
-    //3. jangan lupa update di see all papers
-
-    // return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $paperId]);
+    return redirect()->route('user.home.manage', ['conf' => $confUrl->url]);
   }
 
   public function moveAuthor(Conference $confUrl, Request $request, $paperId, $from, $to)
@@ -378,5 +373,9 @@ class UsersHomeController extends Controller
     if ($this->user === null || !$this->user->isAdmin()) {
       abort(404);
     }
+  }
+
+  protected function isAuthorSubmission($paperId) {
+
   }
 }

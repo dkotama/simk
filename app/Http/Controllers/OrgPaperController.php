@@ -5,24 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Conference;
+use App\Submission;
+use App\SubmissionAuthor;
+use App\SubmissionPaper;
 use App\User;
-use App\SuperuserRegisterService;
-use App\CountryList;
-use App\Http\Requests\RegisterUserRequest;
 use Validator;
+use Route;
+use Carbon\Carbon;
 
-class OrgHomeController extends Controller
+class OrgPaperController extends Controller
 {
   protected $viewData = [];
+  protected $conf     = NULL;
 
   public function __construct() {
     $this->middleware('auth');
-    // var $_url  = Route::current()->getParameter('confUrl');
-    // dd($route->input('confUrl');
-
-    // var $_temp = Conference::where('url', '=', $confUrl)->firstOrFail();
 
     parent::__construct();
+
+    $params = Route::current()->parameters();
+    $this->conf = $params['confUrl'];
+
+    //check if user authorized or not
+
+    $this->isAllowedOrganizer($this->conf);
+    $this->viewData['conf'] = $this->conf;
+  }
+
+  public function allPapers($confUrl)
+  {
+    // $submissions = $this->conf->submissions->all();
+    $submissions = Submission::withTrashed()->where('conference_id', $confUrl->id)->get();
+    $this->viewData['submissions'] = $submissions;
+    // dd($this->conf->submissions);
+
+    return view('organizers.papers.all', $this->viewData);
+  }
+
+  public function singlePaper($confUrl, $paperId)
+  {
+    $date = new Carbon();
+
+    $submission = Submission::findOrFail($paperId);
+
+    //
+    $this->viewData['submission']  = $submission;
+    $this->viewData['authors']     = $submission->authors->sortBy('author_no');
+    $this->viewData['authorCount'] = $submission->authors->count();
+
+    return view('organizers.papers.single', $this->viewData);
   }
 
   public function dashboard(Conference $confUrl)

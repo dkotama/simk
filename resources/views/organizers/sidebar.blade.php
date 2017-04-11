@@ -10,9 +10,9 @@
                     <li class="{{ ($userSelected === 'nonregistered') ? 'active' : NULL}}"><a href="{{ route('organizer.allUser', ['confUrl' => $conf->url, 'mode' => 'nonregistered']) }}"><i class="glyphicon glyphicon-chevron-right"></i> Non Registered</a></li>
                   </ul>
                 @endif
+              <li><a href="{{ route('organizer.allPapers', $conf->url)}}"><i class="glyphicon glyphicon-list-alt"></i> Submissions</a></li>
               <li><a href="#"><i class="glyphicon glyphicon-briefcase"></i> Menu B</a></li>
               <li><a href="#"><i class="glyphicon glyphicon-link"></i> Menu C</a></li>
-              <li><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Menu D</a></li>
             </ul>
 
             <hr>
