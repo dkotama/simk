@@ -14,7 +14,7 @@ class CreateSubmissionsReviewersTable extends Migration
     {
         Schema::create('submissions_reviewers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('submission_id');
+            $table->integer('paper_id');
             $table->integer('user_id');
             $table->float('score');
             $table->string('note');

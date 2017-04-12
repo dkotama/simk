@@ -110,6 +110,10 @@
                       <td>4.5</td>
                       <td>Minor Revision</td>
                     </tr>
+                    <tr>
+                      <td colspan="2"><h4><b class="pull-right">Average Score:</b></h4></td>
+                      <td colspan="2"><h4><b>4.0</b></h4></td>
+                    </tr>
                   </tbody>
                 </table>
                 </div>

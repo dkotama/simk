@@ -10,9 +10,9 @@ class SubmissionReviewer extends Model
 
   protected $fillable =[
     'submission_id',
-    'path',
-    'version',
-
+    'user_id',
+    'score',
+    'note'
   ];
 
   public function submission()
@@ -20,8 +20,8 @@ class SubmissionReviewer extends Model
     return $this->belongsTo('App\Submission', 'submission_id');
   }
 
-  public function reviewers()
+  public function user()
   {
-    return $this->hasMany('App\Submission', 'submission_id');
+    return $this->hasOne('App\User');
   }
 }
