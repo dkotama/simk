@@ -6,12 +6,12 @@ use Validator;
 
 class SubmissionService
 {
-  protected $aliases;
+  protected $paperAliases;
+  protected $scoreAliases;
   protected $aliasNotAllowed;
 
   public function __construct()
   {
-    $this->makeAliases();
     $this->aliasNotAllowed = ['ON_REV'];
   }
 
@@ -19,8 +19,8 @@ class SubmissionService
 
   }
 
-  public function getAliasMeaning($alias) {
-    foreach ($this->alias as $key => $value) {
+  public function getPaperAliasMeaning($alias) {
+    foreach ($this->paperAliases as $key => $value) {
       if ($alias === $key) {
         return $value;
       }
@@ -29,10 +29,22 @@ class SubmissionService
     return NULL;
   }
 
-  public function makeAliases() {
-    return $this->aliases;
+  public function getScoreAliasMeaning($alias) {
+    foreach ($this->scoreAliases as $key => $value) {
+      if ($alias === $key) {
+        return $value;
+      }
+    }
+
+    return NULL;
+  }
+  public function getPaperAliases() {
+    return $this->paperAliases;
   }
 
+  public function getScoreAliases() {
+    return $this->scoreAliases;
+  }
 
   public function isAllowedToUpload($alias) {
     if (!in_array($alias, $this->aliasNotAllowed)) {
@@ -43,8 +55,8 @@ class SubmissionService
   }
 
 
-    protected function makeAliases() {
-    $this->aliases = [
+  protected function makeAliases() {
+    $this->paperAliases = [
       'ON_REV' => 'On Review Process',
       'REJECT' => 'Rejected',
       'REV_MIN' => 'Minor Revision',
@@ -53,6 +65,15 @@ class SubmissionService
       'ACC_REV_MAJ' => 'Accepted - Major Revision',
       'ACC_WAIT_PAY' => 'Accepted - Awaiting Payment',
       'PUBLISHED' => 'Accepted - Minor Revision'
+    ];
+  }
+
+  protected function makeScoreAliases() {
+    $this->scoreAliases = [
+      '0' => 'Bad',
+      '1' => 'Enough',
+      '2' => 'Good',
+      '3' => 'Excellent'
     ];
   }
 }

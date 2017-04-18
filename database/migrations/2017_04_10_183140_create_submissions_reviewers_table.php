@@ -16,8 +16,13 @@ class CreateSubmissionsReviewersTable extends Migration
             $table->increments('id');
             $table->integer('paper_id');
             $table->integer('user_id');
-            $table->float('score');
-            $table->string('note');
+            $table->tinyInteger('score_a')->nullable();
+            $table->tinyInteger('score_b')->nullable();
+            $table->tinyInteger('score_c')->nullable();
+            $table->tinyInteger('score_d')->nullable();
+            $table->tinyInteger('score_e')->nullable();
+            $table->tinyInteger('score_f')->nullable();
+            $table->string('comments')->nullable();
             $table->timestamps();
         });
     }

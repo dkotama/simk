@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+/*namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,19 +9,20 @@ class SubmissionReviewer extends Model
   protected $table = 'submissions_reviewers';
 
   protected $fillable =[
-    'submission_id',
+    'paper_id',
     'user_id',
     'score',
     'note'
   ];
 
-  public function submission()
+  public function paper()
   {
-    return $this->belongsTo('App\Submission', 'submission_id');
+    return $this->belongsTo('App\SubmissionPaper', 'paper_id');
   }
 
-  public function user()
+  public function profile()
   {
     return $this->hasOne('App\User');
   }
 }
+*/

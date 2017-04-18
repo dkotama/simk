@@ -37,6 +37,19 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Conference', 'organizers', 'user_id', 'conference_id');
     }
 
+    public function papersReviewed() {
+      return $this->belongsToMany('App\SubmissionPaper', 'submissions_reviewers', 'user_id', 'paper_id')
+      ->withPivot(
+          'score_a',
+          'score_b',
+          'score_c',
+          'score_d',
+          'score_e',
+          'score_f',
+          'comments'
+        );
+    }
+
     public function submissions() {
         return $this->hasMany('App\Submission');
     }
@@ -84,5 +97,7 @@ class User extends Authenticatable
         $this->is_admin = 0;
         $this->save();
     }
+
+
 
 }

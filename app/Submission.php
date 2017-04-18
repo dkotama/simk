@@ -43,12 +43,12 @@ class Submission extends Model
     return $this->belongsTo('App\Conference', 'conference_id');
   }
 
-  public function reviewers()
-  {
-    return $this->hasManyThrough(
-            'App\SubmissionReviewer', 'App\SubmissionPaper',
-            'submission_id', 'paper_id', 'id');
-  }
+  // public function reviewers()
+  // {
+  //   return $this->hasManyThrough(
+  //           'App\SubmissionReviewer', 'App\SubmissionPaper',
+  //           'submission_id', 'paper_id', 'id');
+  // }
 
   public function papers()
   {
