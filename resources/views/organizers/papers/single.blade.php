@@ -73,7 +73,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">
                 Reviewers
-                <a href="#" class="btn btn-xs btn-primary">Assign New</a>
+                <a href="{{ route('organizer.paper.assignReviewer', ['confurl' => $conf->url, 'paperId' => $submission->id ])}}" class="btn btn-xs btn-primary">Assign New</a>
             </div>
               <div class="panel-body">
                   <table class="table table-condensed">
@@ -81,39 +81,25 @@
                     <tr>
                       <th>No</th>
                       <th>Name</th>
-                      <th>Score</th>
-                      <th>Decision</th>
+                      <th>Score A</th>
+                      <th>Score B</th>
+                      <th>Score C</th>
+                      <th>Score D</th>
+                      <th>Score E</th>
+                      <th>Score F</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Ikhwan Narurozi</td>
-                      <td>4.5</td>
-                      <td>Minor Revision</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Ikhwan Narurozi</td>
-                      <td>4.5</td>
-                      <td>Minor Revision</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Ikhwan Narurozi</td>
-                      <td>4.5</td>
-                      <td>Minor Revision</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Ikhwan Narurozi</td>
-                      <td>4.5</td>
-                      <td>Minor Revision</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2"><h4><b class="pull-right">Average Score:</b></h4></td>
-                      <td colspan="2"><h4><b>4.0</b></h4></td>
-                    </tr>
+                    @foreach($reviewers as $rev)
+                      <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
                 </div>

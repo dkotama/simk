@@ -50,6 +50,14 @@ class User extends Authenticatable
         );
     }
 
+    public function isReviewingPaper($paperId) {
+      $paperId = (int)$paperId;
+      
+      $temp = $this->papersReviewed->whereIn('submission_id', [$paperId]);
+
+      return !$temp->isEmpty();
+    }
+
     public function submissions() {
         return $this->hasMany('App\Submission');
     }

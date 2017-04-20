@@ -43,6 +43,19 @@ class Submission extends Model
     return $this->belongsTo('App\Conference', 'conference_id');
   }
 
+  public function reviewers() {
+    return $this->belongsToMany('App\User', 'submissions_reviewers', 'submission_id', 'user_id')
+          ->withPivot(
+              'score_a',
+              'score_b',
+              'score_c',
+              'score_d',
+              'score_e',
+              'score_f',
+              'comments'
+            );
+  }
+
   // public function reviewers()
   // {
   //   return $this->hasManyThrough(

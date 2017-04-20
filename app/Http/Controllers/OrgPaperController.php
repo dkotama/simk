@@ -42,7 +42,7 @@ class OrgPaperController extends Controller
     return view('organizers.papers.all', $this->viewData);
   }
 
-  public function singlePaper($confUrl, $paperId)
+  public function singlePaper(Conference $confUrl, $paperId)
   {
     $date = new Carbon();
 
@@ -52,6 +52,7 @@ class OrgPaperController extends Controller
     $this->viewData['submission']  = $submission;
     $this->viewData['authors']     = $submission->authors->sortBy('author_no');
     $this->viewData['authorCount'] = $submission->authors->count();
+    $this->viewData['reviewers']   = $submission->reviewers;
 
     return view('organizers.papers.single', $this->viewData);
   }
@@ -67,15 +68,14 @@ class OrgPaperController extends Controller
     }
   }
 
-  public function showAddUser(Conference $confUrl)
+  public function assignReviewer(Conference $confUrl, $paperId)
   {
-    $this->setConf($confUrl);
+    $submission = Submission::findOrFail($paperId);
 
-    $countryList = new CountryList();
-    $this->viewData['countryList'] = $countryList->getList();
+    $this->viewData['reviewers'] = $confUrl->reviewers;
+    $this->viewData['submission']  = $submission;
 
-
-    return view('organizers.users.new', $this->viewData);
+    return view('organizers.papers.assign', $this->viewData);
   }
 
   public function showEditUser(Conference $confUrl, $userId)
