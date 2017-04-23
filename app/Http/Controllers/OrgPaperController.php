@@ -47,7 +47,6 @@ class OrgPaperController extends Controller
     $date = new Carbon();
 
     $submission = Submission::findOrFail($paperId);
-
     //
     $this->viewData['submission']  = $submission;
     $this->viewData['authors']     = $submission->authors->sortBy('author_no');

@@ -1,9 +1,6 @@
 <?php
 namespace App;
 
-
-use Validator;
-
 class SubmissionService
 {
   protected $paperAliases;
@@ -19,17 +16,19 @@ class SubmissionService
 
   }
 
-  public function getPaperAliasMeaning($alias) {
-    foreach ($this->paperAliases as $key => $value) {
-      if ($alias === $key) {
-        return $value;
-      }
-    }
+  public function getPaperAlias($alias) {
+    // foreach ($this->paperAliases as $key => $value) {
+    //   if ($alias === $key) {
+    //     return $value;
+    //   }
+    // }
 
     return NULL;
   }
 
-  public function getScoreAliasMeaning($alias) {
+  public function getScoreAlias($alias) {
+    $this->makeScoreAliases();
+
     foreach ($this->scoreAliases as $key => $value) {
       if ($alias === $key) {
         return $value;
@@ -39,23 +38,27 @@ class SubmissionService
     return NULL;
   }
   public function getPaperAliases() {
+    $this->makePaperAliases();
+
     return $this->paperAliases;
   }
 
   public function getScoreAliases() {
+    $this->makeScoreAliases();
+
     return $this->scoreAliases;
   }
 
   public function isAllowedToUpload($alias) {
     if (!in_array($alias, $this->aliasNotAllowed)) {
       return false;
-    } else
+    } else {
       return false;
     }
   }
 
 
-  protected function makeAliases() {
+  protected function makePaperAliases() {
     $this->paperAliases = [
       'ON_REV' => 'On Review Process',
       'REJECT' => 'Rejected',

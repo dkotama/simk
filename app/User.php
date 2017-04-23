@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Conference;
+use App\SubmissionService;
 
 class User extends Authenticatable
 {
@@ -35,31 +36,6 @@ class User extends Authenticatable
 
     public function organizing() {
         return $this->belongsToMany('App\Conference', 'organizers', 'user_id', 'conference_id');
-    }
-
-    public function papersReviewed() {
-      return $this->belongsToMany('App\SubmissionPaper', 'submissions_reviewers', 'user_id', 'paper_id')
-      ->withPivot(
-          'score_a',
-          'score_b',
-          'score_c',
-          'score_d',
-          'score_e',
-          'score_f',
-          'comments'
-        );
-    }
-
-    public function isReviewingPaper($paperId) {
-      $paperId = (int)$paperId;
-      
-      $temp = $this->papersReviewed->whereIn('submission_id', [$paperId]);
-
-      return !$temp->isEmpty();
-    }
-
-    public function submissions() {
-        return $this->hasMany('App\Submission');
     }
 
     public function isAuthoring(Conference $conf)
@@ -108,4 +84,54 @@ class User extends Authenticatable
 
 
 
+    //--- PAPER MANAGEMENTS
+
+    public function papersReviewed() {
+      return $this->belongsToMany('App\Submission', 'submissions_reviewers', 'user_id', 'submission_id')
+      ->withPivot(
+          'score_a',
+          'score_b',
+          'score_c',
+          'score_d',
+          'score_e',
+          'score_f',
+          'comments'
+        );
+    }
+
+    public function isReviewingPaper($submissionId) {
+      $submissionId = (int)$submissionId;
+
+      $temp = $this->papersReviewed->whereIn('id', [$submissionId]);
+
+      return !$temp->isEmpty();
+    }
+
+    public function submissions() {
+        return $this->hasMany('App\Submission');
+    }
+
+    public function getScoresAsAlias($submissionId) {
+       if ($this->isReviewingPaper($submissionId)) {
+          $submissionService = new SubmissionService;
+
+          $submissionId = (int)$submissionId;
+
+          $paper = $this->papersReviewed->where('id', $submissionId)->first();
+          $piv = $paper->pivot;
+          // $paper = $this->papersReviewed->whereIn('id', [$submissionId]);
+          $temp = [
+            $submissionService->getScoreAlias($piv->score_a),
+            $submissionService->getScoreAlias($piv->score_b),
+            $submissionService->getScoreAlias($piv->score_c),
+            $submissionService->getScoreAlias($piv->score_d),
+            $submissionService->getScoreAlias($piv->score_e),
+            $submissionService->getScoreAlias($piv->score_f)
+           ];
+
+          return $temp;
+       } else {
+           return NULL;
+       }
+    }
 }

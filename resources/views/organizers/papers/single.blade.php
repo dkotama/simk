@@ -81,22 +81,42 @@
                     <tr>
                       <th>No</th>
                       <th>Name</th>
-                      <th>Score A</th>
-                      <th>Score B</th>
-                      <th>Score C</th>
+                      <th>Writing</th>
+                      <th>Publications</th>
+                      <th>Topics</th>
                       <th>Score D</th>
                       <th>Score E</th>
                       <th>Score F</th>
                     </tr>
                   </thead>
                   <tbody>
+                    <?php $count = 1 ?>
                     @foreach($reviewers as $rev)
                       <tr>
                         <td>
+                          <?php $scores = $rev->getScoresAsAlias($submission->id) ?>
+                          {{ $count++ }}
                         </td>
                         <td>
+                          {{ $rev->salutation . " " . $rev->last_name . " " . $rev->first_name }}
                         </td>
                         <td>
+                          {{ $scores[0] }}
+                        </td>
+                        <td>
+                          {{ $scores[1] }}
+                        </td>
+                        <td>
+                          {{ $scores[2] }}
+                        </td>
+                        <td>
+                          {{ $scores[3] }}
+                        </td>
+                        <td>
+                          {{ $scores[4] }}
+                        </td>
+                        <td>
+                          {{ $scores[5] }}
                         </td>
                       </tr>
                     @endforeach
