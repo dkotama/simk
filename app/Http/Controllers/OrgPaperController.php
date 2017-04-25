@@ -56,15 +56,20 @@ class OrgPaperController extends Controller
     return view('organizers.papers.single', $this->viewData);
   }
 
-  public function dashboard(Conference $confUrl)
+  public function attachReviewer(Conference $confUrl, $paperId, $userId)
   {
-    $this->setConf($confUrl);
+    $paper    = Submission::findOrFail($paperId);
+    $reviewer = User::findOrFail($userId);
 
-    if ($this->isAllowed($confUrl)) {
-      return view('organizers.dashboard', $this->viewData);
-    } else {
-      abort(404);
-    }
+    dd($paper->reviewers);
+  }
+
+  public function detachReviewer(Conference $confUrl, $paperId, $userId)
+  {
+    $paper    = Submission::findOrFail($paperId);
+    $reviewer = User::findOrFail($userId);
+
+    dd($paper->reviewers);
   }
 
   public function assignReviewer(Conference $confUrl, $paperId)

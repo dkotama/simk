@@ -46,12 +46,12 @@
                       <td>
                         {{ $rev->salutation . " " . $rev->last_name . " " . $rev->first_name }}
                         @if($rev->isReviewingPaper($submission->id))
-                          <a href=""><div class="label label-primary">reviewing</div></a>
+                          <a href="{{ route('organizer.paper.detachReviewer', ['confUrl' => $conf->url, 'paperId' => $submission->id, 'userId' => $rev->id]) }}"><div class="label label-primary">reviewing</div></a>
                         @endif
                       </td>
                       <td>
                         @if(!$rev->isReviewingPaper($submission->id))
-                          <a href=""><div class="btn btn-sm btn-primary">Set as Paper Reviewer</div></a>
+                          <a href="{{ route('organizer.paper.attachReviewer', ['confUrl' => $conf->url, 'paperId' => $submission->id, 'userId' => $rev->id]) }}"><div class="btn btn-sm btn-primary">Set as Paper Reviewer</div></a>
                         @endif
                       </td>
                     </tr>
