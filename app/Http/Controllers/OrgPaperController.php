@@ -61,7 +61,12 @@ class OrgPaperController extends Controller
     $paper    = Submission::findOrFail($paperId);
     $reviewer = User::findOrFail($userId);
 
-    dd($paper->reviewers);
+    if ($paper->reviewers()->attach($reviewer->id) == NULL){
+      flash()->success('Set Reviewer Success!');
+    }
+
+    // dd($paper->reviewers);
+    return redirect()->back();
   }
 
   public function detachReviewer(Conference $confUrl, $paperId, $userId)
@@ -69,7 +74,11 @@ class OrgPaperController extends Controller
     $paper    = Submission::findOrFail($paperId);
     $reviewer = User::findOrFail($userId);
 
-    dd($paper->reviewers);
+    if ($paper->reviewers()->detach($reviewer->id) == false){
+      flash()->success('Unset Reviewer Success!');
+    }
+
+    return redirect()->back();
   }
 
   public function assignReviewer(Conference $confUrl, $paperId)
