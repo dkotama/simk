@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Requests\StoreConferenceRequest;
 use App\User;
 use App\Conference;
+use App\ReviewQuestion;
 // use App\Http\Requests;
 
 class AdminsController extends Controller
@@ -52,7 +53,9 @@ class AdminsController extends Controller
   public function storeNewConference(StoreConferenceRequest $request)
   {
     //FIXME please add validation date
-    Conference::create($request->all());
+    $conf = Conference::create($request->all());
+    ReviewQuestion::create(['conference_id' => $conf->id]);
+
     flash()->success('Create New Conference Success');
 
     return redirect()->back();

@@ -38,4 +38,12 @@ class Controller extends BaseController
         abort(404);
       }
     }
+
+    protected function isAllowedReviewer($confUrl) {
+      if ($this->user->reviewing->contains('url', $confUrl->url)) {
+        return true;
+      } else {
+        abort(404);
+      }
+    }
 }

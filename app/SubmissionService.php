@@ -5,6 +5,7 @@ class SubmissionService
 {
   protected $paperAliases;
   protected $scoreAliases;
+  protected $recommendationAliases;
   protected $aliasNotAllowed;
 
   public function __construct()
@@ -37,6 +38,25 @@ class SubmissionService
 
     return NULL;
   }
+
+  public function getRecommedationAlias($alias) {
+    $this->makeRecommendationAliases();
+
+    foreach ($this->recommendationAliases as $key => $value) {
+      if ($alias === $key) {
+        return $value;
+      }
+    }
+
+    return NULL;
+  }
+
+  public function getRecommendationAliases() {
+    $this->makeRecommendationAliases();
+
+    return $this->recommendationAliases;
+  }
+
   public function getPaperAliases() {
     $this->makePaperAliases();
 
@@ -77,6 +97,14 @@ class SubmissionService
       '1' => 'Enough',
       '2' => 'Good',
       '3' => 'Excellent'
+    ];
+  }
+
+  protected function makeRecommendationAliases() {
+    $this->recommendationAliases = [
+      '0' => 'Rejected',
+      '1' => 'Revision',
+      '2' => 'Accepted'
     ];
   }
 }

@@ -90,8 +90,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/papers/{paperId}/assign', ['as' => 'organizer.paper.assignReviewer', 'uses' => 'OrgPaperController@assignReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/att/{userId}', ['as' => 'organizer.paper.attachReviewer', 'uses' => 'OrgPaperController@attachReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/dett/{userId}', ['as' => 'organizer.paper.detachReviewer', 'uses' => 'OrgPaperController@detachReviewer']);
-  // Route::post('/{confUrl}/org/users/add', ['as' => 'organizer.registerUser', 'uses' => 'OrgHomeController@registerUser']);
-  // Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
-  // Route::post('/{confUrl}/org/users/{userId}/edit', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
 
+  //Reviewer
+  Route::get('/{confUrl}/reviewer/', ['as' => 'reviewer.manage', 'uses' => 'RevHomeController@dashboard']);
+  Route::get('/{confUrl}/reviewer/papers', ['as' => 'reviewer.papers', 'uses' => 'RevHomeController@showAllPapers']);
+  Route::get('/{confUrl}/reviewer/{paperId}', ['as' => 'reviewer.papers.single', 'uses' => 'RevHomeController@showSinglePaper']);
 });

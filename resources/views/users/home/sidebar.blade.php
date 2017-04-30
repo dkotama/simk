@@ -22,7 +22,7 @@
 
               <ul class="nav nav-pills nav-stacked">
                 @foreach($reviewing as $revw)
-                  <li><a href="{{ route('organizer.manage', $revw->url)}}"><i class="glyphicon glyphicon-briefcase"></i> {{ strtoupper($revw->url) }}</a></li>
+                  <li><a href="{{ route('reviewer.manage', $revw->url)}}"><i class="glyphicon glyphicon-briefcase"></i> {{ strtoupper($revw->url) }}</a></li>
                 @endforeach
 
               </ul>
