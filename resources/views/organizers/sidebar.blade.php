@@ -11,7 +11,7 @@
                   </ul>
                 @endif
               <li><a href="{{ route('organizer.allPapers', $conf->url)}}"><i class="glyphicon glyphicon-list-alt"></i> Submissions</a></li>
-              <li><a href="#"><i class="glyphicon glyphicon-briefcase"></i> Menu B</a></li>
+              <li><a href="{{ route('organizer.manage.questions', $conf->url) }}"><i class="glyphicon glyphicon-cog"></i> Manage Conference</a></li>
               <li><a href="#"><i class="glyphicon glyphicon-link"></i> Menu C</a></li>
             </ul>
 

@@ -56,12 +56,12 @@ class Submission extends Model
             );
   }
 
-  // public function reviewers()
-  // {
-  //   return $this->hasManyThrough(
-  //           'App\SubmissionReviewer', 'App\SubmissionPaper',
-  //           'submission_id', 'paper_id', 'id');
-  // }
+  public function isReviewedBy($userID)
+  {
+    // return $this->hasManyThrough(
+    //         'App\SubmissionReviewer', 'App\SubmissionPaper',
+    //         'submission_id', 'paper_id', 'id');
+  }
 
   public function papers()
   {

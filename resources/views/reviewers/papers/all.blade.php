@@ -15,7 +15,7 @@
                     <th>ID</th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Reviewer</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                           {{ $author->name }}
                         @endforeach
                       </td>
-                      <td class="center"> Review Process</td>
+                      <td class="center"> </td>
                     </tr>
                   @empty
                     <tr>

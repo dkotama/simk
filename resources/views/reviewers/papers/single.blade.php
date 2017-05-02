@@ -33,85 +33,119 @@
         <div class="col-md-10">
           <div class="panel panel-default">
             <div class="panel-heading">
-                Review Paper
+              Questions
             </div>
             <div class="panel-body">
-              <form action="" method="post">
+              <form action="{{ route('reviewer.postReview' ,['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post">
+                {{ csrf_field() }}
                 <div class="form-group">
                   <p>1. {{ $questions->question_a }}</p>
-                  <div class="text-center">
                     <?php $count = 0 ?>
+                    <div style="padding-left:20px;">
                     @foreach($answers as $ans)
-                    <label class="radio-inline">
-                      <input type="radio" name="question_a" value="{{ $count++ }}"> {{ $ans }}
-                    </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="score_a" value="{{ $count++}}"
+                        {{ ($count === 2) ? " checked" : NULL }}
+                        > {{ $ans }}
+                      </label>
+                    </div>
                     @endforeach
-                  </div>
+                    </div>
                 </div>
+
+
 
                 <div class="form-group">
                   <p>2. {{ $questions->question_b }}</p>
-                  <div class="text-center">
                     <?php $count = 0 ?>
+                    <div style="padding-left:20px;">
                     @foreach($answers as $ans)
-                    <label class="radio-inline">
-                      <input type="radio" name="question_b" value="{{ $count++ }}"> {{ $ans }}
-                    </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="score_b" value="{{ $count++ }}"
+                        {{ ($count === 2) ? " checked" : NULL }}
+                        > {{ $ans }}
+                      </label>
+                    </div>
                     @endforeach
-                  </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                   <p>3. {{ $questions->question_c }}</p>
-                  <div class="text-center">
-                    <?php $count = 0 ?>
-                    @foreach($answers as $ans)
-                    <label class="radio-inline">
-                      <input type="radio" name="question_c" value="{{ $count++ }}"> {{ $ans }}
+                  <?php $count = 0 ?>
+                  <div style="padding-left:20px;">
+                  @foreach($answers as $ans)
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="score_c" value="{{ $count++}}"
+                        {{ ($count === 2) ? " checked" : NULL }}
+                      > {{ $ans }}
                     </label>
-                    @endforeach
+                  </div>
+                  @endforeach
                   </div>
                 </div>
 
                 <div class="form-group">
                   <p>4. {{ $questions->question_d }}</p>
-                  <div class="text-center">
                     <?php $count = 0 ?>
+                    <div style="padding-left:20px;">
                     @foreach($answers as $ans)
-                    <label class="radio-inline">
-                      <input type="radio" name="question_d" value="{{ $count++ }}"> {{ $ans }}
-                    </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="score_d" value="{{ $count++}}"
+                        {{ ($count === 2) ? " checked" : NULL }}
+                        > {{ $ans }}
+                      </label>
+                    </div>
                     @endforeach
-                  </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                   <p>5. {{ $questions->question_e }}</p>
-                  <div class="text-center">
                     <?php $count = 0 ?>
+                    <div style="padding-left:20px;">
                     @foreach($answers as $ans)
-                    <label class="radio-inline">
-                      <input type="radio" name="question_e" value="{{ $count++ }}"> {{ $ans }}
-                    </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="score_e" value="{{ $count++}}"
+                        {{ ($count === 2) ? " checked" : NULL }}
+                        > {{ $ans }}
+                      </label>
+                    </div>
                     @endforeach
-                  </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                   <p>6. Recommendation </p>
-                  <div class="text-center">
+                    <div style="padding-left:20px;">
                     <?php $count = 0 ?>
                     @foreach($recommendations as $recs)
-                    <label class="radio-inline">
-                      <input type="radio" name="question_f" value="{{ $count++ }}"> {{ $recs }}
-                    </label>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="score_f" value="{{ $count++ }}"
+                        {{ ($count === 2) ? " checked" : NULL }}
+                        > {{ $recs }}
+
+                      </label>
+                    </div>
                     @endforeach
-                  </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
                   <p>7. Comments</p>
-                  <textarea class="form-control" rows="3"></textarea>
+                  <textarea name="comments" class="form-control" rows="7"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
                 </div>
               </form>
             </div>

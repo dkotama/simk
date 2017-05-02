@@ -65,16 +65,22 @@ class  RevHomeController extends Controller
     return view('reviewers.papers.single', $this->viewData);
   }
 
-  public function attachReviewer(Conference $confUrl, $paperId, $userId)
+  public function postPaperReview(Conference $confUrl, $paperId, Request $request)
   {
-    $paper    = Submission::findOrFail($paperId);
-    $reviewer = User::findOrFail($userId);
+    $paper = $this->user->papersReviewed->where('id', (int)$paperId)->first();
+    $paper = $paper->pivot;
+    $values = $request->all();
 
-    if ($paper->reviewers()->attach($reviewer->id) == NULL){
-      flash()->success('Set Reviewer Success!');
-    }
+    $paper->score_a = $values['score_a'];
+    $paper->score_b = $values['score_b'];
+    $paper->score_c = $values['score_c'];
+    $paper->score_d = $values['score_d'];
+    $paper->score_e = $values['score_e'];
+    $paper->score_f = $values['score_f'];
+    $paper->comments = $values['comments'];
+    $paper->save();
 
-    // dd($paper->reviewers);
+
     return redirect()->back();
   }
 

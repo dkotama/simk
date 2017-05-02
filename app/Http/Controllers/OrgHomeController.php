@@ -9,6 +9,7 @@ use App\User;
 use App\SuperuserRegisterService;
 use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
+use App\ReviewQuestion;
 use Validator;
 
 class OrgHomeController extends Controller
@@ -168,6 +169,21 @@ class OrgHomeController extends Controller
       abort(404);
     }
   }
+
+  // Manage Conferences
+
+  public function managesQuestions(Conference $confUrl)
+  {
+    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+
+    dd($questions);
+    $this->viewData['questions'] = $questions;
+    $this->viewData['conf']      = $confUrl;
+
+    return view('organizers.conferences.questions', $this->viewData);
+  }
+
+
 
   public function attachRoles(Conference $confUrl, User $user, $mode)
   {

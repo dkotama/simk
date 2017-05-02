@@ -73,6 +73,8 @@ Route::group(['middleware' => ['web']], function () {
   ==================*/
   Route::get('/{confUrl}/organizer/', ['as' => 'organizer.manage', 'uses' => 'OrgHomeController@dashboard']);
 
+  Route::get('/{confUrl}/org/manage/questions', ['as' => 'organizer.manage.questions', 'uses' => 'OrgHomeController@managesQuestions']);
+
   //Enroll User
   Route::get('/{confUrl}/org/users/{mode?}', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);
   Route::get('/{confUrl}/org/users/{user}/det/{mode}', ['as' => 'organizer.detachroles', 'uses' => 'OrgHomeController@detachRoles']);
@@ -95,4 +97,5 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/reviewer/', ['as' => 'reviewer.manage', 'uses' => 'RevHomeController@dashboard']);
   Route::get('/{confUrl}/reviewer/papers', ['as' => 'reviewer.papers', 'uses' => 'RevHomeController@showAllPapers']);
   Route::get('/{confUrl}/reviewer/{paperId}', ['as' => 'reviewer.papers.single', 'uses' => 'RevHomeController@showSinglePaper']);
+  Route::post('/{confUrl}/reviewer/{paperId}', ['as' => 'reviewer.postReview', 'uses' => 'RevHomeController@postPaperReview']);
 });
