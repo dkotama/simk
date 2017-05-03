@@ -26,13 +26,13 @@ class StoreConferenceRequest extends Request
     {
         return [
             'name' => 'required',
-            'url' => 'required',
-            'start_submit' => 'required',
-            'end_submit' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'description' => 'required'
-            //
+            'url' => 'required|alpha_num',
+            'submission_deadline' => 'required',
+            'acceptance' => 'required',
+            'camera_ready' => 'required',
+            'registration' => 'required',
+            'start_conference' => 'required',
+            'end_conference' => 'required'
         ];
     }
 }

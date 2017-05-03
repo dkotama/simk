@@ -9,18 +9,7 @@ class Conference extends Model
   protected $fillable =[
     'name',
     'url',
-    'description',
-    'start_date',
-    'end_date',
-    'start_submit',
-    'end_submit'
-  ];
-
-  protected $dates = [
-    'start_date',
-    'end_date',
-    'start_submit',
-    'end_submit'
+    'description'
   ];
 
   public function authors()
@@ -49,5 +38,9 @@ class Conference extends Model
 
   public function reviewQuestions() {
     return $this->hasOne('App\ReviewQuestion');
+  }
+
+  public function dates() {
+    return $this->hasMany('App\ConferenceDate');
   }
 }

@@ -12,7 +12,6 @@ use App\ReviewQuestion;
 
 class AdminsController extends Controller
 {
-
   protected $viewData = [];
 
   public function __construct()
@@ -34,12 +33,14 @@ class AdminsController extends Controller
 
   public function showSingleConference(Conference $confUrl)
   {
-    // $this->viewData['conf'] = $this->getConf($confUrl);
     $this->viewData['conf'] = $confUrl;
+    // $this->viewData['conf'] = $this->getConf($confUrl);
+    // $this->viewData['conf'] = $confUrl;
+    // dd($confUrl->name);
 
     // dd($this->viewData['conf']->start_submit->format('Y-m-d'));
 
-    return view('admins.conferences.edit', $this->viewData);
+    return view('admins.conferences.single', $this->viewData);
   }
 
   public function showAllConferences()
@@ -52,13 +53,12 @@ class AdminsController extends Controller
 
   public function storeNewConference(StoreConferenceRequest $request)
   {
-    //FIXME please add validation date
     $conf = Conference::create($request->all());
     ReviewQuestion::create(['conference_id' => $conf->id]);
 
     flash()->success('Create New Conference Success');
 
-    return redirect()->back();
+    return redirect()->route('admin.conf.show', $conf->url);
   }
 
   public function updateConference(StoreConferenceRequest $request, Conference $confUrl)

@@ -35,54 +35,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('start_submit') ? ' has-error' : '' }}">
-                          <label class="col-md-4 control-label">Start Submit</label>
-                          <div class="col-md-6">
-                              <input type="date" class="form-control" name="start_submit" value="{{ old('start_submit') }}">
 
-                              @if ($errors->has('start_submit'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('start_submit') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('end_submit') ? ' has-error' : '' }}">
-                          <label class="col-md-4 control-label">End Submit</label>
-                          <div class="col-md-6">
-                              <input type="date" class="form-control" name="end_submit" value="{{ old('end_submit') }}">
-
-                              @if ($errors->has('end_submit'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('end_submit') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('start_date') ? ' has-error' : '' }}">
-                          <label class="col-md-4 control-label">Start Date</label>
-                          <div class="col-md-6">
-                              <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}">
-
-                              @if ($errors->has('start_date'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('start_date') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('end_date') ? ' has-error' : '' }}">
-                          <label class="col-md-4 control-label">End Date</label>
-                          <div class="col-md-6">
-                              <input type="date" class="form-control" name="end_date" value="{{ old('end_date') }}">
-
-                              @if ($errors->has('end_date'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('end_date') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                        </div>
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Description</label>
 
@@ -96,6 +49,94 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group{{ $errors->has('start_conference') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Conference Start</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="start_conference">
+
+                                @if ($errors->has('start_conference'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('start_conference') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('conference_end') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Conference End</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="conference_end">
+
+                                @if ($errors->has('conference_end'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('conference_end') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <hr>
+                        <h4 class="text-center">Deadline Dates</h4>
+                        <hr>
+                        <div class="form-group{{ $errors->has('submission_deadline') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Submission</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="submission_deadline">
+
+                                @if ($errors->has('submission_deadline'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('submission_deadline') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('acceptance') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Acceptance</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="acceptance">
+
+                                @if ($errors->has('acceptance'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('acceptance') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('camera_ready') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Camera Ready</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="camera_ready">
+
+                                @if ($errors->has('camera_ready'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('camera_ready') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('registration') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Registration</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="registration">
+
+                                @if ($errors->has('registration'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('registration') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
