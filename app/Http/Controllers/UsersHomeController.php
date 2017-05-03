@@ -11,6 +11,7 @@ use App\Conference;
 use App\Submission;
 use App\SubmissionAuthor;
 use App\SubmissionPaper;
+use App\SubmissionService;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use App\CountryList;
@@ -82,6 +83,10 @@ class UsersHomeController extends Controller
   public function submitPaper(Request $request, Conference $confUrl) {
     $this->isAllowedAuthor($confUrl);
 
+    $service = new SubmissionService();
+    $status = $service->getPaperAliases();
+    $status = key($status);
+
     $validator = Validator::make($request->all(), [
       'title' => 'required',
       'abstract' => 'required',
@@ -106,6 +111,8 @@ class UsersHomeController extends Controller
     $submission->versions()->save($submissionPaper);
 
     $submission->update(['active_version' => $submissionPaper->version]);
+    $submissionPaper->status = $status;
+    $submissionPaper->save();
 
     $paper = $request->file('paper');
 

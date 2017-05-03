@@ -118,15 +118,15 @@ class User extends Authenticatable
           $submissionId = (int)$submissionId;
 
           $paper = $this->papersReviewed->where('id', $submissionId)->first();
-          $piv = $paper->pivot;
-          // $paper = $this->papersReviewed->whereIn('id', [$submissionId]);
+          $piv   = $paper->pivot;
+
           $temp = [
             $submissionService->getScoreAlias($piv->score_a),
             $submissionService->getScoreAlias($piv->score_b),
             $submissionService->getScoreAlias($piv->score_c),
             $submissionService->getScoreAlias($piv->score_d),
             $submissionService->getScoreAlias($piv->score_e),
-            $submissionService->getScoreAlias($piv->score_f)
+            $submissionService->getRecommedationAlias($piv->score_f)
            ];
 
           return $temp;

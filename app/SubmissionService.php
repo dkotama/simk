@@ -6,6 +6,7 @@ class SubmissionService
   protected $paperAliases;
   protected $scoreAliases;
   protected $recommendationAliases;
+  protected $resolveAliases;
   protected $aliasNotAllowed;
 
   public function __construct()
@@ -18,11 +19,13 @@ class SubmissionService
   }
 
   public function getPaperAlias($alias) {
-    // foreach ($this->paperAliases as $key => $value) {
-    //   if ($alias === $key) {
-    //     return $value;
-    //   }
-    // }
+    $this->makePaperAliases();
+
+    foreach ($this->paperAliases as $key => $value) {
+      if ($alias === $key) {
+        return $value;
+      }
+    }
 
     return NULL;
   }
@@ -63,6 +66,12 @@ class SubmissionService
     return $this->paperAliases;
   }
 
+  public function getResolveAliases() {
+    $this->makeResolveAliases();
+
+    return $this->resolveAliases;
+  }
+
   public function getScoreAliases() {
     $this->makeScoreAliases();
 
@@ -87,9 +96,21 @@ class SubmissionService
       'ACC_REV_MIN' => 'Accepted - Minor Revision',
       'ACC_REV_MAJ' => 'Accepted - Major Revision',
       'ACC_WAIT_PAY' => 'Accepted - Awaiting Payment',
-      'PUBLISHED' => 'Accepted - Minor Revision'
+      'ACC' => 'Accepted',
     ];
   }
+
+  protected function makeResolveAliases() {
+    $this->resolveAliases = [
+      'REJECT' => 'Reject',
+      'REV_MIN' => 'Minor Revision',
+      'REV_MAJ' => 'Major Revision',
+      'ACC_REV_MIN' => 'Accept - Minor Revision',
+      'ACC_REV_MAJ' => 'Accept - Major Revision',
+      'ACC_WAIT_PAY' => 'Accept Paper'
+    ];
+  }
+
 
   protected function makeScoreAliases() {
     $this->scoreAliases = [

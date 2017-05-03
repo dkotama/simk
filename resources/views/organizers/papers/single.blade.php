@@ -2,37 +2,7 @@
 
 @section('content')
   <div class="row">
-        <div class="col-md-10">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                  Submission ID: {{ $submission->id }}
-                  <a href="#" class="btn btn-xs btn-primary">Edit</a>
-                  <div class="pull-right">
-                    <a href="#" class="btn btn-xs btn-success">Resolve Submission</a>
-                  </div>
-                </div>
-                <div class="panel-body">
-                  <h4><strong>{{ $submission->title }}</strong></h4>
-                  <p>
-                    <strong>Keywords:</strong>
-                    {{ $submission->keywords }}
-                  </p>
-                  <p>
-                    <strong>Abstract:</strong>
-                    <br>{{ $submission->abstract }}
-                  </p>
-
-
-                  <p>
-                      <strong>File Version {{ $submission->active_version }} :</strong>
-                      <a href="/uploads/{{ $submission->getCurrentActivePath() }}" class="btn btn-sm btn-default">Download</a>
-                  </p>
-                  <div class="pull-right">
-                      <strong>Status : On Review</strong>
-                  </div>
-                </div>
-            </div>
-        </div>
+        @include('partials.singlepaper')
         <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading">Authors</div>
@@ -81,12 +51,12 @@
                     <tr>
                       <th>No</th>
                       <th>Name</th>
-                      <th>Writing</th>
-                      <th>Publications</th>
-                      <th>Topics</th>
-                      <th>Score D</th>
-                      <th>Score E</th>
-                      <th>Score F</th>
+                      <th>{{ $questions->topic_a }}</th>
+                      <th>{{ $questions->topic_b }}</th>
+                      <th>{{ $questions->topic_c }}</th>
+                      <th>{{ $questions->topic_d }}</th>
+                      <th>{{ $questions->topic_e }}</th>
+                      <th>Recommendation</th>
                     </tr>
                   </thead>
                   <tbody>

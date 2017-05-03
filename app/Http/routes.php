@@ -74,6 +74,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/organizer/', ['as' => 'organizer.manage', 'uses' => 'OrgHomeController@dashboard']);
 
   Route::get('/{confUrl}/org/manage/questions', ['as' => 'organizer.manage.questions', 'uses' => 'OrgHomeController@managesQuestions']);
+  Route::post('/{confUrl}/org/updateq/{questionId}', ['as' => 'organizer.manage.updateQuestions', 'uses' => 'OrgHomeController@updateQuestions']);
 
   //Enroll User
   Route::get('/{confUrl}/org/users/{mode?}', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);
@@ -92,6 +93,10 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/papers/{paperId}/assign', ['as' => 'organizer.paper.assignReviewer', 'uses' => 'OrgPaperController@assignReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/att/{userId}', ['as' => 'organizer.paper.attachReviewer', 'uses' => 'OrgPaperController@attachReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/dett/{userId}', ['as' => 'organizer.paper.detachReviewer', 'uses' => 'OrgPaperController@detachReviewer']);
+
+  Route::get('/{confUrl}/org/papers/{paperId}/resolve', ['as' => 'organizer.paper.resolve', 'uses' => 'OrgPaperController@resolvePaper']);
+  Route::post('/{confUrl}/org/papers/{paperId}/postresolve', ['as' => 'organizer.paper.postresolve', 'uses' => 'OrgPaperController@postResolve']);
+
 
   //Reviewer
   Route::get('/{confUrl}/reviewer/', ['as' => 'reviewer.manage', 'uses' => 'RevHomeController@dashboard']);

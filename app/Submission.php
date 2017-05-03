@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\SubmissionService;
 
 class Submission extends Model
 {
@@ -85,6 +86,32 @@ class Submission extends Model
         return false;
     } else {
         return true;
+    }
+  }
+
+  public function getStatusAlias()
+  {
+    $service  = new SubmissionService();
+
+    $lastVersion = $this->versions->last();
+    $lastVersion = $lastVersion->status;
+
+    return $service->getPaperAlias($lastVersion);
+  }
+
+  public function getStatusCode()
+  {
+    $lastVersion = $this->versions->last();
+
+    return $lastVersion->status;
+  }
+
+  public function availableForReview()
+  {
+    if ($this->getStatusCode() === 'ON_REV') {
+      return true;
+    } else {
+      return false;
     }
   }
 }

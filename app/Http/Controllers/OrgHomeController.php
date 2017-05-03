@@ -176,11 +176,19 @@ class OrgHomeController extends Controller
   {
     $questions  = ReviewQuestion::findOrFail($confUrl->id);
 
-    dd($questions);
     $this->viewData['questions'] = $questions;
     $this->viewData['conf']      = $confUrl;
 
     return view('organizers.conferences.questions', $this->viewData);
+  }
+
+  public function updateQuestions(Conference $confUrl, Request $request)
+  {
+    $questions  = ReviewQuestion::find($confUrl->id);
+    // dd($request);
+    $questions->update($request->all());
+
+    return redirect()->back();
   }
 
 
