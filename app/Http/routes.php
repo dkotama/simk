@@ -31,6 +31,7 @@ Route::group(['middleware' => ['web']], function () {
 
   Route::get('/admin/conferences/new', ['as' => 'admin.conf.new', 'uses' => 'AdminsController@showNewConferenceForm']);
   Route::get('/admin/conferences/{confUrl}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
+  Route::get('/admin/conferences/{confUrl}/edit', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
 
   //Admin Users
   Route::get('/admin/users/new', ['as' => 'admin.user.new', 'uses' => 'AdminsUserController@showNewUserForm']);

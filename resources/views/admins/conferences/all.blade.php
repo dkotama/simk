@@ -36,7 +36,7 @@
                         {{ $conf->id }}
                       </td>
                       <td class="title">
-                        <a href="#"  data-toggle="tooltip" data-placement="top" title="{{$conf->description}}">
+                        <a href="{{ route('admin.conf.show', $conf->url) }}"  data-toggle="tooltip" data-placement="top" title="{{$conf->description}}">
                           {{$conf->name}}
                         </a>
                       </td>

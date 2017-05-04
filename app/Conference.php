@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Conference extends Model
 {
@@ -11,6 +12,13 @@ class Conference extends Model
     'url',
     'description'
   ];
+
+  public $visibleDates = [];
+
+  // public function __construct() {
+  //   $this->getVisibleDates();
+  //   dd($this->visibleDates);
+  // }
 
   public function authors()
   {
@@ -42,5 +50,59 @@ class Conference extends Model
 
   public function dates() {
     return $this->hasMany('App\ConferenceDate');
+  }
+
+  public function getVisibleDates() {
+    $dates = $this->dates()->where('is_visible', 1)->get();
+    $temp  = [];
+    $boldNum = count($dates) - 1;
+    $count = 0;
+
+    foreach ($dates as $key => $value) {
+      $tag = 'del';
+
+      if ($count === $boldNum) { $tag = 'b'; }
+
+      $temp['submission_deadline'][$key] = [
+        'date' => Carbon::parse($value->submission_deadline)->toFormattedDateString(),
+        'tag' => $tag
+      ];
+
+      $temp['acceptance'][$key] = [
+        'date' => Carbon::parse($value->acceptance)->toFormattedDateString(),
+        'tag' => $tag
+      ];
+
+      $temp['camera_ready'][$key] = [
+        'date' => Carbon::parse($value->camera_ready)->toFormattedDateString(),
+        'tag' => $tag
+      ];
+
+      $temp['registration'][$key] = [
+        'date' => Carbon::parse($value->registration)->toFormattedDateString(),
+        'tag' => $tag
+      ];
+
+      $temp['start_conference'][$key] = [
+        'date' => Carbon::parse($value->start_conference)->toFormattedDateString(),
+        'tag' => $tag
+      ];
+
+      $temp['end_conference'][$key] = [
+        'date' => Carbon::parse($value->end_conference)->toFormattedDateString(),
+        'tag' => $tag
+      ];
+
+      $count++;
+    }
+
+    return collect($temp);
+  }
+
+  public function getStartDate() {
+    // if ($mode === 'print') {
+    //   $start = $this->dates()->max('start_conference');
+    //   dd($start);
+    // }
   }
 }

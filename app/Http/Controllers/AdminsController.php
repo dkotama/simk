@@ -33,7 +33,14 @@ class AdminsController extends Controller
 
   public function showSingleConference(Conference $confUrl)
   {
-    $this->viewData['conf'] = $confUrl;
+    $visibleDates = $confUrl->getVisibleDates();
+    // dd(count($visibleDates['submission_deadline']));
+    $this->viewData['conf']  = $confUrl;
+    // dd($confUrl->visibleDates);
+    $this->viewData['dates'] = $visibleDates;
+    $this->viewData['boldNum'] = count($visibleDates['submission_deadline']);
+    $this->viewData['startDate'] = $visibleDates->get('start_conference');
+    // dd($visibleDates->get('start_conference'));
     // $this->viewData['conf'] = $this->getConf($confUrl);
     // $this->viewData['conf'] = $confUrl;
     // dd($confUrl->name);

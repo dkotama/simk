@@ -37,8 +37,7 @@
                         <b>Start Date</b>
                     </div>
                     <div class="col-md-8">
-                        <?php $lastIndex = count($dates['submission_deadline']) - 1 ?>
-                        {{ $dates['start_conference'][$lastIndex]['date'] . ' - ' .  $dates['end_conference'][$lastIndex]['date']}}
+                      09-Sep-2017 - 13-Sep-2017
                     </div>
                   </div>
 
@@ -55,13 +54,6 @@
                         <b>Submission Deadline</b>
                     </div>
                     <div class="col-md-7">
-                      <p>
-                      <?php $count = 0 ?>
-                      @foreach($dates['submission_deadline'] as $date)
-                          <{{ $date['tag'] }}>{{ $date['date'] }}</{{ $date['tag'] }}>
-                          <br>
-                      @endforeach
-                      </p>
                     </div>
                   </div>
                   <div class="row">
@@ -70,12 +62,10 @@
                     </div>
                     <div class="col-md-7">
                       <p>
-                      <?php $count = 0 ?>
-                      @foreach($dates['acceptance'] as $date)
-                          <{{ $date['tag'] }}>{{ $date['date'] }}</{{ $date['tag'] }}>
-                          <br>
-                      @endforeach
-                      </p>
+                        <del>09-Aug-2017</del>
+                        <br><del>18-Aug-2017</del>
+                        <br><b>28-Aug-2017</b>
+                      <p>
                     </div>
                   </div>
                   <div class="row">
@@ -84,12 +74,10 @@
                     </div>
                     <div class="col-md-7">
                       <p>
-                      <?php $count = 0 ?>
-                      @foreach($dates['camera_ready'] as $date)
-                          <{{ $date['tag'] }}>{{ $date['date'] }}</{{ $date['tag'] }}>
-                          <br>
-                      @endforeach
-                      </p>
+                        <del>09-Aug-2017</del>
+                        <br><del>18-Aug-2017</del>
+                        <br><b>28-Aug-2017</b>
+                      <p>
                     </div>
                   </div>
                   <div class="row">
@@ -98,12 +86,10 @@
                     </div>
                     <div class="col-md-7">
                       <p>
-                      <?php $count = 0 ?>
-                      @foreach($dates['registration'] as $date)
-                          <{{ $date['tag'] }}>{{ $date['date'] }}</{{ $date['tag'] }}>
-                          <br>
-                      @endforeach
-                      </p>
+                        <del>09-Aug-2017</del>
+                        <br><del>18-Aug-2017</del>
+                        <br><b>28-Aug-2017</b>
+                      <p>
                     </div>
                   </div>
 
