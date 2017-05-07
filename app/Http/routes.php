@@ -27,11 +27,11 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/admin', ['as' => 'admin', 'uses' => 'AdminsController@index']);
   Route::get('/admin/conferences', ['as' => 'admin.conf.all', 'uses' => 'AdminsController@showAllConferences']);
   Route::post('/admin/conferences', ['as' => 'admin.conf.post', 'uses' => 'AdminsController@storeNewConference']);
-  Route::post('/admin/conferences/{confUrl}', ['as' => 'admin.conf.update', 'uses' => 'AdminsController@updateConference']);
 
   Route::get('/admin/conferences/new', ['as' => 'admin.conf.new', 'uses' => 'AdminsController@showNewConferenceForm']);
   Route::get('/admin/conferences/{confUrl}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
-  Route::get('/admin/conferences/{confUrl}/edit', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
+  Route::get('/admin/conferences/{confUrl}/edit', ['as' => 'admin.conf.edit', 'uses' => 'AdminsController@editConference']);
+  Route::post('/admin/conferences/{confUrl}', ['as' => 'admin.conf.update', 'uses' => 'AdminsController@updateConference']);
 
   //Admin Users
   Route::get('/admin/users/new', ['as' => 'admin.user.new', 'uses' => 'AdminsUserController@showNewUserForm']);

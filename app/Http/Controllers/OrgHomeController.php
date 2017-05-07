@@ -191,6 +191,47 @@ class OrgHomeController extends Controller
     return redirect()->back();
   }
 
+  public function updateConference(Conference $confUrl, Request $request)
+  {
+    $this->updateConferenceService();
+  }
+
+  public function updateConferenceService(Conference $confUrl, Request $request, $routeback)
+  {
+    if ($this->isAllowed($confUrl)) {
+        $rules = [
+          'name' => 'required',
+          'description' => 'required',
+        ];
+
+        $conferenceData = $request->all();
+
+        if ($confUrl->url !== $conferenceData['url'] && $conferenceData['url'] !== '') {
+          $rules['url'] = 'required|alpha_num|unique:conferences';
+        } else {
+          unset($conferenceData['url']);
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+        //
+        if ($validator->fails()) {
+          return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $update = $confUrl->update($conferenceData);
+        // //
+
+        if ($update) {
+          flash()->success('Success update Conference');
+          return true;
+        }
+
+        // return redirect()->action(
+        //   $routeback, ['confUrl' => $confUrl->url]
+        // );
+    }
+  }
+
 
 
   public function attachRoles(Conference $confUrl, User $user, $mode)
@@ -248,6 +289,7 @@ class OrgHomeController extends Controller
       abort(404);
     }
   }
+
 
   protected function isAllowed(Conference $confUrl) {
     return ($this->user->isAdmin() || $this->user->isOrganizing($confUrl));

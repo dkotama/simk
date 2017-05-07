@@ -8,6 +8,11 @@ use App\Http\Requests\StoreConferenceRequest;
 use App\User;
 use App\Conference;
 use App\ReviewQuestion;
+use App\ConferenceService;
+use App\Http\Controllers\OrgHomeController;
+use Validator;
+use Carbon\Carbon;
+
 // use App\Http\Requests;
 
 class AdminsController extends Controller
@@ -28,9 +33,27 @@ class AdminsController extends Controller
 
   public function showNewConferenceForm()
   {
-    return view('admins.conferences.new');
+    $dateNow = Carbon::now();
+    $dateNow->next();
+    $dateNow = $dateNow->toDateString();
+
+    $this->viewData['edited']['start_conference'] = $dateNow;
+    $this->viewData['edited']['end_conference']   = $dateNow;
+    $this->viewData['edited']['submission_deadline'] = $dateNow;
+    $this->viewData['edited']['acceptance'] = $dateNow;
+    $this->viewData['edited']['camera_ready'] = $dateNow;
+    $this->viewData['edited']['registration'] = $dateNow;
+
+    return view('admins.conferences.new', $this->viewData);
   }
 
+  public function editConference(Conference $confUrl)
+  {
+    $this->viewData['conf'] = $confUrl;
+    $this->viewData['edited'] = $confUrl->toArray();
+
+    return view('admins.conferences.edit', $this->viewData);
+  }
   public function showSingleConference(Conference $confUrl)
   {
     $visibleDates = $confUrl->getVisibleDates();
@@ -60,20 +83,28 @@ class AdminsController extends Controller
 
   public function storeNewConference(StoreConferenceRequest $request)
   {
-    $conf = Conference::create($request->all());
-    ReviewQuestion::create(['conference_id' => $conf->id]);
+    dd($dateNow);
+    dd($request->all());
+    // $conf = Conference::create($request->all());
 
-    flash()->success('Create New Conference Success');
+    // ReviewQuestion::create(['conference_id' => $conf->id]);
 
-    return redirect()->route('admin.conf.show', $conf->url);
+    // flash()->success('Create New Conference Success');
+
+    // return redirect()->route('admin.conf.show', $conf->url);
   }
 
-  public function updateConference(StoreConferenceRequest $request, Conference $confUrl)
+  public function updateConference(Conference $confUrl, Request $request)
   {
-    $confUrl->update($request->all());
-    flash()->success('Conferece Succesfully Updated');
+    $service = new ConferenceService();
+    $update  = $service->update($confUrl, $request);
 
-    return redirect()->back();
+    if ($update) {
+      flash()->success('Update Conference Success');
+      return redirect()->route('admin.conf.show', $confUrl->url);
+    } else {
+      return redirect()->back()->withErrors($update);
+    }
   }
 
   protected function checkAllowed() {

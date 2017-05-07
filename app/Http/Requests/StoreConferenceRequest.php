@@ -26,7 +26,7 @@ class StoreConferenceRequest extends Request
     {
         return [
             'name' => 'required',
-            'url' => 'required|alpha_num',
+            'url' => 'required|alpha_num|unique:conferences',
             'submission_deadline' => 'required',
             'acceptance' => 'required',
             'camera_ready' => 'required',

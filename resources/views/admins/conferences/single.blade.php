@@ -5,7 +5,7 @@
         <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading">{{ $conf->name }}
-                  <a href="#" class="btn btn-xs btn-primary">Edit Conference</a>
+                  <a href="{{ route('admin.conf.edit', $conf->url) }}" class="btn btn-xs btn-primary">Edit Conference</a>
                 </div>
                 <div class="panel-body">
                   <div class="row">
