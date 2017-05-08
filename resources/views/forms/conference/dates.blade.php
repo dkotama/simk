@@ -60,7 +60,7 @@
                             <label class="col-md-4 control-label">Camera Ready</label>
 
                             <div class="col-md-6">
-                                <input type="date" class="form-control" name="camera_ready" {{ isset($edited['camera_ready']) ? $edited['camera_ready'] : old('camera_ready') }}>
+                                <input type="date" class="form-control" name="camera_ready" value="{{ isset($edited['camera_ready']) ? $edited['camera_ready'] : old('camera_ready') }}">
 
                                 @if ($errors->has('camera_ready'))
                                     <span class="help-block">
@@ -74,7 +74,7 @@
                             <label class="col-md-4 control-label">Registration</label>
 
                             <div class="col-md-6">
-                                <input type="date" class="form-control" name="registration">
+                                <input type="date" class="form-control" name="registration" value="{{ isset($edited['registration']) ? $edited['registration'] : old('registration') }}">
 
                                 @if ($errors->has('registration'))
                                     <span class="help-block">

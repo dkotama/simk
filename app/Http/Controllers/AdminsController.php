@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Requests\StoreConferenceRequest;
 use App\User;
 use App\Conference;
+use App\ConferenceDate;
 use App\ReviewQuestion;
 use App\ConferenceService;
 use App\Http\Controllers\OrgHomeController;
@@ -34,9 +35,10 @@ class AdminsController extends Controller
   public function showNewConferenceForm()
   {
     $dateNow = Carbon::now();
-    $dateNow->next();
+    $dateNow->addMonth();
     $dateNow = $dateNow->toDateString();
 
+    // autofill avoid empty database
     $this->viewData['edited']['start_conference'] = $dateNow;
     $this->viewData['edited']['end_conference']   = $dateNow;
     $this->viewData['edited']['submission_deadline'] = $dateNow;
@@ -83,15 +85,15 @@ class AdminsController extends Controller
 
   public function storeNewConference(StoreConferenceRequest $request)
   {
-    dd($dateNow);
-    dd($request->all());
-    // $conf = Conference::create($request->all());
+    $conf = Conference::create($request->all());
+    $confDate = ConferenceDate::create($request->all());
 
-    // ReviewQuestion::create(['conference_id' => $conf->id]);
+    $conf->dates()->save($confDate);
 
-    // flash()->success('Create New Conference Success');
 
-    // return redirect()->route('admin.conf.show', $conf->url);
+    flash()->success('Create New Conference Success');
+
+    return redirect()->route('admin.conf.show', $conf->url);
   }
 
   public function updateConference(Conference $confUrl, Request $request)
@@ -105,6 +107,16 @@ class AdminsController extends Controller
     } else {
       return redirect()->back()->withErrors($update);
     }
+  }
+
+  public function extendConference(Conference $confUrl, Request $request)
+  {
+
+  }
+
+  public function updateVisibility(Conference $confUrl, Request $request)
+  {
+
   }
 
   protected function checkAllowed() {

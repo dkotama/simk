@@ -35,4 +35,13 @@ class ConferenceService
         }
     }
 
+    public function extends(Conference $confUrl, $request){
+      dd($request->all());
+    }
+
+    public function updateVisibility(Conference $confUrl, $request){
+      dd($request->all());
+    }
+
+
 }

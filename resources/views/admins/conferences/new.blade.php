@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Create New Conference</div>
                 <div class="panel-body">
-                  <form class="form-horizontal" role="form" method="POST" action="">
+                  <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.conf.post') }}">
                     {!! csrf_field() !!}
                     @include('forms.conference.name_url_desc')
                     @include('forms.conference.dates')
