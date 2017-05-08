@@ -109,9 +109,20 @@ class AdminsController extends Controller
     }
   }
 
-  public function extendConference(Conference $confUrl, Request $request)
+  public function showExtendConference(Conference $confUrl)
   {
 
+      $this->viewData['conf']  = $confUrl;
+      return view('admins.conferences.extends', $this->viewData);
+  }
+
+  public function postExtends(Conference $confUrl, Request $request)
+  {
+    $visible = $request->visible;
+    
+    foreach ($visible as $key => $value) {
+
+    }
   }
 
   public function updateVisibility(Conference $confUrl, Request $request)

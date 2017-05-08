@@ -32,7 +32,8 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/admin/conferences/{confUrl}', ['as' => 'admin.conf.show', 'uses' => 'AdminsController@showSingleConference']);
   Route::get('/admin/conferences/{confUrl}/edit', ['as' => 'admin.conf.edit', 'uses' => 'AdminsController@editConference']);
   Route::post('/admin/conferences/{confUrl}', ['as' => 'admin.conf.update', 'uses' => 'AdminsController@updateConference']);
-  Route::post('/admin/conferences/{confUrl}/extends', ['as' => 'admin.conf.update', 'uses' => 'AdminsController@updateConference']);
+  Route::get('/admin/conferences/{confUrl}/extends', ['as' => 'admin.conf.extends', 'uses' => 'AdminsController@showExtendConference']);
+  Route::post('/admin/conferences/{confUrl}/extends', ['as' => 'admin.conf.postExtends', 'uses' => 'AdminsController@postExtends']);
 
   //Admin Users
   Route::get('/admin/users/new', ['as' => 'admin.user.new', 'uses' => 'AdminsUserController@showNewUserForm']);
