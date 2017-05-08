@@ -52,7 +52,7 @@ class Conference extends Model
     return $this->hasMany('App\ConferenceDate');
   }
 
-  public function getVisibleDates() {
+  public function getVisibleArray() {
     $dates = $this->dates()->where('is_visible', 1)->get();
     $temp  = [];
     $boldNum = count($dates) - 1;
@@ -99,10 +99,11 @@ class Conference extends Model
     return collect($temp);
   }
 
-  public function getStartDate() {
-    // if ($mode === 'print') {
-    //   $start = $this->dates()->max('start_conference');
-    //   dd($start);
-    // }
+  public function getVisibleCollection() {
+    return $this->dates()->where('is_visible', 1)->get();
+  }
+
+  public function getLastDate() {
+    return $this->dates()->where('is_visible', 1)->last();
   }
 }

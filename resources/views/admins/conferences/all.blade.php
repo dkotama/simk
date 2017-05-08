@@ -23,8 +23,9 @@
                   <tr>
                     <!-- <th></th> -->
                     <!-- <th></th> -->
-                    <th>Start</th>
-                    <th>End</th>
+                    <th>Deadline</th>
+                    <th>Acceptance</th>
+                    <th>Camera Ready</th>
                     <th>Start</th>
                     <th>End</th>
                   </tr>
@@ -38,6 +39,7 @@
                       <td class="title">
                         <a href="{{ route('admin.conf.show', $conf->url) }}"  data-toggle="tooltip" data-placement="top" title="{{$conf->description}}">
                           {{$conf->name}}
+                          <?php $dates = $conf->getLastDate() ?>
                         </a>
                       </td>
                       <td class="center">

@@ -58,7 +58,7 @@ class AdminsController extends Controller
   }
   public function showSingleConference(Conference $confUrl)
   {
-    $visibleDates = $confUrl->getVisibleDates();
+    $visibleDates = $confUrl->getVisibleArray();
     // dd(count($visibleDates['submission_deadline']));
     $this->viewData['conf']  = $confUrl;
     // dd($confUrl->visibleDates);
@@ -119,7 +119,7 @@ class AdminsController extends Controller
   public function postExtends(Conference $confUrl, Request $request)
   {
     $visible = $request->visible;
-    
+
     foreach ($visible as $key => $value) {
 
     }
