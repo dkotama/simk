@@ -34,6 +34,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::post('/admin/conferences/{confUrl}', ['as' => 'admin.conf.update', 'uses' => 'AdminsController@updateConference']);
   Route::get('/admin/conferences/{confUrl}/extends', ['as' => 'admin.conf.extends', 'uses' => 'AdminsController@showExtendConference']);
   Route::post('/admin/conferences/{confUrl}/extends', ['as' => 'admin.conf.postExtends', 'uses' => 'AdminsController@postExtends']);
+  Route::post('/admin/conferences/{confUrl}/updatevisibility', ['as' => 'admin.conf.updateVisibility', 'uses' => 'AdminsController@updateVisibility']);
 
   //Admin Users
   Route::get('/admin/users/new', ['as' => 'admin.user.new', 'uses' => 'AdminsUserController@showNewUserForm']);
@@ -76,8 +77,17 @@ Route::group(['middleware' => ['web']], function () {
   ==================*/
   Route::get('/{confUrl}/organizer/', ['as' => 'organizer.manage', 'uses' => 'OrgHomeController@dashboard']);
 
+  //question
   Route::get('/{confUrl}/org/manage/questions', ['as' => 'organizer.manage.questions', 'uses' => 'OrgHomeController@managesQuestions']);
   Route::post('/{confUrl}/org/updateq/{questionId}', ['as' => 'organizer.manage.updateQuestions', 'uses' => 'OrgHomeController@updateQuestions']);
+
+  //conference
+  Route::get('/{confUrl}/org/show', ['as' => 'organizer.manage.show', 'uses' => 'OrgHomeController@showDescription']);
+  Route::get('/{confUrl}/org/edit', ['as' => 'organizer.manage.edit', 'uses' => 'OrgHomeController@editConference']);
+  Route::post('/{confUrl}/org/update', ['as' => 'organizer.manage.update', 'uses' => 'OrgHomeController@updateConference']);
+  Route::get('/{confUrl}/org/extends', ['as' => 'organizer.manage.extends', 'uses' => 'OrgHomeController@showExtendConference']);
+  Route::post('/{confUrl}/org/extends', ['as' => 'organizer.manage.postExtends', 'uses' => 'OrgHomeController@postExtends']);
+  Route::post('/{confUrl}/org/updatevisibility', ['as' => 'organizer.manage.updateVisibility', 'uses' => 'OrgHomeController@updateVisibility']);
 
   //Enroll User
   Route::get('/{confUrl}/org/users/{mode?}', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);

@@ -59,18 +59,11 @@ class AdminsController extends Controller
   public function showSingleConference(Conference $confUrl)
   {
     $visibleDates = $confUrl->getVisibleArray();
-    // dd(count($visibleDates['submission_deadline']));
+
     $this->viewData['conf']  = $confUrl;
-    // dd($confUrl->visibleDates);
     $this->viewData['dates'] = $visibleDates;
     $this->viewData['boldNum'] = count($visibleDates['submission_deadline']);
     $this->viewData['startDate'] = $visibleDates->get('start_conference');
-    // dd($visibleDates->get('start_conference'));
-    // $this->viewData['conf'] = $this->getConf($confUrl);
-    // $this->viewData['conf'] = $confUrl;
-    // dd($confUrl->name);
-
-    // dd($this->viewData['conf']->start_submit->format('Y-m-d'));
 
     return view('admins.conferences.single', $this->viewData);
   }
@@ -111,23 +104,48 @@ class AdminsController extends Controller
 
   public function showExtendConference(Conference $confUrl)
   {
-
       $this->viewData['conf']  = $confUrl;
+      $this->viewData['dates'] = $confUrl->dates;
+
+      $dateNow = Carbon::now();
+      $dateNow->addMonth();
+      $dateNow = $dateNow->toDateString();
+
+      // autofill avoid empty database
+      $this->viewData['edited']['start_conference'] = $dateNow;
+      $this->viewData['edited']['end_conference']   = $dateNow;
+      $this->viewData['edited']['submission_deadline'] = $dateNow;
+      $this->viewData['edited']['acceptance'] = $dateNow;
+      $this->viewData['edited']['camera_ready'] = $dateNow;
+      $this->viewData['edited']['registration'] = $dateNow;
+
       return view('admins.conferences.extends', $this->viewData);
   }
 
   public function postExtends(Conference $confUrl, Request $request)
   {
-    $visible = $request->visible;
+    $service = new ConferenceService();
+    $result  = $service->postExtends($confUrl, $request);
 
-    foreach ($visible as $key => $value) {
-
+    if ($result) {
+      flash()->success('Add New Date Success!');
+      return redirect()->route('admin.conf.extends', $confUrl->url);
+    } else {
+      return redirect()->back()->withErrors($result);
     }
   }
 
   public function updateVisibility(Conference $confUrl, Request $request)
   {
+    $service = new ConferenceService();
+    $result  = $service->updateVisibility($confUrl, $request);
 
+    if ($result === true) {
+      flash()->success('Update Visibility Success');
+      return redirect()->route('admin.conf.extends', $confUrl->url);
+    } else {
+      return redirect()->back()->withErrors($result);
+    }
   }
 
   protected function checkAllowed() {

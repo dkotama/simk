@@ -104,6 +104,8 @@ class Conference extends Model
   }
 
   public function getLastDate() {
-    return $this->dates()->where('is_visible', 1)->last();
+    $temp = $this->dates()->where('is_visible', 1)->get();
+
+    return $temp->last();
   }
 }

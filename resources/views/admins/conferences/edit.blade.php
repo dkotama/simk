@@ -11,7 +11,7 @@
                     {!! csrf_field() !!}
                     @include('forms.conference.name_url_desc')
 
-                    <div class="form-group">
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-success">
                                 <i class="fa fa-btn fa-user"></i>Update

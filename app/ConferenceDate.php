@@ -14,7 +14,8 @@ class ConferenceDate extends Model
       'camera_ready',
       'registration',
       'start_conference',
-      'end_conference'
+      'end_conference',
+      'is_visible'
     ];
 
     public function conference() {

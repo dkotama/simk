@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Conference;
+use App\ConferenceService;
 use App\User;
 use App\SuperuserRegisterService;
 use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
 use App\ReviewQuestion;
 use Validator;
+use Carbon\Carbon;
 
 class OrgHomeController extends Controller
 {
@@ -171,16 +173,99 @@ class OrgHomeController extends Controller
   }
 
   // Manage Conferences
+  public function showDescription(Conference $confUrl)
+  {
+    $this->setConf($confUrl);
+
+    $visibleDates = $confUrl->getVisibleArray();
+
+    $this->viewData['dates'] = $visibleDates;
+    $this->viewData['boldNum'] = count($visibleDates['submission_deadline']);
+    $this->viewData['startDate'] = $visibleDates->get('start_conference');
+
+    return view('organizers.conferences.single', $this->viewData);
+  }
 
   public function managesQuestions(Conference $confUrl)
   {
+    $this->setConf($confUrl);
     $questions  = ReviewQuestion::findOrFail($confUrl->id);
 
     $this->viewData['questions'] = $questions;
-    $this->viewData['conf']      = $confUrl;
+    $this->viewData['manageSelected'] = 'question';
 
     return view('organizers.conferences.questions', $this->viewData);
   }
+
+  public function editConference(Conference $confUrl)
+  {
+    $this->setConf($confUrl);
+
+    $this->viewData['conf'] = $confUrl;
+    $this->viewData['edited'] = $confUrl->toArray();
+
+    return view('organizers.conferences.edit', $this->viewData);
+  }
+
+  public function updateConference(Conference $confUrl, Request $request)
+  {
+    $this->setConf($confUrl);
+    $service = new ConferenceService();
+    $update  = $service->update($confUrl, $request);
+
+    if ($update) {
+      flash()->success('Update Conference Success');
+      return redirect()->route('organizer.manage.show', $confUrl->url);
+    } else {
+      return redirect()->back()->withErrors($update);
+    }
+  }
+  public function showExtendConference(Conference $confUrl)
+  {
+      $this->viewData['conf']  = $confUrl;
+      $this->viewData['dates'] = $confUrl->dates;
+
+      $dateNow = Carbon::now();
+      $dateNow->addMonth();
+      $dateNow = $dateNow->toDateString();
+
+      // autofill avoid empty database
+      $this->viewData['edited']['start_conference'] = $dateNow;
+      $this->viewData['edited']['end_conference']   = $dateNow;
+      $this->viewData['edited']['submission_deadline'] = $dateNow;
+      $this->viewData['edited']['acceptance'] = $dateNow;
+      $this->viewData['edited']['camera_ready'] = $dateNow;
+      $this->viewData['edited']['registration'] = $dateNow;
+
+      return view('organizers.conferences.extends', $this->viewData);
+  }
+
+  public function postExtends(Conference $confUrl, Request $request)
+  {
+    $service = new ConferenceService();
+    $result  = $service->postExtends($confUrl, $request);
+
+    if ($result) {
+      flash()->success('Add New Date Success!');
+      return redirect()->route('organizer.manage.extends', $confUrl->url);
+    } else {
+      return redirect()->back()->withErrors($result);
+    }
+  }
+
+  public function updateVisibility(Conference $confUrl, Request $request)
+  {
+    $service = new ConferenceService();
+    $result  = $service->updateVisibility($confUrl, $request);
+
+    if ($result === true) {
+      flash()->success('Update Visibility Success');
+      return redirect()->route('organizer.manage.extends', $confUrl->url);
+    } else {
+      return redirect()->back()->withErrors($result);
+    }
+  }
+
 
   public function updateQuestions(Conference $confUrl, Request $request)
   {
@@ -190,48 +275,6 @@ class OrgHomeController extends Controller
 
     return redirect()->back();
   }
-
-  public function updateConference(Conference $confUrl, Request $request)
-  {
-    $this->updateConferenceService();
-  }
-
-  public function updateConferenceService(Conference $confUrl, Request $request, $routeback)
-  {
-    if ($this->isAllowed($confUrl)) {
-        $rules = [
-          'name' => 'required',
-          'description' => 'required',
-        ];
-
-        $conferenceData = $request->all();
-
-        if ($confUrl->url !== $conferenceData['url'] && $conferenceData['url'] !== '') {
-          $rules['url'] = 'required|alpha_num|unique:conferences';
-        } else {
-          unset($conferenceData['url']);
-        }
-
-        $validator = Validator::make($request->all(), $rules);
-        //
-        if ($validator->fails()) {
-          return redirect()->back()->withErrors($validator->errors());
-        }
-
-        $update = $confUrl->update($conferenceData);
-        // //
-
-        if ($update) {
-          flash()->success('Success update Conference');
-          return true;
-        }
-
-        // return redirect()->action(
-        //   $routeback, ['confUrl' => $confUrl->url]
-        // );
-    }
-  }
-
 
 
   public function attachRoles(Conference $confUrl, User $user, $mode)

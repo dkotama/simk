@@ -17,7 +17,7 @@
                     <th rowspan="2">#</th>
                     <th rowspan="2">Name</th>
                     <th rowspan="2">URL</th>
-                    <th colspan="2">Submission</th>
+                    <th colspan="3">Submission</th>
                     <th colspan="2">Event</th>
                   </tr>
                   <tr>
@@ -39,23 +39,29 @@
                       <td class="title">
                         <a href="{{ route('admin.conf.show', $conf->url) }}"  data-toggle="tooltip" data-placement="top" title="{{$conf->description}}">
                           {{$conf->name}}
-                          <?php $dates = $conf->getLastDate() ?>
+                          <?php
+                             $carbon = new Carbon\Carbon;
+                             $dates = $conf->getLastDate()
+                          ?>
                         </a>
                       </td>
                       <td class="center">
                         <a href="{{ route('admin.conf.show', $conf->url) }}">{{$conf->url}}</a>
                       </td>
                       <td class="date">
-                        {{ null !== $conf->start_submit ? date('d F Y', strtotime($conf->start_submit)) : null }}
+                        {{ $carbon::parse($dates->submission_deadline)->toFormattedDateString() }}
                       </td>
                       <td class="date">
-                        {{ null !== $conf->end_submit ? date('d F Y', strtotime($conf->end_submit)) : null }}
+                        {{ $carbon::parse($dates->acceptance)->toFormattedDateString() }}
                       </td>
                       <td class="date">
-                        {{ null !== $conf->start_date ? date('d F Y', strtotime($conf->start_date)) : null }}
+                        {{ $carbon::parse($dates->camera_ready)->toFormattedDateString() }}
                       </td>
                       <td class="date">
-                        {{ null !== $conf->start_submit ? date('d F Y', strtotime($conf->start_submit)) : null }}
+                        {{ $carbon::parse($dates->start_conference)->toFormattedDateString() }}
+                      </td>
+                      <td class="date">
+                        {{ $carbon::parse($dates->end_conference)->toFormattedDateString() }}
                       </td>
                     </tr>
                   @endforeach

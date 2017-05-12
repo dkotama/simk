@@ -1,4 +1,4 @@
-@extends('admins.dashboard')
+@extends('organizers.dashboard')
 
 @section('content')
   <div class="row">
@@ -6,7 +6,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Extends Date</div>
                 <div class="panel-body">
-                  <form action="{{ route('admin.conf.updateVisibility', $conf->url)}}" method="post">
+                  <form action="{{ route('organizer.manage.updateVisibility', $conf->url)}}" method="post">
                     {{ csrf_field() }}
                     @include('forms.conference.extends_table');
                     <div class="form-group{{ $errors->has('minimal') ? ' has-error' : '' }} text-center">
@@ -22,9 +22,9 @@
                   <hr>
 
 
-                  <form class="form-horizontal" action="{{ route('admin.conf.postExtends', $conf->url)}}" method="post">
+                  <form class="form-horizontal" action="{{ route('organizer.manage.postExtends', $conf->url)}}" method="post">
                     {{ csrf_field() }}
-                    @include('forms.conference.dates');
+                    @include('forms.conference.dates')
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <button type="submit" class="btn btn-success">

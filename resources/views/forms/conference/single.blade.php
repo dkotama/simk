@@ -97,8 +97,4 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col-md-12 text-center">
-                    <a href="{{ route('admin.conf.extends', $conf->url) }}" class="btn btn-primary">Extends Deadlines</a>
-                  </div>
-                </div> 
+              
