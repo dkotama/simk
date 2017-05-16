@@ -17,8 +17,8 @@
                     <th>#</th>
                     <th>ID</th>
                     <th>Title</th>
-                    <th>Author</th>
                     <th>Reviewer</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -41,11 +41,11 @@
                         @endif
                       </td>
                       <td>
-                        @foreach ($subs->authors as $author)
-                          {{ $author->name }}
+                        @foreach ($subs->reviewers as $revs)
+                          {{ $revs->last_name . " " . $revs->first_name}} ,
                         @endforeach
                       </td>
-                      <td class="center"> Review Process</td>
+                      <td class="center">{{ $subs->getStatus() }}</td>
                       <td>
 
                         @if ($subs->isDeleted())

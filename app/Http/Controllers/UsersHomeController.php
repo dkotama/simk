@@ -43,6 +43,9 @@ class UsersHomeController extends Controller
 
   public function addPaper(Conference $confUrl)
   {
+    $this->isAllowedAuthor($confUrl);
+    $this->isCanUploadPaper($confUrl);
+
     $this->viewData['conf'] = $confUrl;
 
     return view('users.home.add', $this->viewData);
@@ -61,7 +64,6 @@ class UsersHomeController extends Controller
     // $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
     $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
     $this->viewData['submissions'] = $submissions;
-
 
     return view('users.home.manage', $this->viewData);
   }
@@ -82,16 +84,17 @@ class UsersHomeController extends Controller
 
   public function submitPaper(Request $request, Conference $confUrl) {
     $this->isAllowedAuthor($confUrl);
+    $this->isCanUploadPaper($confUrl);
 
-    $service = new SubmissionService();
-    $status = $service->getPaperAliases();
-    $status = key($status);
+    // $service = new SubmissionService();
+    // $status = $service->getPaperAliases();
+    // $status = key($status);
 
     $validator = Validator::make($request->all(), [
       'title' => 'required',
       'abstract' => 'required',
       'keywords' => 'required',
-      'paper' => 'required|mimes:pdf|max:5000'
+      'paper' => 'required|mimes:doc,docx|max:5000'
     ]);
 
     if ($validator->fails()) {
@@ -111,7 +114,7 @@ class UsersHomeController extends Controller
     $submission->versions()->save($submissionPaper);
 
     $submission->update(['active_version' => $submissionPaper->version]);
-    $submissionPaper->status = $status;
+    $submissionPaper->status = 'WAIT_BLIND';
     $submissionPaper->save();
 
     $paper = $request->file('paper');
@@ -133,6 +136,7 @@ class UsersHomeController extends Controller
     $this->isAllowedAuthor($confUrl);
 
     $submission = Submission::findOrFail($paperId);
+    // dd($submission);
 
     $this->viewData['conf']        = $confUrl;
     $this->viewData['submission']  = $submission;
@@ -142,9 +146,32 @@ class UsersHomeController extends Controller
     return view('users.home.single', $this->viewData);
   }
 
+  public function editPaper(Conference $confUrl, $paperId)
+  {
+    $this->viewData['conf']   = $confUrl;
+    $this->viewData['edited'] = Submission::find($paperId);
+
+
+    return view('users.home.editPaper', $this->viewData);
+  }
+
+  public function updatePaper(Conference $confUrl, $paperId, Request $request)
+  {
+    $service = new SubmissionService();
+    $update  = $service->update($paperId, $request);
+
+    if($update === true) {
+      flash()->success('You Submission Updated!');
+      return redirect()->route('user.home.single.show', ['confUrl' => $confUrl->url, 'paperId' => $paperId]);
+    } else {
+      return redirect()->route('user.home.single.edit', ['confUrl' => $confUrl->url, 'paperId' => $paperId])->withErrors($update);
+    }
+  }
+
   public function addAuthor(Conference $confUrl, Request $request, $paperId)
   {
     $this->isAllowedAuthor($confUrl);
+    $this->isCanUploadPaper($confUrl);
 
     $validator = Validator::make($request->all(), [
       'name' => 'required',
@@ -227,8 +254,9 @@ class UsersHomeController extends Controller
 
   public function removeAuthor(Conference $confUrl, $paperId, $authorId)
   {
-
     $this->isAllowedAuthor($confUrl);
+    $this->isCanUploadPaper($confUrl);
+
     $submission = Submission::findOrFail($paperId);
     $author = SubmissionAuthor::findOrFail($authorId);
     //
@@ -243,6 +271,8 @@ class UsersHomeController extends Controller
   public function editAuthor(Conference $confUrl, $paperId, $authorId)
   {
     $this->isAllowedAuthor($confUrl);
+    $this->isCanUploadPaper($confUrl);
+
     $submission = Submission::findOrFail($paperId);
 
     $this->viewData['conf'] = $confUrl;
@@ -259,6 +289,7 @@ class UsersHomeController extends Controller
   public function updateAuthor(Request $request, Conference $confUrl, $paperId, $authorId)
   {
     $this->isAllowedAuthor($confUrl);
+    $this->isCanUploadPaper($confUrl);
 
     $validator = Validator::make($request->all(), [
       'name' => 'required',
@@ -276,26 +307,8 @@ class UsersHomeController extends Controller
     $author = SubmissionAuthor::findOrFail($authorId);
     $author->update($request->all());
 
-    // $submission = Submission::findOrFail($paperId);
-    //
-    // if ($submission->authors->count() === 0) {
-    //   $author->is_primary = 1;
-    // }
-    //
-    // $submission->authors()->save($author);
-    //
+
     return redirect()->route('user.home.single.show', ['confUrl' => $confUrl->url, 'paperId' => $paperId]);
-    // $submission = Submission::findOrFail($paperId);
-    //
-    // $this->viewData['conf'] = $confUrl;
-    // $this->viewData['submission'] = $submission;
-    // $this->viewData['authors'] = $submission->authors->sortByDesc('is_primary');
-    //
-    // $this->viewData['author'] = SubmissionAuthor::findOrFail($authorId);
-    // $this->viewData['edit']   = true;
-    // //
-    //
-    // return view('users.home.single', $this->viewData);
   }
 
   public function showProfile($userId) {
@@ -376,13 +389,4 @@ class UsersHomeController extends Controller
     return redirect()->route('user.profile', ['userId' => $editedUser->id]);
   }
 
-  protected function checkAllowed() {
-    if ($this->user === null || !$this->user->isAdmin()) {
-      abort(404);
-    }
-  }
-
-  protected function isAuthorSubmission($paperId) {
-
-  }
 }

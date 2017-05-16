@@ -11,7 +11,9 @@ class SubmissionPaper extends Model
   protected $fillable =[
     'submission_id',
     'path',
-    'version'
+    'version',
+    'blind_version',
+    'camera_ready',
   ];
 
   public function submission()

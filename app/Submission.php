@@ -80,6 +80,11 @@ class Submission extends Model
     }
   }
 
+  public function getLastPaper()
+  {
+    return $this->papers->last();
+  }
+
   public function isDeleted()
   {
     if ($this->deleted_at->year < 0) {
@@ -104,6 +109,63 @@ class Submission extends Model
     $lastVersion = $this->versions->last();
 
     return $lastVersion->status;
+  }
+
+  public function getStatusFromAuthor()
+  {
+    $lastVersion = $this->versions->last();
+
+    $service  = new SubmissionService();
+
+    if ($lastVersion->status === 'WAIT_BLIND') {
+      return 'Checking Process By Organizer';
+    } else if ($lastVersion->status === 'WAIT_REV') {
+      return 'Review Process';
+    } else {
+      return $service->getPaperAlias($lastVersion->status);
+    }
+  }
+
+  public function getStatus()
+  {
+    $lastVersion = $this->versions->last();
+
+    $service  = new SubmissionService();
+
+    return $service->getPaperAlias($lastVersion->status);
+  }
+
+  public function isAuthorCameraReady()
+  {
+    $lastVersion = $this->versions->last();
+
+    if ($lastVersion->status === 'ON_REV' || $lastVersion->status === 'WAIT_REV') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  public function isCanEdit()
+  {
+    $lastVersion = $this->versions->last();
+
+    if ($lastVersion->status === 'WAIT_BLIND') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function isCanAssignReviewer()
+  {
+    $lastVersion = $this->versions->last();
+
+    if ($lastVersion->status === 'WAIT_BLIND') {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   public function availableForReview()

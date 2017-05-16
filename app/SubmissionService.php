@@ -1,6 +1,8 @@
 <?php
 namespace App;
 
+use Validator;
+
 class SubmissionService
 {
   protected $paperAliases;
@@ -9,18 +11,51 @@ class SubmissionService
   protected $resolveAliases;
   protected $aliasNotAllowed;
 
-  public function __construct()
-  {
-    $this->aliasNotAllowed = ['ON_REV'];
-  }
+  protected $uploadFolder = 'uploads';
 
-  public function isFinal() {
+  public function update($paperId, $request) {
+    $rules = [
+      'title' => 'required',
+      'abstract' => 'required',
+      'keywords' => 'required'
+    ];
 
+    $paperData = $request->all();
+    $withPaper = false;
+
+    if (isset($paperData['paper'])) {
+      $rules['paper'] = 'required|mimes:doc,docx|max:5000';
+      $withPaper      = true;
+    } else {
+      unset($paperData['url']);
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+      return $validator->errors();
+    }
+
+    $submission = Submission::find($paperId);
+    $update     = $submission->update($request->all());
+    //
+    $submissionPaper = $submission->getLastPaper();
+    //
+    $paper = $request->file('paper');
+    //
+    if ($withPaper && $paper->isValid()) {
+        $extension = $paper->getClientOriginalExtension(); // getting image extension
+        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renaming image
+        $paper->move($this->uploadFolder, $fileName); // uploading file to given path
+        $submissionPaper->update(['path' => $fileName]);
+    }
+
+    return true;
   }
 
   public function getPaperAlias($alias) {
     $this->makePaperAliases();
-
+    
     foreach ($this->paperAliases as $key => $value) {
       if ($alias === $key) {
         return $value;
@@ -90,24 +125,21 @@ class SubmissionService
   protected function makePaperAliases() {
     $this->paperAliases = [
       'ON_REV' => 'On Review Process',
+      'WAIT_BLIND' => 'Waiting Blind Version',
+      'WAIT_REV' => 'Waiting Revision',
       'REJECT' => 'Rejected',
-      'REV_MIN' => 'Minor Revision',
-      'REV_MAJ' => 'Major Revision',
       'ACC_REV_MIN' => 'Accepted - Minor Revision',
       'ACC_REV_MAJ' => 'Accepted - Major Revision',
-      'ACC_WAIT_PAY' => 'Accepted - Awaiting Payment',
-      'ACC' => 'Accepted',
+      'WAIT_PAY' => 'Accepted - Awaiting Payment'
     ];
   }
 
   protected function makeResolveAliases() {
     $this->resolveAliases = [
       'REJECT' => 'Reject',
-      'REV_MIN' => 'Minor Revision',
-      'REV_MAJ' => 'Major Revision',
       'ACC_REV_MIN' => 'Accept - Minor Revision',
       'ACC_REV_MAJ' => 'Accept - Major Revision',
-      'ACC_WAIT_PAY' => 'Accept Paper'
+      'WAIT_PAY' => 'Accept Paper'
     ];
   }
 

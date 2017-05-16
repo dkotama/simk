@@ -6,17 +6,21 @@
         <div class="panel panel-default col-md-offset-2">
             <div class="panel-heading">
                 <div class="panel-title">
-                    <h4>Upload Paper</h4>
+                    <h4>Edit Paper</h4>
                 </div>
             </div>
             <div class="panel-body">
-                   <form class="form form-vertical" role="form" method="POST" action="{{ route('test.addPaper.submit', $conf->url) }}" enctype="multipart/form-data">
+                   <form class="form form-vertical" role="form" method="POST" action="{{ route('user.home.single.update', ['confUrl' => $conf->url, 'paperId' => $edited->id])}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                         <label>Title</label>
 
                         <div class="controls">
-                            <input type="text" class="form-control" name="title" value="{{ old('title') }}">
+                            @if (old('title') !== NULL)
+                              <input type="text" class="form-control" name="title" value="{{ old('title') }}">
+                            @else
+                              <input type="text" class="form-control" name="title" value="{{ $edited->title }}">
+                            @endif
 
                             @if ($errors->has('title'))
                                 <span class="help-block">
@@ -29,7 +33,11 @@
                         <div class="form-group{{ $errors->has('abstract') ? ' has-error' : '' }}">
                             <label>Abstract</label>
                             <div class="controls">
-                                <textarea class="form-control" name="abstract">{{ old('abstract') }}</textarea>
+                                @if (old('abstract') !== NULL)
+                                    <textarea class="form-control" name="abstract">{{ old('abstract') }}</textarea>
+                                @else
+                                    <textarea class="form-control" name="abstract">{{ $edited->abstract }}</textarea>
+                                @endif
 
                                 @if ($errors->has('abstract'))
                                     <span class="help-block">
@@ -43,7 +51,11 @@
                         <div class="form-group{{ $errors->has('keywords') ? ' has-error' : '' }}">
                             <label>Keywords</label>
                             <div class="controls">
-                                <textarea class="form-control" name="keywords">{{ old('keywords') }}</textarea>
+                                @if (old('keywords') !== NULL)
+                                  <textarea class="form-control" name="keywords">{{ old('keywords') }}</textarea>
+                                @else
+                                  <textarea class="form-control" name="keywords">{{ $edited->keywords }}</textarea>
+                                @endif
                                 <span class="help-block">
                                     @if ($errors->has('keywords'))
                                        <strong>{{ $errors->first('keywords') }}</strong>

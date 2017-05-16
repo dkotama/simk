@@ -58,6 +58,31 @@ class OrgPaperController extends Controller
     return view('organizers.papers.single', $this->viewData);
   }
 
+  public function postBlindPaper(Conference $confUrl, $paperId, Request $request)
+  {
+    $rules['paper'] = 'required|mimes:doc,docx|max:5000';
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+      return redirect()->back()->withErrors($validator->errors());
+    }
+
+    $submission = Submission::find($paperId);
+    $submissionPaper = $submission->getLastPaper();
+    //
+    $paper = $request->file('paper')  ;
+    //
+    if ($paper->isValid()) {
+        $extension = $paper->getClientOriginalExtension(); // getting image extension
+        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renaming image
+        $paper->move('uploads', $fileName); // uploading file to given path
+        $submissionPaper->update(['blind_version' => $fileName, 'status' => 'WAIT_REV']);
+    }
+
+    flash()->success('Success uploading Blind Version!');
+    return redirect()->route('organizer.paper.showSingle', ['confUrl' => $confUrl->url, 'paperId' => $submission->id]);
+  }
+
   public function attachReviewer(Conference $confUrl, $paperId, $userId)
   {
     $paper    = Submission::findOrFail($paperId);

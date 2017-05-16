@@ -108,4 +108,37 @@ class Conference extends Model
 
     return $temp->last();
   }
+
+  public function isCanUpload() {
+    $lastDate = $this->getLastDate();
+    $lastDate = Carbon::parse($lastDate->submission_deadline, 'Asia/Makassar');
+    $now      = Carbon::now('Asia/Makassar');
+    $diff     = $now->diffInDays($lastDate, false);
+
+    return ($diff > 0);
+  }
+
+  public function isCanUploadCameraReady() {
+    $lastDate = $this->getLastDate();
+    $lastDate = Carbon::parse($lastDate->camera_ready);
+    $now      = Carbon::now('Asia/Makassar');
+    $diff     = $now->diffInDays($lastDate, false);
+
+    return ($diff > 0);
+  }
+
+  public function isCanRegister() {
+    $lastDate = $this->getLastDate();
+    $lastDate = Carbon::parse($lastDate->camera_ready);
+    $now      = Carbon::now('Asia/Makassar');
+    $diff     = $now->diffInDays($lastDate, false);
+
+    return ($diff > 0);
+  }
+
+  public function getDate($dateName) {
+    $lastDate = $this->getLastDate()->toArray();
+
+    return Carbon::parse($lastDate[$dateName])->toFormattedDateString();
+  }
 }

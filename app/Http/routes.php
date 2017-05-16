@@ -59,6 +59,8 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/users/home/manage/{confUrl}', ['as' => 'user.home.manage', 'uses' => 'UsersHomeController@manage']);
   Route::get('/users/home/manage/{confUrl}/add', ['as' => 'user.home.addPaper', 'uses' => 'UsersHomeController@addPaper']);
   Route::get('/users/home/manage/{confUrl}/{paperId}', ['as' => 'user.home.single.show', 'uses' => 'UsersHomeController@showSinglePaper']);
+  Route::get('/users/home/manage/{confUrl}/{paperId}/edit', ['as' => 'user.home.single.edit', 'uses' => 'UsersHomeController@editPaper']);
+  Route::post('/users/home/manage/{confUrl}/{paperId}/update', ['as' => 'user.home.single.update', 'uses' => 'UsersHomeController@updatePaper']);
   Route::get('/users/home/manage/{confUrl}/{paperId}/move-author/{from}/{to}', ['as' => 'user.home.moveAuthor', 'uses' => 'UsersHomeController@moveAuthor']);
   Route::get('/users/home/manage/{confUrl}/{paperId}/cancel', ['as' => 'user.home.cancelpaper', 'uses' => 'UsersHomeController@cancelPaper']);
 
@@ -106,6 +108,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/papers/{paperId}/assign', ['as' => 'organizer.paper.assignReviewer', 'uses' => 'OrgPaperController@assignReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/att/{userId}', ['as' => 'organizer.paper.attachReviewer', 'uses' => 'OrgPaperController@attachReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/dett/{userId}', ['as' => 'organizer.paper.detachReviewer', 'uses' => 'OrgPaperController@detachReviewer']);
+  Route::post('/{confUrl}/org/papers/{paperId}/postblind', ['as' => 'organizer.paper.postBlind', 'uses' => 'OrgPaperController@postBlindPaper']);
+
+
 
   Route::get('/{confUrl}/org/papers/{paperId}/resolve', ['as' => 'organizer.paper.resolve', 'uses' => 'OrgPaperController@resolvePaper']);
   Route::post('/{confUrl}/org/papers/{paperId}/postresolve', ['as' => 'organizer.paper.postresolve', 'uses' => 'OrgPaperController@postResolve']);

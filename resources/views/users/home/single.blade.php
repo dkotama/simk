@@ -6,7 +6,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                   Submission ID: {{ $submission->id }}
-                  <a href="#" class="btn btn-xs btn-primary">Edit</a>
+                  <a href="{{ route('user.home.single.edit', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" class="btn btn-xs btn-primary" {{ (!$submission->isCanEdit()) ? " disabled" : NULL }}>Edit</a>
+                  {{ (!$submission->isCanEdit()) ? "Updating Disabled. Review is On Process" : NULL }}
                 </div>
                 <div class="panel-body">
                   <h4><strong>{{ $submission->title }}</strong></h4>

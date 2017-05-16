@@ -46,4 +46,13 @@ class Controller extends BaseController
         abort(404);
       }
     }
+
+    protected function isCanUploadPaper($confUrl) {
+      if ($confUrl->isCanUpload()) {
+        return true;
+      } else {
+        abort(404);
+      }
+    }
+
 }

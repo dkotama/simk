@@ -7,8 +7,13 @@
             <div class="panel-heading">
               <strong>Your Papers on {{ $conf->name }} </strong>
               <a href="{{ route('user.home.addPaper', $conf->url) }}">
-                <button type="button" class="btn btn-success btn-xs">Add Paper</button>
+                <button type="button" class="btn btn-success btn-xs"
+                {{ ($conf->isCanUpload()) ? NULL : " disabled"}}
+                >Add Paper</button>
               </a>
+                @if(!$conf->isCanUpload())
+                  Uploading new paper disabled. Deadline passed.
+                @endif
             </div>
             <div class="panel-body">
               <table class="table table-bordered conferences">
@@ -38,7 +43,7 @@
                           {{ $author->name }} ,
                         @endforeach
                       </td>
-                      <td class="center"> Review Process</td>
+                      <td class="center">{{ $subs->getStatusFromAuthor() }}</td>
                       <td>
                         <button class="btn btn-danger btn-xs" onclick="confirmDelete({{ $subs->id }})">Cancel</button>
                       </td>
