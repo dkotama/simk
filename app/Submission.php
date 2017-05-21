@@ -85,6 +85,11 @@ class Submission extends Model
     return $this->papers->last();
   }
 
+  public function getMainPaper()
+  {
+    return $this->papers->first();
+  }
+
   public function isDeleted()
   {
     if ($this->deleted_at->year < 0) {
@@ -126,6 +131,21 @@ class Submission extends Model
     }
   }
 
+  public function getStatusFromReviewer()
+  {
+    $lastVersion = $this->versions->last();
+
+    $service  = new SubmissionService();
+
+    if ($lastVersion->status === 'WAIT_BLIND') {
+      return 'Waiting Bling Review';
+    } else if ($lastVersion->status === 'WAIT_REV') {
+      return 'Waiting Your Review';
+    } else {
+      return $service->getPaperAlias($lastVersion->status);
+    }
+  }
+
   public function getStatus()
   {
     $lastVersion = $this->versions->last();
@@ -161,11 +181,58 @@ class Submission extends Model
   {
     $lastVersion = $this->versions->last();
 
-    if ($lastVersion->status === 'WAIT_BLIND') {
-      return false;
-    } else {
+    if ($lastVersion->status === 'WAIT_REV') {
       return true;
+    } else {
+      return false;
     }
+  }
+
+  public function isPaperResolved()
+  {
+    $lastVersion = $this->versions->first();
+    $status = $lastVersion->status;
+    $service = new SubmissionService();
+    $resolvedStatus = $service->getResolveAliases();
+
+    foreach ($resolvedStatus as $key => $value) {
+      if($key === $status) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public function isCameraReadyApproved()
+  {
+    $lastVersion = $this->versions()->where('is_camera_ready', 1)->get()->last();
+
+    if ($lastVersion != NULL) {
+      $status = $lastVersion->status;
+
+      if ($status === "ACC_WAIT_PAY" || $status === "WAIT_ORG") {
+        return true;
+      }
+    }
+
+    return false;
+  }
+  public function getLastPaperReadableStatus()
+  {
+    $lastVersion = $this->versions->last();
+    $status = $lastVersion->status;
+
+    $service  = new SubmissionService();
+    $readable = $service->getPaperAliases();
+
+    foreach ($readable as $key => $value) {
+      if($key === $status) {
+        return $value;
+      }
+    }
+
+    return NULL;
   }
 
   public function availableForReview()

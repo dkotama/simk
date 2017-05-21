@@ -86,7 +86,7 @@ class User extends Authenticatable
 
     //--- PAPER MANAGEMENTS
 
-    public function papersReviewed() {
+    public function getAllPaperToReview() {
       return $this->belongsToMany('App\Submission', 'submissions_reviewers', 'user_id', 'submission_id')
       ->withPivot(
           'score_a',
@@ -99,10 +99,24 @@ class User extends Authenticatable
         );
     }
 
+    public function getReviewedPaper($paperId) {
+      $paper = $this->getAllPaperToReview()->where('submission_id', $paperId)->get()->first();
+
+      return $paper->pivot;
+    }
+
+    public function papersToReview() {
+      return $this->getAllPaperToReview()->whereNull('score_a')->get();
+    }
+
+    public function papersReviewed() {
+      return $this->getAllPaperToReview()->whereNotNull('score_a')->get();
+    }
+
     public function isReviewingPaper($submissionId) {
       $submissionId = (int)$submissionId;
 
-      $temp = $this->papersReviewed->whereIn('id', [$submissionId]);
+      $temp = $this->getAllPaperToReview->whereIn('id', [$submissionId]);
 
       return !$temp->isEmpty();
     }
@@ -117,7 +131,7 @@ class User extends Authenticatable
 
           $submissionId = (int)$submissionId;
 
-          $paper = $this->papersReviewed->where('id', $submissionId)->first();
+          $paper = $this->getAllPaperToReview->where('id', $submissionId)->first();
           $piv   = $paper->pivot;
 
           $temp = [

@@ -3,7 +3,8 @@
             <hr>
 
             <ul class="nav nav-pills nav-stacked">
-              <li><a href="{{ route('reviewer.papers', $conf->url )}}"><i class="glyphicon glyphicon-list-alt"></i> Papers Reviewed</a></li>
+              <li><a href="{{ route('reviewer.papers', $conf->url )}}"><i class="glyphicon glyphicon-list-alt"></i> Waiting Review</a></li>
+              <li><a href="{{ route('reviewer.papers.reviewed', $conf->url )}}"><i class="glyphicon glyphicon-list-alt"></i> Reviewed Paper</a></li>
             </ul>
 
             <hr>

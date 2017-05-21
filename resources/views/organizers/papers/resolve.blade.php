@@ -8,23 +8,9 @@
                   Submission ID: {{ $submission->id }}
                 </div>
                 <div class="panel-body">
-                  <h4><strong>{{ $submission->title }}</strong></h4>
-                  <p>
-                    <strong>Keywords:</strong>
-                    {{ $submission->keywords }}
-                  </p>
-                  <p>
-                    <strong>Abstract:</strong>
-                    <br>{{ $submission->abstract }}
-                  </p>
-
-
-                  <p>
-                      <strong>File Version {{ $submission->active_version }} :</strong>
-                      <a href="/uploads/{{ $submission->getCurrentActivePath() }}" class="btn btn-sm btn-default">Download</a>
-                  </p>
+                  @include('partials.singlepaper_content')
                   <div class="pull-right">
-                      <strong>Status : On Review</strong>
+                      <strong>Status : {{ $submission->getLastPaperReadableStatus() }}</strong>
                   </div>
                 </div>
             </div>
@@ -49,11 +35,27 @@
                       @endforeach
                       </div>
                     </div>
-                  <div class="form-group">
-                    <div class="col-md-12 text-center">
-                      <button type="submit" class="btn btn-primary">Resolve</button>
+                  @if($submission->getLastPaper()->status === 'WAIT_ORG')
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label for="notes">Notes For Author:</label>
+                      </div>
+                      <div class="col-md-12">
+                        <textarea id="notes" name="notes" rows="8" cols="80"></textarea>
+                      </div>
                     </div>
-                  </div>
+                    <div class="form-group">
+                      <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Resolve Camera Ready</button>
+                      </div>
+                    </div>
+                  @else
+                    <div class="form-group">
+                      <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Resolve</button>
+                      </div>
+                    </div>
+                  @endif
 
                   </form>
                 </div>

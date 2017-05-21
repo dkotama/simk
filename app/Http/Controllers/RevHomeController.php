@@ -39,17 +39,30 @@ class  RevHomeController extends Controller
 
   public function showAllPapers($confUrl)
   {
-    $submissions = $this->user->papersReviewed;
+    $submissions = $this->user->papersToReview();
+    // dd($submissions);
+
     $this->viewData['submissions'] = $submissions;
     // dd($this->conf->submissions);
 
     return view('reviewers.papers.all', $this->viewData);
   }
 
+  public function showReviewedPapers($confUrl)
+  {
+    $submissions = $this->user->papersReviewed();
+    // dd($submissions);
+
+    $this->viewData['submissions'] = $submissions;
+    // dd($this->conf->submissions);
+
+    return view('reviewers.papers.all', $this->viewData);
+  }
   public function showSinglePaper(Conference $confUrl, $paperId)
   {
     $submission = Submission::findOrFail($paperId);
     $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $edited     = $this->user->getReviewedPaper($paperId);
 
     $service = new SubmissionService();
     $answers = $service->getScoreAliases();
@@ -59,6 +72,7 @@ class  RevHomeController extends Controller
     $this->viewData['answers']     = $answers;
     $this->viewData['questions']   = $questions;
     $this->viewData['submission']  = $submission;
+    $this->viewData['edited']      = $edited;
 
     $this->viewData['recommendations']     = $recommendations;
 
@@ -67,21 +81,25 @@ class  RevHomeController extends Controller
 
   public function postPaperReview(Conference $confUrl, $paperId, Request $request)
   {
-    $paper = $this->user->papersReviewed->where('id', (int)$paperId)->first();
+    $paper = $this->user->getAllPaperToReview->where('id', (int)$paperId)->first();
     $paper = $paper->pivot;
     $values = $request->all();
 
-    $paper->score_a = $values['score_a'];
-    $paper->score_b = $values['score_b'];
-    $paper->score_c = $values['score_c'];
-    $paper->score_d = $values['score_d'];
-    $paper->score_e = $values['score_e'];
-    $paper->score_f = $values['score_f'];
-    $paper->comments = $values['comments'];
-    $paper->save();
+    $paper->update($values);
 
+    flash()->success("Thank you for your review!");
+    return redirect()->route('reviewer.papers', $confUrl->url);
+  }
 
-    return redirect()->back();
+  public function updatePaperReview(Conference $confUrl, $paperId, Request $request) {
+    $paper = $this->user->getAllPaperToReview->where('id', (int)$paperId)->first();
+    $paper = $paper->pivot;
+    $values = $request->all();
+
+    $paper->update($values);
+
+    flash()->success("Your Review Updated!");
+    return redirect()->route('reviewer.papers.reviewed', $confUrl->url);
   }
 
   public function detachReviewer(Conference $confUrl, $paperId, $userId)

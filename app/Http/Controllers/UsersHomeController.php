@@ -12,6 +12,7 @@ use App\Submission;
 use App\SubmissionAuthor;
 use App\SubmissionPaper;
 use App\SubmissionService;
+use App\ReviewQuestion;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use App\CountryList;
@@ -49,6 +50,44 @@ class UsersHomeController extends Controller
     $this->viewData['conf'] = $confUrl;
 
     return view('users.home.add', $this->viewData);
+  }
+
+  public function postCameraReady(Conference $confUrl, $paperId, Request $request)
+  {
+    $rules['paper'] = 'required|mimes:doc,docx|max:5000';
+    $validator = Validator::make($request->all(), $rules);
+    //
+    if ($validator->fails()) {
+      return redirect()->back()->withErrors($validator->errors());
+    }
+    //
+    $paper = $request->file('paper');
+    $fileName = '';
+
+    if ($paper->isValid()) {
+        $extension = $paper->getClientOriginalExtension(); // getting image extension
+        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renaming image
+        $paper->move('uploads', $fileName); // uploading file to given path
+    }
+
+    $submission = Submission::find($paperId);
+    $version    = count($submission->papers) + 1;
+
+    // dd($version);
+    $submissionPaper = SubmissionPaper::create([
+      'version' => $version,
+      'status' => 'WAIT_ORG',
+      'path' => $fileName,
+      'is_camera_ready' => 1
+    ]);
+
+    $submission->versions()->save($submissionPaper);
+    $submission->update(['active_version' => $version]);
+
+    //
+    flash()->success('Success uploading Camera Ready');
+    //
+    return redirect()->route('user.home.single.show', ['confUrl' => $confUrl->url, 'paperId' => $submission->id]);
   }
 
   public function index()
@@ -125,7 +164,6 @@ class UsersHomeController extends Controller
         $paper->move($this->uploadFolder, $fileName); // uploading file to given path
         $submissionPaper->path = $fileName;
         $submissionPaper->save();
-    } else {
     }
 
     return redirect()->route('user.home.single.show', ['conf' => $confUrl->url, 'paperId' => $submission->id]);
@@ -134,12 +172,14 @@ class UsersHomeController extends Controller
   public function showSinglePaper(Conference $confUrl, $paperId)
   {
     $this->isAllowedAuthor($confUrl);
-
     $submission = Submission::findOrFail($paperId);
-    // dd($submission);
+    $versions = $submission->versions;
+
+    // dd($submission->isPaperResolved() && $submission->isCameraReadyApproved());
 
     $this->viewData['conf']        = $confUrl;
     $this->viewData['submission']  = $submission;
+    $this->viewData['versions']    = $versions;
     $this->viewData['authors']     = $submission->authors->sortBy('author_no');
     $this->viewData['authorCount'] = $submission->authors->count();
 
@@ -166,6 +206,22 @@ class UsersHomeController extends Controller
     } else {
       return redirect()->route('user.home.single.edit', ['confUrl' => $confUrl->url, 'paperId' => $paperId])->withErrors($update);
     }
+  }
+
+
+  public function showPaperReview(Conference $confUrl, $paperId) {
+    $submission = Submission::findOrFail($paperId);
+    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $reviewers  = $submission->reviewers;
+    // $reviews    = $reviewer->getReviewedPaper($paperId);
+    //
+    //
+    $this->viewData['submission']  = $submission;
+    $this->viewData['questions']   = $questions;
+    $this->viewData['reviewers']   = $reviewers;
+    // dd('showPaperReview' . $paperId);
+
+    return view('users.home.allreview', $this->viewData);
   }
 
   public function addAuthor(Conference $confUrl, Request $request, $paperId)

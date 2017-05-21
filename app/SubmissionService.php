@@ -55,7 +55,7 @@ class SubmissionService
 
   public function getPaperAlias($alias) {
     $this->makePaperAliases();
-    
+
     foreach ($this->paperAliases as $key => $value) {
       if ($alias === $key) {
         return $value;
@@ -127,6 +127,7 @@ class SubmissionService
       'ON_REV' => 'On Review Process',
       'WAIT_BLIND' => 'Waiting Blind Version',
       'WAIT_REV' => 'Waiting Revision',
+      'WAIT_ORG' => 'Waiting Camera Ready Approval',
       'REJECT' => 'Rejected',
       'ACC_REV_MIN' => 'Accepted - Minor Revision',
       'ACC_REV_MAJ' => 'Accepted - Major Revision',

@@ -17,6 +17,6 @@
                 <strong>Abstract:</strong>
               </div>
               <div class="col-md-12">
-                  {{ $submission->keywords }}
+                  {{ $submission->abstract}}
               </div>
             </div>

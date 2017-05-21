@@ -8,24 +8,7 @@
                   Submission ID: {{ $submission->id }}
                 </div>
                 <div class="panel-body">
-                  <h4><strong>{{ $submission->title }}</strong></h4>
-                  <p>
-                    <strong>Keywords:</strong>
-                    {{ $submission->keywords }}
-                  </p>
-                  <p>
-                    <strong>Abstract:</strong>
-                    <br>{{ $submission->abstract }}
-                  </p>
-
-
-                  <p>
-                      <strong>File Version {{ $submission->active_version }} :</strong>
-                      <a href="/uploads/{{ $submission->getCurrentActivePath() }}" class="btn btn-sm btn-default">Download</a>
-                  </p>
-                  <div class="pull-right">
-                      <strong>Status : On Review</strong>
-                  </div>
+                  @include("partials.singlepaper_content")
                 </div>
             </div>
         </div>

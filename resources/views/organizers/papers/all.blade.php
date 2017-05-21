@@ -6,9 +6,6 @@
         <div class="panel panel-default">
             <div class="panel-heading">
               <strong>All Papers on {{ $conf->name }} </strong>
-              <a href="">
-                <button type="button" class="btn btn-success btn-xs">Add Paper</button>
-              </a>
             </div>
             <div class="panel-body">
               <table class="table table-bordered conferences">

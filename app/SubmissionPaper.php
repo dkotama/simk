@@ -13,7 +13,9 @@ class SubmissionPaper extends Model
     'path',
     'version',
     'blind_version',
-    'camera_ready',
+    'is_camera_ready',
+    'status',
+    'notes'
   ];
 
   public function submission()

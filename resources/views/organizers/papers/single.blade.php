@@ -7,7 +7,7 @@
                 <div class="panel-heading">
                   Submission ID: {{ $submission->id }}
                   <div class="pull-right">
-                    @if($submission->getStatusCode() === 'WAIT_REV')
+                    @if($submission->getStatusCode() === 'WAIT_REV' || $submission->getStatusCode() === 'WAIT_ORG')
                       <a href="{{ route('organizer.paper.resolve', ['confUrl' => $conf->url, 'paperId' => $submission->id])}}" class="btn btn-xs btn-success">Resolve Submission</a>
                     @endif
                   </div>
@@ -20,7 +20,7 @@
 
                       </div>
                       <div class="col-md-12" style="padding-top:10px;">
-                        @if($submission->getLastPaper()->blind_version === '')
+                        @if($submission->getMainPaper()->blind_version === '')
                           <form class="form form-vertical" action="{{ route('organizer.paper.postBlind', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="control-group">
@@ -49,11 +49,25 @@
                             </div>
                           </form>
                         @else
-                          <b>1st Version (Blind Mode):</b>&nbsp;<a href="/uploads/{{ $submission->getLastPaper()->blind_version }}" class="btn btn-primary btn-xs">Download</a>
+                          <b>1st Version (Blind Mode):</b>&nbsp;<a href="/uploads/{{ $submission->getMainPaper()->blind_version }}" class="btn btn-primary btn-xs">Download</a>
                         @endif
                       </div>
-                    </div>
 
+                        @foreach($versions as $ver)
+                         @if($ver->version > 1)
+                          <div class="col-md-12" style="padding-top:10px;">
+                              <b>Camera Ready Version {{ $ver->version - 1 }}:</b>&nbsp;<a href="/uploads/{{ $submission->getLastPaper()->path}}" class="btn btn-primary btn-xs">Download</a>
+                          </div>
+                         @endif
+                        @endforeach
+                    </div>
+                  <div class="row">
+                    <div class="col-md-12" style="padding-top:10px;">
+                      <div class="pull-right">
+                        <strong>Status : {{ $submission->getLastPaperReadableStatus() }}</strong>
+                      </div>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -98,7 +112,9 @@
             <div class="panel-heading">
                 Reviewers
                 <a href="{{ route('organizer.paper.assignReviewer', ['confurl' => $conf->url, 'paperId' => $submission->id ])}}" class="btn btn-xs btn-primary" {{ (!$submission->isCanAssignReviewer()) ? " disabled" : NULL }}>Assign New</a>
-                {{ (!$submission->isCanAssignReviewer()) ? "Please upload blind version first." : NULL }}
+                {{ (!$submission->getLastPaper()->status === 'WAIT_BLIND') ? "Please upload blind version first." : NULL }}
+                {{ ($submission->isPaperResolved()) ? "Paper Already Resolved" : NULL }}
+                <a href="{{ route('organizer.paper.showAllReview', ['confurl' => $conf->url, 'paperId' => $submission->id ])}}" class="btn btn-xs btn-primary pull-right" }>Show All Review</a>
             </div>
               <div class="panel-body">
                   <table class="table table-condensed">
@@ -115,6 +131,11 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <?php $revAlias = [
+                        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+                        'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                        'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+                      ];?>
                     <?php $count = 1 ?>
                     @foreach($reviewers as $rev)
                       <tr>
@@ -123,7 +144,9 @@
                           {{ $count++ }}
                         </td>
                         <td>
-                          {{ $rev->salutation . " " . $rev->last_name . " " . $rev->first_name }}
+                          <a href="{{ route('organizer.paper.showSingleReview', ['confUrl' => $conf->url, 'paperId' => $submission->id, 'reviewerId' => $rev->id])}}">
+                            {{ $rev->salutation . " " . $rev->last_name . " " . $rev->first_name}}
+                          </a>({{ $revAlias[$count-2]}})
                         </td>
                         <td>
                           {{ $scores[0] }}

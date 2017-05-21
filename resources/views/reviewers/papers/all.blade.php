@@ -21,6 +21,7 @@
                 <tbody>
                   <?php $count = 1 ?>
                   @forelse($submissions as $subs)
+                   @if($subs->getLastPaper()->status === "WAIT_REV")
                     <tr>
                       <td>
                         {{ $count++ }}
@@ -41,8 +42,11 @@
                           {{ $author->name }}
                         @endforeach
                       </td>
-                      <td class="center"> </td>
+                      <td class="center">
+                        {{ ($subs->pivot->score_a === NULL) ? $subs->getStatusFromReviewer() : 'Done' }}
+                      </td>
                     </tr>
+                    @endif
                   @empty
                     <tr>
                       <td>

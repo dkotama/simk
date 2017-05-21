@@ -48,11 +48,13 @@ class OrgPaperController extends Controller
   {
     $submission = Submission::findOrFail($paperId);
     $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $versions = $submission->versions;
 
     $this->viewData['submission']  = $submission;
     $this->viewData['questions']   = $questions;
     $this->viewData['authors']     = $submission->authors->sortBy('author_no');
     $this->viewData['authorCount'] = $submission->authors->count();
+    $this->viewData['versions']    = $versions;
     $this->viewData['reviewers']   = $submission->reviewers;
 
     return view('organizers.papers.single', $this->viewData);
@@ -110,7 +112,12 @@ class OrgPaperController extends Controller
 
   public function assignReviewer(Conference $confUrl, $paperId)
   {
+
     $submission = Submission::findOrFail($paperId);
+
+    if (!$submission->isCanAssignReviewer() || $submission->isPaperResolved()) {
+      abort(404);
+    }
 
     $this->viewData['reviewers'] = $confUrl->reviewers;
     $this->viewData['submission']  = $submission;
@@ -136,6 +143,9 @@ class OrgPaperController extends Controller
       $submission = Submission::findOrFail($paperId);
       $submission = $submission->versions->last();
       $submission->status = $requests->status;
+
+      ($requests->notes != NULL) ? $submission->notes = $requests->notes : NULL;
+
       $submission->save();
 
 
@@ -143,4 +153,34 @@ class OrgPaperController extends Controller
 
       return redirect()->route('organizer.paper.showSingle', ['confUrl' => $confUrl->url, 'paperId' => $paperId]);
   }
+
+  public function showSingleReview(Conference $confUrl, $paperId, $reviewerId) {
+    $submission = Submission::findOrFail($paperId);
+    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $reviewer   = User::findOrFail($reviewerId);
+    $reviews    = $reviewer->getReviewedPaper($paperId);
+
+    $this->viewData['questions']   = $questions;
+    $this->viewData['submission']  = $submission;
+    $this->viewData['reviews']     = $reviews;
+    $this->viewData['reviewer']    = $reviewer;
+
+    return view('organizers.papers.single_review', $this->viewData);
+  }
+
+  public function showAllReview(Conference $confUrl, $paperId) {
+    $submission = Submission::findOrFail($paperId);
+    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $reviewers  = $submission->reviewers;
+    // $reviews    = $reviewer->getReviewedPaper($paperId);
+
+
+    $this->viewData['submission']  = $submission;
+    $this->viewData['questions']   = $questions;
+    $this->viewData['reviewers']   = $reviewers;
+
+
+    return view('organizers.papers.allreview', $this->viewData);
+  }
+
 }

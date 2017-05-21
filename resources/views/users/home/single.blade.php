@@ -6,8 +6,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                   Submission ID: {{ $submission->id }}
-                  <a href="{{ route('user.home.single.edit', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" class="btn btn-xs btn-primary" {{ (!$submission->isCanEdit()) ? " disabled" : NULL }}>Edit</a>
-                  {{ (!$submission->isCanEdit()) ? "Updating Disabled. Review is On Process" : NULL }}
+                  @if($submission->isCanEdit())
+                    <a href="{{ route('user.home.single.edit', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" class="btn btn-xs btn-primary" {{ (!$submission->isCanEdit()) ? " disabled" : NULL }}>Edit</a>
+                  @endif
                 </div>
                 <div class="panel-body">
                   <h4><strong>{{ $submission->title }}</strong></h4>
@@ -17,17 +18,65 @@
                   </p>
                   <p>
                     <strong>Abstract:</strong>
-                    					<br>{{ $submission->abstract }}
+                    <br>{{ $submission->abstract }}
                   </p>
 
 
-                  <p>
-                      <strong>File Version {{ $submission->active_version }} :</strong>
-                      <a href="/uploads/{{ $submission->getCurrentActivePath() }}" class="btn btn-sm btn-default">Download</a>
-                  </p>
-                  <div class="pull-right">
-                      <strong>Status : On Review</strong>
+                  <div class="row">
+                    @foreach($versions as $ver)
+                    <div class="col-md-12" style="padding-top:10px;">
+                      @if($ver->version < 2)
+                        <strong>First Version :</strong>
+                      @else
+                        <strong>Camera Ready Version {{ $ver->version - 1 }} :</strong>
+                      @endif
+                      <a href="/uploads/{{ $ver->path }}" class="btn btn-sm btn-primary">Download</a>
+
+
+                      @if($ver->version === 1 && $submission->isPaperResolved())
+                      <a href="{{ route('user.home.showPaperReview', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" class="btn btn-sm btn-success">Show Review Results</a>
+                      @endif
+                    </div>
+                    @endforeach
+
+                    @if($submission->isPaperResolved() && $submission->isCameraReadyApproved() === false)
+                    <div class="col-md-12" style="padding-top:10px;">
+                      <form class="form form-vertical" action="{{ route('user.home.postCameraReady', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post" enctype="multipart/form-data">
+                          {{ csrf_field() }}
+                          <div class="control-group">
+                              <div class="form-group{{ $errors->has('paper') ? ' has-error' : '' }}" >
+                                  <label>Camera Ready Paper Upload
+                                      <br>
+                                  </label>
+                                  <div class="controls">
+                                    <div class="col-md-5">
+                                      <input type="file" class="form-control input-sm" name="paper">
+                                      @if ($errors->has('paper'))
+                                          <span class="help-block">
+                                              <strong>{{ $errors->first('paper') }}</strong>
+                                          </span>
+                                      @else
+                                          <span class="help-block">
+                                              <strong>Please upload file with .doc / .docx extension only.</strong>
+                                          </span>
+                                      @endif
+                                    </div>
+                                    <div class="col-md-7">
+                                      <button type="submit" class="btn btn-primary btn-sm">Set Camera Ready</button>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </form>
+                      @endif
+                    </div>
+
+                  <div class="col-md-12">
+                    <div class="pull-right">
+                        <strong>Status : {{ $submission->getLastPaperReadableStatus() }}</strong>
+                    </div>
                   </div>
+                </div>
                 </div>
             </div>
         </div>
