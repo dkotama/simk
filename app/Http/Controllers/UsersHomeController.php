@@ -90,6 +90,49 @@ class UsersHomeController extends Controller
     return redirect()->route('user.home.single.show', ['confUrl' => $confUrl->url, 'paperId' => $submission->id]);
   }
 
+  public function postPaymentProof(Conference $confUrl, $paperId, Request $request)
+  {
+    $rules['payment_proof'] = 'required|mimes:jpg,jpeg,png,bitmap|max:2000';
+    $validator = Validator::make($request->all(), $rules);
+    //
+    if ($validator->fails()) {
+      return redirect()->back()->withErrors($validator->errors());
+    }
+    //
+    $payment_proof = $request->file('payment_proof');
+    $fileName = '';
+
+    if ($payment_proof->isValid()) {
+        $extension = $payment_proof->getClientOriginalExtension(); // getting image extension
+        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renaming image
+        $payment_proof->move('payment', $fileName); // uploading file to given path
+    }
+
+    $submission = Submission::find($paperId);
+    $submission->update(['payment_proof' => $fileName]);
+
+    $lastVersion = $submission->getLastPaper();
+    $lastVersion->update(['status' => 'WAIT_ORG_PAY']);
+
+    // $version    = count($submission->papers) + 1;
+    //
+    // // dd($version);
+    // $submissionPaper = SubmissionPaper::create([
+    //   'version' => $version,
+    //   'status' => 'WAIT_ORG',
+    //   'path' => $fileName,
+    //   'is_camera_ready' => 1
+    // ]);
+    //
+    // $submission->versions()->save($submissionPaper);
+    // $submission->update(['active_version' => $version]);
+
+    //
+    flash()->success('Success uploading Payment Proof');
+
+    return redirect()->route('user.home.single.show', ['confUrl' => $confUrl->url, 'paperId' => $submission->id]);
+  }
+
   public function index()
   {
       return view('users.home.index', $this->viewData);

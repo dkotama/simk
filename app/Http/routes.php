@@ -65,6 +65,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/users/home/manage/{confUrl}/{paperId}/cancel', ['as' => 'user.home.cancelpaper', 'uses' => 'UsersHomeController@cancelPaper']);
   Route::get('/users/home/manage/{confUrl}/{paperId}/review', ['as' => 'user.home.showPaperReview', 'uses' => 'UsersHomeController@showPaperReview']);
   Route::post('/users/home/manage/{confUrl}/{paperId}/camera', ['as' => 'user.home.postCameraReady', 'uses' => 'UsersHomeController@postCameraReady']);
+  Route::post('/users/home/manage/{confUrl}/{paperId}/payment', ['as' => 'user.home.postPaymentProof', 'uses' => 'UsersHomeController@postPaymentProof']);
 
   //User Profile
   Route::get('/users/{userId}/profile', ['as' => 'user.profile', 'uses' => 'UsersHomeController@showProfile']);

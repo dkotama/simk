@@ -18,7 +18,9 @@ class Submission extends Model
     'title',
     'abstract',
     'keywords',
-    'active_version'
+    'active_version',
+    'payment_proof',
+    'payment_notes'
   ];
 
   protected $dates = ['deleted_at'];
@@ -211,7 +213,7 @@ class Submission extends Model
     if ($lastVersion != NULL) {
       $status = $lastVersion->status;
 
-      if ($status === "ACC_WAIT_PAY" || $status === "WAIT_ORG") {
+      if ($status === "ACC_WAIT_PAY" || $status === "WAIT_ORG" || $status === "ACC_WAIT_PAY") {
         return true;
       }
     }

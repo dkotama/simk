@@ -31,6 +31,9 @@
                         <strong>Camera Ready Version {{ $ver->version - 1 }} :</strong>
                       @endif
                       <a href="/uploads/{{ $ver->path }}" class="btn btn-sm btn-primary">Download</a>
+                      @if($ver->notes != NULL)
+                      <a href="" class="btn btn-sm btn-warning">See Organizer Notes</a>
+                      @endif
 
 
                       @if($ver->version === 1 && $submission->isPaperResolved())
@@ -39,7 +42,7 @@
                     </div>
                     @endforeach
 
-                    @if($submission->isPaperResolved() && $submission->isCameraReadyApproved() === false)
+                    @if($submission->isPaperResolved() && $submission->isCameraReadyApproved())
                     <div class="col-md-12" style="padding-top:10px;">
                       <form class="form form-vertical" action="{{ route('user.home.postCameraReady', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post" enctype="multipart/form-data">
                           {{ csrf_field() }}
@@ -68,8 +71,10 @@
                               </div>
                           </div>
                         </form>
+                      </div>
                       @endif
-                    </div>
+
+
 
                   <div class="col-md-12">
                     <div class="pull-right">
@@ -80,6 +85,57 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-10">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                Payment Section
+              </div>
+              <div class="panel-body">
+                  @if($submission->getStatusCode() === 'WAIT_PAY')
+                        <div class="col-md-12" style="padding-top:10px;">
+                        <form class="form form-vertical" action="{{ route('user.home.postPaymentProof', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="control-group">
+                                <div class="form-group{{ $errors->has('payment_proof') ? ' has-error' : '' }}" >
+                                    <label>Upload Payment Proof
+                                        <br>
+                                    </label>
+                                    <div class="controls">
+                                      <div class="col-md-5">
+                                        <input type="file" class="form-control input-sm" name="payment_proof">
+                                        @if ($errors->has('payment_proof'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('payment_proof') }}</strong>
+                                            </span>
+                                        @else
+                                            <span class="help-block">
+                                                <strong>Please upload file with .jpg/ .jpeg / .png / .bmp extension only.</strong>
+                                            </span>
+                                        @endif
+                                      </div>
+                                      <div class="col-md-7">
+                                        <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </form>
+                        </div>
+                      @endif
+
+
+                      @if($submission->getStatusCode() === 'WAIT_ORG_PAY')
+                        <div class="col-md-12" style="padding-top:10px;">
+                          <b>Payment Proof</b>
+                          <a href="/payment/{{ $submission->payment_proof }}" class="thumbnail">
+                            <img src="/payment/{{ $submission->payment_proof }}" alt="Payment Proof">
+                          </a>
+                        </div>
+                      @endif
+              </div>
+          </div>
+        </div>
+
         <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading">Authors</div>
