@@ -11,6 +11,7 @@ class Submission extends Model
   use SoftDeletes;
 
   protected $table = 'submissions';
+  
   protected $fillable =[
     'user_id',
     'conference_id',

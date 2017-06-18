@@ -2,6 +2,7 @@
 
 @section('content')
    <div class="row">
+    @if(!$isParticipating)
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -67,6 +68,71 @@
             </div>
         </div>
     </div>
+    @endif
+    @if(!$isRegisteredAuthor && !$isParticipating)
+      <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <strong>Participant Section</strong>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="text-danger">
+                    Please note. By registering as participant, you cannot upload papers as authors.</p>
+                    <p>To Register, you just need to send the payment proof of participant registration below.
+                  </p>
+                </div>
+                @if($appl != NULL && $appl->payment_notes != '')
+                    <div class="col-md-12" style="padding-top:10px;">
+                      <p>
+                        <b>Notes From Organizer</b>
+                        <br>{{ $appl->payment_notes }}
+                      </p>
+                    </div>
+                  @endif
+                @if($appl === NULL || $appl->payment_proof === '')
+                <div class="col-md-12">
+                  <form class="form form-vertical" action="{{ route('user.home.registerParticipant', $conf->url) }}" method="post" enctype="multipart/form-data">
+                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <div class="control-group">
+                              <div class="form-group{{ $errors->has('payment_proof') ? ' has-error' : '' }}" >
+                                  <label>Upload Payment Proof
+                                      <br>
+                                  </label>
+
+
+                                  <div class="controls">
+                                    <div class="col-md-5">
+                                      <input type="file" class="form-control input-sm" name="payment_proof">
+                                      <span class="help-block">
+                                            <strong>Please upload file with .jpg/ .jpeg / .png / .bmp extension only.</strong>
+                                      </span>
+                                    </div>
+                                    <div class="col-md-7">
+                                      <button type="submit" class="btn btn-primary btn-sm">Upload</button>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                        </form>
+                      </div>
+                    @else
+                    <div class="col-md-12">
+                      Participant Payment Proof Uploaded. Waiting Validation
+                    </div>
+                    @endif
+              </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if($isParticipating)
+      <div class="col-md-12">
+        <p class="">You are a registered participants of this conference</p>
+      </div>
+    @endif
   </div>
   <style media="screen">
     table.conferences th {

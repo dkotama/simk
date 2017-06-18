@@ -81,5 +81,45 @@
         </div>
       </div>
     </div>
+    <!-- Participant Section -->
+    @if($userSelected === 'registered')
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+          <div class="panel-heading">
+              <strong>Users Applying For Participant</strong>
+            </div>
+        <div class="panel-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr class="text-center">
+                <th>#</th>
+                <th>Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php $i = 1; ?>
+              @foreach ($participants as $partiAppl)
+              <?php $usr = $partiAppl->user ?>
+                <tr>
+                  <td>{{ $i }}</td>
+                  <td>
+                    <a href="{{ route('organizer.singleParticipant', ['confUrl' => $conf->url, 'userId' => $usr->id]) }}">
+                      {{ $usr->title . " " . $usr->last_name . " " . $usr->first_name }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ $usr->getPaymentStatus($conf->id) }}
+                  </td>
+                </tr>
+                </tr>
+                <?php $i++; ?>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    @endif
   </div>
 @endsection

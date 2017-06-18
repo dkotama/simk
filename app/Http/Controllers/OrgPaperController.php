@@ -38,16 +38,28 @@ class OrgPaperController extends Controller
   {
     // $submissions = $this->conf->submissions->all();
     $submissions = Submission::withTrashed()->where('conference_id', $confUrl->id)->get();
+    // dd($submissions->first()->uploader->isParticipating($confUrl));
     $this->viewData['submissions'] = $submissions;
+    $this->viewData['paperSelected'] = 'onprogress';
     // dd($this->conf->submissions);
 
     return view('organizers.papers.all', $this->viewData);
   }
 
+  public function proceeding($confUrl)
+  {
+    $submissions = Submission::withTrashed()->where('conference_id', $confUrl->id)->get();
+    $this->viewData['submissions'] = $submissions;
+    $this->viewData['paperSelected'] = 'proceeding';
+
+    return view('organizers.papers.proceeding', $this->viewData);
+  }
+
+
   public function singlePaper(Conference $confUrl, $paperId)
   {
-    $submission = Submission::findOrFail($paperId);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $submission = Submission::find($paperId);
+    $questions  = $confUrl->reviewQuestions;
     $versions = $submission->versions;
 
     $this->viewData['submission']  = $submission;
@@ -152,6 +164,31 @@ class OrgPaperController extends Controller
       flash()->success('Success Resolve Paper');
 
       return redirect()->route('organizer.paper.showSingle', ['confUrl' => $confUrl->url, 'paperId' => $paperId]);
+  }
+
+  // public function validatePayment(Conference $confUrl, $paperId)
+  // {
+  //     dd('validatePayment, ' . $paperId);
+  // }
+
+  public function postValidation(Conference $confUrl, $paperId, Request $requests)
+  {
+    // dd($requests->all());
+
+    $validation = $requests->validation;
+
+    $submission = Submission::findOrFail($paperId);
+
+    if ($validation === 'WAIT_PAY') {
+      $submission->update(['payment_proof' => NULL, 'payment_notes' => $requests->payment_notes]);
+    }
+
+    $paper = $submission->versions->last();
+    $paper->update(['status' => $validation]);
+
+    flash()->success('Success Validating Payment');
+
+    return redirect()->route('organizer.paper.showSingle', ['confUrl' => $confUrl->url, 'paperId' => $paperId]);
   }
 
   public function showSingleReview(Conference $confUrl, $paperId, $reviewerId) {

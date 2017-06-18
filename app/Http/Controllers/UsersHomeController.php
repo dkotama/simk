@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Input;
 use Validator;
 use App\CountryList;
 use App\RoleWriter;
+use App\ParticipantApplication;
 use Carbon\Carbon;
 // use App\Http\Requests;
 
@@ -92,7 +93,7 @@ class UsersHomeController extends Controller
 
   public function postPaymentProof(Conference $confUrl, $paperId, Request $request)
   {
-    $rules['payment_proof'] = 'required|mimes:jpg,jpeg,png,bitmap|max:2000';
+    $rules['payment_proof'] = 'required|mimes:jpg,jpeg,png,bmp|max:2000';
     $validator = Validator::make($request->all(), $rules);
     //
     if ($validator->fails()) {
@@ -143,9 +144,13 @@ class UsersHomeController extends Controller
     $this->isAllowedAuthor($confUrl);
 
     $this->viewData['conf'] = $confUrl;
+    $appl = $this->user->participantAppl()->conferenceid($confUrl->id)->first();
     // $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
     $submissions = $this->user->submissions->where('conference_id', $confUrl->id)->all();
     $this->viewData['submissions'] = $submissions;
+    $this->viewData['isParticipating'] = $this->user->isParticipating($confUrl);
+    $this->viewData['isRegisteredAuthor'] = $this->user->isRegisteredAuthor($confUrl);
+    $this->viewData['appl'] = $appl;
 
     return view('users.home.manage', $this->viewData);
   }
@@ -227,6 +232,60 @@ class UsersHomeController extends Controller
     $this->viewData['authorCount'] = $submission->authors->count();
 
     return view('users.home.single', $this->viewData);
+  }
+
+  public function registerParticipant(Conference $confUrl, Request $request)
+  {
+    $rules['payment_proof'] = 'required|mimes:jpeg,jpg,png,bmp|max:5000';
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+      // dd($validator->errors());
+      return redirect()->back()->withErrors($validator->errors());
+    }
+
+    // //
+    $proof = $request->file('payment_proof');
+    // $fileName = '';
+
+
+    if ($proof->isValid()) {
+        $extension = $proof->getClientOriginalExtension(); // getting image extension
+        $fileName = md5(uniqid('', true) . microtime()) . '.' . $extension; // renaming image
+        $proof->move('payment', $fileName); // uploading file to given path
+    }
+
+
+    $appl = $this->user->participantAppl()->conferenceid($confUrl->id)->first();
+
+    if($appl === NULL) {
+      $appl = ParticipantApplication::create([
+        'user_id' => $this->user->id,
+        'conference_id' => $confUrl->id
+      ]);
+    }
+
+    $appl->update(['payment_proof' => $fileName]);
+    //
+    // $submission = Submission::find($paperId);
+    // $version    = count($submission->papers) + 1;
+    //
+    // // dd($version);
+    // $submissionPaper = SubmissionPaper::create([
+    //   'version' => $version,
+    //   'status' => 'WAIT_ORG',
+    //   'path' => $fileName,
+    //   'is_camera_ready' => 1
+    // ]);
+    //
+    // $submission->versions()->save($submissionPaper);
+    // $submission->update(['active_version' => $version]);
+    //
+    // //
+    flash()->success('Success Register Participant');
+    return redirect()->back();
+    // //
   }
 
   public function editPaper(Conference $confUrl, $paperId)

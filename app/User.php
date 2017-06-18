@@ -38,6 +38,51 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Conference', 'organizers', 'user_id', 'conference_id');
     }
 
+    public function participating() {
+      return $this->belongsToMany('App\Conference', 'participants', 'user_id', 'conference_id')
+        ->withPivot(
+            'payment_proof'
+          );
+    }
+
+    public function participantAppl() {
+      return $this->hasMany('App\ParticipantApplication');
+    }
+
+    public function getPaymentStatus($confId) {
+      $appl =  $this->participantAppl()->conferenceid($confId)->first();
+      $conf = Conference::find($confId);
+
+      if ($this->isParticipating($conf)) {
+        return 'Registered';
+      } else if ($appl->payment_notes != "" && $appl->payment_proof === "") {
+        return 'Waiting User Re Upload Payment Proof';
+      } else if ($appl->payment_notes === "" && $appl->payment_proof != "") {
+        return 'Please Check Payment Proof';
+      } else {
+        return 'Please Check Payment Proof';
+      }
+    }
+
+    public function isPaymentProofExist($confId) {
+      $appl =  $this->participantAppl()->conferenceid($confId)->first();
+      $conf = Conference::find($confId);
+
+      if($appl->payment_proof !== "") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    // public function isApplyingParticipant(){
+    //   // $appl = $this->participantAppl
+    //   // if ($this->participantAppl != NULL){
+    //   //
+    //   // }
+    //   //
+    //   // return false;
+    // }
+
     public function isAuthoring(Conference $conf)
     {
         return $this->authoring()->whereId($conf->id)->exists();
@@ -82,6 +127,26 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function isParticipating(Conference $conf)
+    {
+        return $this->participating()->whereId($conf->id)->exists();
+    }
+
+    public function isRegisteredAuthor(Conference $conf)
+    {
+        $submissions = $this->submissionsOnConference($conf);
+        foreach ($submissions as $submission) {
+          $papers = $submission->papers;
+
+          foreach ($papers as $paper) {
+            if($paper->status === 'REGISTERED') {
+              return true;
+            }
+          }
+        }
+
+        return false;
+    }
 
 
     //--- PAPER MANAGEMENTS
@@ -123,6 +188,10 @@ class User extends Authenticatable
 
     public function submissions() {
         return $this->hasMany('App\Submission');
+    }
+
+    public function submissionsOnConference(Conference $conf) {
+        return $this->hasMany('App\Submission')->where('conference_id', $conf->id)->get();
     }
 
     public function getScoresAsAlias($submissionId) {

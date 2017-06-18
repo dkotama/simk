@@ -71,6 +71,59 @@
                 </div>
             </div>
         </div>
+
+        @if($submission->getStatusCode() === 'WAIT_ORG_PAY')
+        <div class="col-md-10">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                Payment Section
+              </div>
+              <div class="panel-body">
+                  <div class="col-md-12" style="padding-top:10px;">
+                    <b>Payment Proof</b>
+                    <a href="/payment/{{ $submission->payment_proof }}" class="thumbnail">
+                      <img src="/payment/{{ $submission->payment_proof }}" alt="Payment Proof">
+                    </a>
+                  </div>
+
+                  <div class="col-md-12" style="padding-top:10px;">
+                  <form class="form-vertical" action="{{ route('organizer.paper.postValidation', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post">
+                    <div style="padding-left:20px;">
+                    {{ csrf_field() }}
+                      <div class="form-group">
+                          <div class="radio">
+                            <label>
+                              <input type="radio" value="REGISTERED"  name="validation" checked> Approve
+                            </label>
+                          </div>
+                          <div class="radio">
+                            <label>
+                              <input type="radio" value="WAIT_PAY"  name="validation"> Reject
+                            </label>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <label for="payment_notes">Notes For Author:</label>
+                      </div>
+                      <div class="col-md-12">
+                        <textarea id="payment_notes" name="payment_notes" rows="8" cols="80"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Validate</button>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+          </div>
+        </div>
+        @endif
+
         <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading">Authors</div>

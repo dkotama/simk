@@ -22,6 +22,7 @@
                 <tbody>
                   <?php $count = 1 ?>
                   @forelse($submissions as $subs)
+                   @if($subs->getStatusCode() != 'REGISTERED' && !$subs->uploader->isParticipating($conf))
                     <tr>
                       <td>
                         {{ $count++ }}
@@ -52,6 +53,7 @@
                         @endif
                       </td>
                     </tr>
+                    @endif
                   @empty
                     <tr>
                       <td>

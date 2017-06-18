@@ -132,7 +132,8 @@ class SubmissionService
       'ACC_REV_MIN' => 'Accepted - Minor Revision',
       'ACC_REV_MAJ' => 'Accepted - Major Revision',
       'WAIT_PAY' => 'Accepted - Awaiting Payment',
-      'WAIT_ORG_PAY' => 'Waiting Payment Validation'
+      'WAIT_ORG_PAY' => 'Waiting Payment Validation',
+      'REGISTERED' => 'Registered'
     ];
   }
 

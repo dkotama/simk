@@ -11,17 +11,8 @@
                   @endif
                 </div>
                 <div class="panel-body">
-                  <h4><strong>{{ $submission->title }}</strong></h4>
-                  <p>
-                    <strong>Keywords:</strong>
-                    {{ $submission->keywords }}
-                  </p>
-                  <p>
-                    <strong>Abstract:</strong>
-                    <br>{{ $submission->abstract }}
-                  </p>
-
-
+                  @include('partials.singlepaper_content')
+                  <hr>
                   <div class="row">
                     @foreach($versions as $ver)
                     <div class="col-md-12" style="padding-top:10px;">
@@ -31,19 +22,21 @@
                         <strong>Camera Ready Version {{ $ver->version - 1 }} :</strong>
                       @endif
                       <a href="/uploads/{{ $ver->path }}" class="btn btn-sm btn-primary">Download</a>
-                      @if($ver->notes != NULL)
-                      <a href="" class="btn btn-sm btn-warning">See Organizer Notes</a>
-                      @endif
-
-
                       @if($ver->version === 1 && $submission->isPaperResolved())
                       <a href="{{ route('user.home.showPaperReview', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" class="btn btn-sm btn-success">Show Review Results</a>
                       @endif
+                      @if($ver->notes != NULL)
+                         <br><b>Revision Notes :</b>
+                         <br>{{ $ver->notes }}
+                         <hr>
+                      @endif
+
+
                     </div>
                     @endforeach
 
-                    @if($submission->isPaperResolved() && $submission->isCameraReadyApproved())
-                    <div class="col-md-12" style="padding-top:10px;">
+                    @if($submission->isPaperResolved() && $submission->getStatusCode() !== 'WAIT_ORG' &&  $submission->getStatusCode() !== 'WAIT_PAY' &&  $submission->getStatusCode() !== 'REGISTERED' &&  $submission->getStatusCode() !== 'WAIT_ORG_PAY')
+                    <div class="col-md-12" style="padding-top:30px;">
                       <form class="form form-vertical" action="{{ route('user.home.postCameraReady', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post" enctype="multipart/form-data">
                           {{ csrf_field() }}
                           <div class="control-group">
@@ -74,8 +67,6 @@
                       </div>
                       @endif
 
-
-
                   <div class="col-md-12">
                     <div class="pull-right">
                         <strong>Status : {{ $submission->getLastPaperReadableStatus() }}</strong>
@@ -85,13 +76,22 @@
                 </div>
             </div>
         </div>
+        @if($submission->getStatusCode() === 'WAIT_PAY' || $submission->getStatusCode() === 'WAIT_ORG_PAY')
         <div class="col-md-10">
           <div class="panel panel-default">
               <div class="panel-heading">
                 Payment Section
               </div>
               <div class="panel-body">
-                  @if($submission->getStatusCode() === 'WAIT_PAY')
+                      @if($submission->getStatusCode() === 'WAIT_PAY')
+                        @if($submission->payment_notes !== '')
+                        <div class="col-md-12" style="padding-top:10px;">
+                          <p>
+                            <b>Notes From Organizer</b>
+                            <br>{{ $submission->payment_notes }}
+                          </p>
+                        </div>
+                        @endif
                         <div class="col-md-12" style="padding-top:10px;">
                         <form class="form form-vertical" action="{{ route('user.home.postPaymentProof', ['confUrl' => $conf->url, 'paperId' => $submission->id]) }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
@@ -123,7 +123,6 @@
                         </div>
                       @endif
 
-
                       @if($submission->getStatusCode() === 'WAIT_ORG_PAY')
                         <div class="col-md-12" style="padding-top:10px;">
                           <b>Payment Proof</b>
@@ -135,6 +134,7 @@
               </div>
           </div>
         </div>
+        @endif
 
         <div class="col-md-10">
             <div class="panel panel-default">

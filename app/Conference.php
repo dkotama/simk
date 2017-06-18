@@ -35,6 +35,15 @@ class Conference extends Model
     return $this->belongsToMany('App\User', 'organizers', 'conference_id', 'user_id');
   }
 
+  public function participants()
+  {
+    return $this->belongsToMany('App\User', 'participants', 'conference_id', 'user_id');
+  }
+
+  public function participantAppl() {
+    return $this->hasMany('App\ParticipantApplication');
+  }
+
   public static function getByUrl($url)
   {
     return static::whereUrl($url)->firstOrFail();

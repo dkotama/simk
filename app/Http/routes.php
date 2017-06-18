@@ -72,6 +72,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/users/{userId}/edit', ['as' => 'user.profile.edit', 'uses' => 'UsersHomeController@editProfile']);
   Route::post('/users/{userId}/update', ['as' => 'user.profile.update', 'uses' => 'UsersHomeController@updateProfile']);
 
+  //Participant
+  Route::post('/users/home/{confUrl}/regparti', ['as' => 'user.home.registerParticipant', 'uses' => 'UsersHomeController@registerParticipant']);
+
   // Conferences
   Route::get('/{confUrl}', 'HomepageController@home');
   Route::get('/{confUrl}/callpaper', 'HomepageController@callPaper');
@@ -93,6 +96,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/extends', ['as' => 'organizer.manage.extends', 'uses' => 'OrgHomeController@showExtendConference']);
   Route::post('/{confUrl}/org/extends', ['as' => 'organizer.manage.postExtends', 'uses' => 'OrgHomeController@postExtends']);
   Route::post('/{confUrl}/org/updatevisibility', ['as' => 'organizer.manage.updateVisibility', 'uses' => 'OrgHomeController@updateVisibility']);
+  Route::get('/{confUrl}/org/webmanage', ['as' => 'organizer.manage.manageWeb', 'uses' => 'OrgHomeController@manageWeb']);
 
   //Register User
   Route::get('/{confUrl}/org/users/add', ['as' => 'organizer.addUser', 'uses' => 'OrgHomeController@showAddUser']);
@@ -100,14 +104,12 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/user/{userId}/edit', ['as' => 'organizer.editUser', 'uses' => 'OrgHomeController@showEditUser']);
   Route::post('/{confUrl}/org/users/{userId}/edit', ['as' => 'organizer.updateUser', 'uses' => 'OrgHomeController@updateUser']);
 
+
   //Enroll User
   Route::get('/{confUrl}/org/users/{mode?}', ['as' => 'organizer.allUser', 'uses' => 'OrgHomeController@showManagesUser']);
   Route::get('/{confUrl}/org/users/{user}/det/{mode}', ['as' => 'organizer.detachroles', 'uses' => 'OrgHomeController@detachRoles']);
   Route::get('/{confUrl}/org/users/{user}/att/{mode}', ['as' => 'organizer.attachroles', 'uses' => 'OrgHomeController@attachRoles']);
 
-
-  //Manage Papers
-  Route::get('/{confUrl}/org/papers/', ['as' => 'organizer.allPapers', 'uses' => 'OrgPaperController@allPapers']);
   Route::get('/{confUrl}/org/papers/{paperId}', ['as' => 'organizer.paper.showSingle', 'uses' => 'OrgPaperController@singlePaper']);
   Route::get('/{confUrl}/org/papers/{paperId}/assign', ['as' => 'organizer.paper.assignReviewer', 'uses' => 'OrgPaperController@assignReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/att/{userId}', ['as' => 'organizer.paper.attachReviewer', 'uses' => 'OrgPaperController@attachReviewer']);
@@ -115,11 +117,21 @@ Route::group(['middleware' => ['web']], function () {
   Route::post('/{confUrl}/org/papers/{paperId}/postblind', ['as' => 'organizer.paper.postBlind', 'uses' => 'OrgPaperController@postBlindPaper']);
 
   Route::get('/{confUrl}/org/papers/{paperId}/resolve', ['as' => 'organizer.paper.resolve', 'uses' => 'OrgPaperController@resolvePaper']);
+  Route::get('/{confUrl}/org/papers/{paperId}/validatepayment', ['as' => 'organizer.paper.validatePayment', 'uses' => 'OrgPaperController@validatePayment']);
+  Route::post('/{confUrl}/org/papers/{paperId}/postvalidation', ['as' => 'organizer.paper.postValidation', 'uses' => 'OrgPaperController@postValidation']);
   Route::post('/{confUrl}/org/papers/{paperId}/postresolve', ['as' => 'organizer.paper.postresolve', 'uses' => 'OrgPaperController@postResolve']);
-
   Route::get('/{confUrl}/org/papers/{paperId}/rev/{reviewerId}', ['as' => 'organizer.paper.showSingleReview', 'uses' => 'OrgPaperController@showSingleReview']);
   Route::get('/{confUrl}/org/papers/{paperId}/allrev', ['as' => 'organizer.paper.showAllReview', 'uses' => 'OrgPaperController@showAllReview']);
 
+  //Manage Papers
+  Route::get('/{confUrl}/org/papers/', ['as' => 'organizer.allPapers', 'uses' => 'OrgPaperController@allPapers']);
+  Route::get('/{confUrl}/org/proceeding/', ['as' => 'organizer.proceeding', 'uses' => 'OrgPaperController@proceeding']);
+
+  //Manage Participant
+  // Route::get('/{confUrl}/org/participants/', ['as' => 'organizer.allParticipants', 'uses' => 'OrgPaperController@allPapers']);
+  Route::get('/{confUrl}/org/participants/{userId}', ['as' => 'organizer.singleParticipant', 'uses' => 'OrgHomeController@showSingleParticipant']);
+  Route::post('/{confUrl}/org/participants/{userId}', ['as' => 'organizer.postParticipant', 'uses' => 'OrgHomeController@postParticipant']);
+  // Route::get('/{confUrl}/org/proceeding/', ['as' => 'organizer.proceeding', 'uses' => 'OrgPaperController@proceeding']);
 
   //Reviewer
   Route::get('/{confUrl}/reviewer/', ['as' => 'reviewer.manage', 'uses' => 'RevHomeController@dashboard']);

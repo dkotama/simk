@@ -1,11 +1,11 @@
-@extends('reviewers.dashboard')
+@extends('organizers.dashboard')
 
 @section('content')
    <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-              <strong>All Review Task on {{ $conf->name }} </strong>
+              <strong>{{ $conf->name }} Proceeding</strong>
             </div>
             <div class="panel-body">
               <table class="table table-bordered conferences">
@@ -14,14 +14,15 @@
                     <th>#</th>
                     <th>ID</th>
                     <th>Title</th>
-                    <th>Abstract</th>
+                    <th>Reviewer</th>
                     <th>Status</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php $count = 1 ?>
                   @forelse($submissions as $subs)
-                   @if($subs->getLastPaper()->status === "WAIT_REV" && !$subs->uploader->isParticipating($conf))
+                   @if($subs->getStatusCode() === 'REGISTERED')
                     <tr>
                       <td>
                         {{ $count++ }}
@@ -30,7 +31,7 @@
                         {{ $subs->id }}
                       </td>
                       <td class="title">
-                        <a href="{{ route('reviewer.papers.single' ,['confUrl' => $conf->url, 'paperId' => $subs->id]) }}"  data-toggle="tooltip" data-placement="top" title="{{ str_limit($subs->abstract, 100) }}">
+                        <a href="{{ route('organizer.paper.showSingle', ['conf' => $conf->url, 'paperId' => $subs->id]) }}"  data-toggle="tooltip" data-placement="top" title="{{ str_limit($subs->abstract, 100) }}">
                           {{ str_limit($subs->title, 70) }}
                         </a>
                         @if ($subs->isDeleted())
@@ -38,10 +39,18 @@
                         @endif
                       </td>
                       <td>
-                        {{ str_limit($subs->abstract, 100) }}
+                        @foreach ($subs->reviewers as $revs)
+                          {{ $revs->last_name . " " . $revs->first_name}} ,
+                        @endforeach
                       </td>
-                      <td class="center">
-                        {{ ($subs->pivot->score_a === NULL) ? $subs->getStatusFromReviewer() : 'Done' }}
+                      <td class="center">{{ $subs->getStatus() }}</td>
+                      <td>
+
+                        @if ($subs->isDeleted())
+                          <button class="btn btn-success btn-xs" onclick="confirmRestore({{ $subs->id }})">Restore</button>
+                        @else
+                          <button class="btn btn-danger btn-xs" onclick="confirmDelete({{ $subs->id }})">Cancel</button>
+                        @endif
                       </td>
                     </tr>
                     @endif

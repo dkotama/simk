@@ -11,6 +11,7 @@ use App\SuperuserRegisterService;
 use App\CountryList;
 use App\Http\Requests\RegisterUserRequest;
 use App\ReviewQuestion;
+use App\ParticipantApplication;
 use Validator;
 use Carbon\Carbon;
 
@@ -136,7 +137,7 @@ class OrgHomeController extends Controller
   {
     if ($this->isAllowed($confUrl)) {
       $this->viewData['userSelected'] = 'registered';
-
+      
       $this->setConf($confUrl);
       $temp = collect([]);
 
@@ -158,18 +159,57 @@ class OrgHomeController extends Controller
         $authors    = $confUrl->authors;
         $reviewers  = $confUrl->reviewers;
         $organizers = $confUrl->organizers;
+        $participants = $confUrl->participantAppl;
 
         $temp = $authors->merge($reviewers);
         $temp = $temp->merge($organizers);
         $temp->unique();
 
         $this->viewData['users'] = $temp;
+        $this->viewData['participants'] = $participants;
       }
 
       return view('organizers.users', $this->viewData);
     } else {
       abort(404);
     }
+  }
+
+  //Participant
+
+  public function showSingleParticipant(Conference $confUrl, $userId) {
+    $this->setConf($confUrl);
+
+    $showUser = User::findOrFail($userId);
+    $participantAppl = ParticipantApplication::userid($userId)->conferenceid($confUrl->id)->first();
+
+    $this->viewData['showUser']        = $showUser;
+    $this->viewData['participantAppl'] = $participantAppl;
+
+    $countryList = new CountryList();
+
+    $this->viewData['userCountry'] = $countryList->getById($showUser->country);
+    return view('organizers.users.singleparticipant', $this->viewData);
+  }
+
+  public function postParticipant(Conference $confUrl, $userId, Request $request) {
+    // dd($request->all());
+
+    $participantAppl = ParticipantApplication::userid($userId)->conferenceid($confUrl->id)->first();
+    // $participantAppl->payment_proof = "laskdjasldja";
+    // $participantAppl->save();
+    // dd($participantAppl->payment_proof);
+
+    if ($request->validation === 'REJECT') {
+      $participantAppl->update(['payment_proof'=>'', 'payment_notes' => $request->payment_notes]);
+    } else {
+      $user = User::find($userId);
+      $user->participating()->attach($confUrl->id);
+      $participantAppl->update(['payment_notes' => $request->payment_notes]);
+    }
+
+    flash()->success('Validation Success');
+    return redirect()->route('organizer.allUser', $confUrl->url);
   }
 
   // Manage Conferences
@@ -195,6 +235,16 @@ class OrgHomeController extends Controller
     $this->viewData['manageSelected'] = 'question';
 
     return view('organizers.conferences.questions', $this->viewData);
+  }
+  public function manageWeb(Conference $confUrl)
+  {
+    $this->setConf($confUrl);
+    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+
+    $this->viewData['questions'] = $questions;
+    $this->viewData['manageSelected'] = 'question';
+
+    return view('organizers.conferences.manageweb', $this->viewData);
   }
 
   public function editConference(Conference $confUrl)
@@ -332,6 +382,12 @@ class OrgHomeController extends Controller
       abort(404);
     }
   }
+
+  //Participant Section
+
+
+
+  //End Participant Section
 
 
   protected function isAllowed(Conference $confUrl) {
