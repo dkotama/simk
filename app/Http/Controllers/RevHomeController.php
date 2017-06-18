@@ -61,7 +61,7 @@ class  RevHomeController extends Controller
   public function showSinglePaper(Conference $confUrl, $paperId)
   {
     $submission = Submission::findOrFail($paperId);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $questions  = $confUrl->reviewQuestions;
     $edited     = $this->user->getReviewedPaper($paperId);
 
     $service = new SubmissionService();

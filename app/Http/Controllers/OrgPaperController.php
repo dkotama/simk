@@ -72,6 +72,17 @@ class OrgPaperController extends Controller
     return view('organizers.papers.single', $this->viewData);
   }
 
+  public function restorePaper(Conference $confUrl, $paperId)
+  {
+    $submission = Submission::withTrashed()->where('id', $paperId)->first();
+    //
+    if ($submission->restore()) {
+      flash()->success('Success Restore Paper.');
+    }
+
+    return redirect()->route('organizer.allPapers', $confUrl->url);
+  }
+
   public function postBlindPaper(Conference $confUrl, $paperId, Request $request)
   {
     $rules['paper'] = 'required|mimes:doc,docx|max:5000';
@@ -193,7 +204,7 @@ class OrgPaperController extends Controller
 
   public function showSingleReview(Conference $confUrl, $paperId, $reviewerId) {
     $submission = Submission::findOrFail($paperId);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $questions  = $confUrl->reviewQuestions;
     $reviewer   = User::findOrFail($reviewerId);
     $reviews    = $reviewer->getReviewedPaper($paperId);
 
@@ -207,7 +218,7 @@ class OrgPaperController extends Controller
 
   public function showAllReview(Conference $confUrl, $paperId) {
     $submission = Submission::findOrFail($paperId);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $questions  = $confUrl->reviewQuestions;
     $reviewers  = $submission->reviewers;
     // $reviews    = $reviewer->getReviewedPaper($paperId);
 

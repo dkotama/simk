@@ -81,7 +81,8 @@ class AdminsController extends Controller
     $conf = Conference::create($request->all());
     $confDate = ConferenceDate::create($request->all());
     $ReviewQuestion = ReviewQuestion::create(['conference_id' => $conf->id]);
-
+    $website = Website::create(['conference_id' => $conf->id]);
+    
     $conf->dates()->save($confDate);
 
 

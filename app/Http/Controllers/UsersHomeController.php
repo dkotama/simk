@@ -313,7 +313,7 @@ class UsersHomeController extends Controller
 
   public function showPaperReview(Conference $confUrl, $paperId) {
     $submission = Submission::findOrFail($paperId);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $questions  = $confUrl->reviewQuestions;
     $reviewers  = $submission->reviewers;
     // $reviews    = $reviewer->getReviewedPaper($paperId);
     //

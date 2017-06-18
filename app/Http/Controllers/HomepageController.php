@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Conference;
+use App\Website;
 use App\Http\Requests;
 use App\Http\Request\SubmitPaperRequest;
 
@@ -28,6 +29,7 @@ class HomepageController extends Controller
   public function policies(Conference $confUrl)
   {
     $this->setInit($confUrl, 'policies');
+    $this->viewData['website'] = $confUrl->website;
 
    return view('conferences.shows.policies', $this->viewData);
   }
@@ -40,15 +42,24 @@ class HomepageController extends Controller
     if (isset($this->user)) {
       if ($this->user->isAuthoring($conf)) {
         $this->viewData['joinUrl']  = route('user.home.manage', $conf->url);
-        $this->viewData['joinText'] = 'Manage Submission';    
+        $this->viewData['joinText'] = 'Manage Submission';
       } else {
         $this->viewData['joinUrl']  = route('user.join.conf', $conf->url);
-        $this->viewData['joinText'] = 'Join Now';    
+        $this->viewData['joinText'] = 'Join Now';
       }
-    } else {  
+    } else {
       $this->viewData['joinUrl']  = '/register';
       $this->viewData['joinText'] = 'Login / Register To Join';
-    } 
+    }
+
+    //new config
+    $this->viewData['website'] = $conf->website;
+
+    $visibleDates = $conf->getVisibleArray();
+
+    $this->viewData['dates'] = $visibleDates;
+    $this->viewData['boldNum'] = count($visibleDates['submission_deadline']);
+    $this->viewData['startDate'] = $visibleDates->get('start_conference');
   }
 
   protected function setActive($string)

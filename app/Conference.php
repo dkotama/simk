@@ -40,6 +40,12 @@ class Conference extends Model
     return $this->belongsToMany('App\User', 'participants', 'conference_id', 'user_id');
   }
 
+  public function website()
+  {
+    return $this->hasOne('App\Website');
+  }
+
+
   public function participantAppl() {
     return $this->hasMany('App\ParticipantApplication');
   }

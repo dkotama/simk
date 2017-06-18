@@ -97,6 +97,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::post('/{confUrl}/org/extends', ['as' => 'organizer.manage.postExtends', 'uses' => 'OrgHomeController@postExtends']);
   Route::post('/{confUrl}/org/updatevisibility', ['as' => 'organizer.manage.updateVisibility', 'uses' => 'OrgHomeController@updateVisibility']);
   Route::get('/{confUrl}/org/webmanage', ['as' => 'organizer.manage.manageWeb', 'uses' => 'OrgHomeController@manageWeb']);
+  Route::post('/{confUrl}/org/webmanage', ['as' => 'organizer.manage.postManageWeb', 'uses' => 'OrgHomeController@postManageWeb']);
 
   //Register User
   Route::get('/{confUrl}/org/users/add', ['as' => 'organizer.addUser', 'uses' => 'OrgHomeController@showAddUser']);
@@ -111,6 +112,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/users/{user}/att/{mode}', ['as' => 'organizer.attachroles', 'uses' => 'OrgHomeController@attachRoles']);
 
   Route::get('/{confUrl}/org/papers/{paperId}', ['as' => 'organizer.paper.showSingle', 'uses' => 'OrgPaperController@singlePaper']);
+  Route::get('/{confUrl}/org/papers/{paperId}/restore', ['as' => 'organizer.paper.revive', 'uses' => 'OrgPaperController@restorePaper']);
   Route::get('/{confUrl}/org/papers/{paperId}/assign', ['as' => 'organizer.paper.assignReviewer', 'uses' => 'OrgPaperController@assignReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/att/{userId}', ['as' => 'organizer.paper.attachReviewer', 'uses' => 'OrgPaperController@attachReviewer']);
   Route::get('/{confUrl}/org/papers/{paperId}/dett/{userId}', ['as' => 'organizer.paper.detachReviewer', 'uses' => 'OrgPaperController@detachReviewer']);

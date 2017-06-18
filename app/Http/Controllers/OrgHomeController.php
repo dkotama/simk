@@ -137,7 +137,7 @@ class OrgHomeController extends Controller
   {
     if ($this->isAllowed($confUrl)) {
       $this->viewData['userSelected'] = 'registered';
-      
+
       $this->setConf($confUrl);
       $temp = collect([]);
 
@@ -229,7 +229,7 @@ class OrgHomeController extends Controller
   public function managesQuestions(Conference $confUrl)
   {
     $this->setConf($confUrl);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $questions  = $confUrl->reviewQuestions;
 
     $this->viewData['questions'] = $questions;
     $this->viewData['manageSelected'] = 'question';
@@ -239,12 +239,26 @@ class OrgHomeController extends Controller
   public function manageWeb(Conference $confUrl)
   {
     $this->setConf($confUrl);
-    $questions  = ReviewQuestion::findOrFail($confUrl->id);
+    $website = $confUrl->website;
 
-    $this->viewData['questions'] = $questions;
-    $this->viewData['manageSelected'] = 'question';
+    $this->viewData['website'] = $website;
+    // $this->viewData['manageSelected'] = 'question';
 
     return view('organizers.conferences.manageweb', $this->viewData);
+  }
+
+  public function postManageWeb(Conference $confUrl, Request $request)
+  {
+    $confUrl->website->update($request->all());
+    // $this->setConf($confUrl);
+    // $website = $confUrl->website;
+    //
+    // $this->viewData['website'] = $website;
+    // $this->viewData['manageSelected'] = 'question';
+
+    flash()->success('Update Website Success');
+    return redirect()->back();
+    // return view('organizers.conferences.manageweb', $this->viewData);
   }
 
   public function editConference(Conference $confUrl)
@@ -319,7 +333,7 @@ class OrgHomeController extends Controller
 
   public function updateQuestions(Conference $confUrl, Request $request)
   {
-    $questions  = ReviewQuestion::find($confUrl->id);
+    $questions  = $confUrl->reviewQuestions;
     // dd($request);
     $questions->update($request->all());
 

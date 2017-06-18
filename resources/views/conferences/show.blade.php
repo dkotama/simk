@@ -12,9 +12,7 @@
             <a href="#" class="list-group-item">
               <i class="fa fa-home fa-fw"></i> {{$conf->name }} Home
             </a>
-            <a href="#" class="list-group-item">
-              <i class="fa fa-book fa-fw"></i> Call For Papers <span class="label label-warning">!</span>
-            </a>
+          
             <a href="#" class="list-group-item">
               <i class="fa fa-gavel fa-fw"></i> Track Policies
             </a>
