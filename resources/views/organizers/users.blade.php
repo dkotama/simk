@@ -69,7 +69,7 @@
                   <td>
                     @if (!$usr->isAdmin())
                      <a href="{{ route('organizer.editUser', ['confUrl' => $conf->url, 'userId' => $usr->id])}}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                     <a href="{{ route('organizer.attachroles', [$conf->url, $usr->id, 'reviewer'])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+                     <a href="" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> Delete</a>
                     @endif
                   </td>
                 </tr>

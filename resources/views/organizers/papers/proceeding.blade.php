@@ -48,8 +48,6 @@
 
                         @if ($subs->isDeleted())
                           <button class="btn btn-success btn-xs" onclick="confirmRestore({{ $subs->id }})">Restore</button>
-                        @else
-                          <button class="btn btn-danger btn-xs" onclick="confirmDelete({{ $subs->id }})">Cancel</button>
                         @endif
                       </td>
                     </tr>
@@ -92,12 +90,11 @@
 
 @section('scripts.footer')
 <script>
-  function confirmDelete(submissionId) {
-    if (confirm('Are you sure want to delete ?')) {
+  function confirmRestore(submissionId) {
+    if (confirm('Are you sure want to restore?')) {
       // console.log(true);
-      window.location.href = "{{ asset('/') }}users/home/manage/{{ $conf->url }}/" + submissionId + "/cancel";
+      window.location.href = "{{ asset('/') }}{{ $conf->url }}/org/papers/" + submissionId + "/restore";
     }
   }
-
 </script>
 @endsection

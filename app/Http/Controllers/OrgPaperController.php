@@ -14,6 +14,7 @@ use App\User;
 use Validator;
 use Route;
 use Carbon\Carbon;
+use Mail;
 
 class OrgPaperController extends Controller
 {
@@ -62,14 +63,44 @@ class OrgPaperController extends Controller
     $questions  = $confUrl->reviewQuestions;
     $versions = $submission->versions;
 
+    $now = Carbon::now('Asia/Makassar');
+    $acceptance = $confUrl->getLastAccepted();
+    $warning = false;
+
+    if($now->diffInDays($acceptance) <= 7) {
+      $warning = true;
+    }
+
     $this->viewData['submission']  = $submission;
     $this->viewData['questions']   = $questions;
     $this->viewData['authors']     = $submission->authors->sortBy('author_no');
     $this->viewData['authorCount'] = $submission->authors->count();
     $this->viewData['versions']    = $versions;
     $this->viewData['reviewers']   = $submission->reviewers;
+    $this->viewData['warning']     = $warning;
 
     return view('organizers.papers.single', $this->viewData);
+  }
+
+  public function mailWarning(Conference $confUrl, $userId, $paperId) {
+        $user = User::find($userId);
+        $submission = Submission::find($paperId);
+        dd($confUrl->name);
+        $userData = [
+          'name'  => $user->last_name . ', ' . $user->first_name,
+          'title' => $user->salutation,
+          'conf_title' => $confUrl->name,
+          'email' => $user->email
+        ];
+
+        Mail::send('emails.warning', $userData, function ($message) use ($userData) {
+          $message->from('simk.noreply@domain.com', 'SIMK Automail');
+
+          $message->to($userData['email'])->subject('SIMK Review Reminder');
+        });
+
+        flash()->success('Send Warning Success');
+        return redirect()->back();
   }
 
   public function restorePaper(Conference $confUrl, $paperId)

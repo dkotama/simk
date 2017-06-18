@@ -20,8 +20,8 @@
               <li><a href="{{ route('organizer.manage.show', $conf->url) }}"><i class="glyphicon glyphicon-cog"></i> Manage Conference</a></li>
                 @if(isset($manageSelected))
                   <ul class="nav nav-pills nav-stacked" style="padding-left:20px;">
-                    <li class="{{ ($manageSelected === 'conference') ? 'active' : NULL}}"><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Conferences</a></li>
-                    <li class="{{ ($manageSelected === 'question') ? 'active' : NULL}}"><a href="#"><i class="glyphicon glyphicon-chevron-right"></i> Questions</a></li>
+                    <li class="{{ ($manageSelected === 'conference') ? 'active' : NULL}}"><a href="{{ route('organizer.manage.show', $conf->url) }}"><i class="glyphicon glyphicon-chevron-right"></i> Conferences</a></li>
+                    <li class="{{ ($manageSelected === 'question') ? 'active' : NULL}}"><a href="{{ route('organizer.manage.questions', $conf->url) }}"><i class="glyphicon glyphicon-chevron-right"></i> Questions</a></li>
                   </ul>
                 @endif
               <li><a href="{{ route('organizer.manage.manageWeb', $conf->url) }}"><i class="glyphicon glyphicon-link"></i> Website Management</a></li>

@@ -129,6 +129,9 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}/org/papers/', ['as' => 'organizer.allPapers', 'uses' => 'OrgPaperController@allPapers']);
   Route::get('/{confUrl}/org/proceeding/', ['as' => 'organizer.proceeding', 'uses' => 'OrgPaperController@proceeding']);
 
+  //Warning
+  Route::get('/{confUrl}/org/warning/{userId}/{paperId}', ['as' => 'organizer.mailWarning', 'uses' => 'OrgPaperController@mailWarning']);
+
   //Manage Participant
   // Route::get('/{confUrl}/org/participants/', ['as' => 'organizer.allParticipants', 'uses' => 'OrgPaperController@allPapers']);
   Route::get('/{confUrl}/org/participants/{userId}', ['as' => 'organizer.singleParticipant', 'uses' => 'OrgHomeController@showSingleParticipant']);

@@ -114,6 +114,14 @@ class Conference extends Model
     return collect($temp);
   }
 
+  public function getLastAccepted() {
+    $dates = $this->dates()->where('is_visible', 1)->get();
+    $last = count($dates) - 1;
+    $date = $dates[$last];
+    
+    return Carbon::parse($date->acceptance);
+  }
+
   public function getVisibleCollection() {
     return $this->dates()->where('is_visible', 1)->get();
   }

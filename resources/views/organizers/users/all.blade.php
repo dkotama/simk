@@ -16,11 +16,7 @@
                     <div class="form-group">
                       <label for="select-conference">Select Conference</label>
                       <select class="form-control">
-                        <option>International Fucking Conference One</option>
-                        <option>International Fucking Conference Two</option>
-                        <option>International Fucking Conference Three</option>
-                        <option>International Fucking Conference Four</option>
-                        <option>International Fucking Conference Five</option>
+                      
                       </select>
                     </div>
                     <button type="submit" class="btn btn-default">See Users</button>

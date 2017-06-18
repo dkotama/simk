@@ -200,6 +200,9 @@
                           <a href="{{ route('organizer.paper.showSingleReview', ['confUrl' => $conf->url, 'paperId' => $submission->id, 'reviewerId' => $rev->id])}}">
                             {{ $rev->salutation . " " . $rev->last_name . " " . $rev->first_name}}
                           </a>({{ $revAlias[$count-2]}})
+                          @if($warning)
+                            <a href="{{ route('organizer.mailWarning', ['confUrl'=> $conf->url, 'userId' => $rev->id, 'paperId' => $submission->id]) }}" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-warning-sign"></i>   Warning</a>
+                          @endif
                         </td>
                         <td>
                           {{ $scores[0] }}

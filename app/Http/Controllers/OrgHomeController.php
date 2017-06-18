@@ -216,7 +216,7 @@ class OrgHomeController extends Controller
   public function showDescription(Conference $confUrl)
   {
     $this->setConf($confUrl);
-
+    $this->viewData['manageSelected'] = 'conference';
     $visibleDates = $confUrl->getVisibleArray();
 
     $this->viewData['dates'] = $visibleDates;
@@ -337,6 +337,7 @@ class OrgHomeController extends Controller
     // dd($request);
     $questions->update($request->all());
 
+    flash()->success('Update Question Success');
     return redirect()->back();
   }
 

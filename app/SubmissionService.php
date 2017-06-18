@@ -126,7 +126,7 @@ class SubmissionService
     $this->paperAliases = [
       'ON_REV' => 'On Review Process',
       'WAIT_BLIND' => 'Waiting Blind Version',
-      'WAIT_REV' => 'Waiting Revision',
+      'WAIT_REV' => 'Waiting Review From Reviewers',
       'WAIT_ORG' => 'Waiting Camera Ready Approval',
       'REJECT' => 'Rejected',
       'ACC_REV_MIN' => 'Accepted - Minor Revision',
