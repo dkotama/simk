@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Requests\StoreConferenceRequest;
 use App\User;
 use App\Conference;
+use App\Website;
 use App\ConferenceDate;
 use App\ReviewQuestion;
 use App\ConferenceService;
@@ -82,7 +83,9 @@ class AdminsController extends Controller
     $confDate = ConferenceDate::create($request->all());
     $ReviewQuestion = ReviewQuestion::create(['conference_id' => $conf->id]);
     $website = Website::create(['conference_id' => $conf->id]);
-    
+    $website->conference_id = $conf->id;
+    $website->save();
+
     $conf->dates()->save($confDate);
 
 

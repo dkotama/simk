@@ -34,6 +34,21 @@ class HomepageController extends Controller
    return view('conferences.shows.policies', $this->viewData);
   }
 
+  public function helpParticipant(Conference $confUrl)
+  {
+    $this->setInit($confUrl, 'helpp');
+    $this->viewData['website'] = $confUrl->website;
+
+   return view('conferences.shows.helpparticipant', $this->viewData);
+  }
+
+  public function helpAuthor(Conference $confUrl)
+  {
+    $this->setInit($confUrl, 'helpa');
+    $this->viewData['website'] = $confUrl->website;
+
+   return view('conferences.shows.helpauthor', $this->viewData);
+  }
   protected function setInit($conf, $active) {
     $this->viewData['conf'] = $conf;
     $this->canAccessDasboard($conf);

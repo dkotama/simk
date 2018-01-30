@@ -141,6 +141,7 @@ class UsersHomeController extends Controller
 
   public function manage(Conference $confUrl)
   {
+    $this->isAllowedOrganizer($confUrl);
     $this->isAllowedAuthor($confUrl);
 
     $this->viewData['conf'] = $confUrl;
@@ -222,7 +223,6 @@ class UsersHomeController extends Controller
     $this->isAllowedAuthor($confUrl);
     $submission = Submission::findOrFail($paperId);
     $versions = $submission->versions;
-
     // dd($submission->isPaperResolved() && $submission->isCameraReadyApproved());
 
     $this->viewData['conf']        = $confUrl;
@@ -436,6 +436,7 @@ class UsersHomeController extends Controller
     $this->viewData['conf'] = $confUrl;
     $this->viewData['submission'] = $submission;
     $this->viewData['authors'] = $submission->authors->sortByDesc('is_primary');
+    $this->viewData['versions'] = $submission->versions;
     $this->viewData['authorCount'] = $submission->authors->count();
 
     $this->viewData['singleAuthor'] = SubmissionAuthor::findOrFail($authorId);

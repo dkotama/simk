@@ -27,7 +27,7 @@ class Controller extends BaseController
       if ($this->user->authoring->contains('url', $confUrl->url)) {
         return true;
       } else {
-        abort(404);
+        return false;
       }
     }
 
@@ -35,7 +35,7 @@ class Controller extends BaseController
       if ($this->user->organizing->contains('url', $confUrl->url)) {
         return true;
       } else {
-        abort(404);
+        return false;
       }
     }
 

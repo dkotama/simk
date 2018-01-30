@@ -79,6 +79,8 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/{confUrl}', 'HomepageController@home');
   Route::get('/{confUrl}/callpaper', 'HomepageController@callPaper');
   Route::get('/{confUrl}/policies', 'HomepageController@policies');
+  Route::get('/{confUrl}/help-participant', 'HomepageController@helpParticipant');
+  Route::get('/{confUrl}/help-author', 'HomepageController@helpAuthor');
 
   /*================
   Organizer Section

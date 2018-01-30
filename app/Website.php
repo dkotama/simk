@@ -9,6 +9,7 @@ class Website extends Model
   protected $table = 'websites';
 
   protected $fillable = [
+    'confererence_id',
     'overview',
     'policies'
   ];

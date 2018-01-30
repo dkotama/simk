@@ -186,6 +186,10 @@ class OrgPaperController extends Controller
 
     $aliases = $service->getResolveAliases();
 
+    if($submission->getLastPaper()->is_camera_ready === 1){
+      unset($aliases["ACC_REV_MAJ"]);
+    }
+
     $this->viewData['submission']  = $submission;
     $this->viewData['aliases']     = $aliases;
 

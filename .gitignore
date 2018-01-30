@@ -3,5 +3,6 @@
 /node_modules
 /public/storage
 /public/uploads
+/public/payments
 Homestead.yaml
 Homestead.json

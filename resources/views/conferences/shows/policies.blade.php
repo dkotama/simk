@@ -3,7 +3,7 @@
 @section('content')
 <h2 id="sec0">Track Policies</h2>
   <hr>
-  @if($website->policies === NULL || $website->policies === '')
+  @if($website === NULL || $website->policies === NULL || $website->policies === '')
   Rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
   dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia cor magni dolores
   eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit,

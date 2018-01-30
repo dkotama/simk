@@ -12,6 +12,12 @@
             <a href="/{{ $conf->url }}/policies" class="list-group-item {{ $active == 'policies' ? 'active' : null }}">
               <i class="fa fa-gavel fa-fw"></i> Track Policies
             </a>
+            <a href="/{{ $conf->url }}/help-author" class="list-group-item {{ $active == 'helpa' ? 'active' : null }}">
+            <i class="fa fa-question-circle" aria-hidden="true"></i> Author Guidelines
+            </a>
+            <a href="/{{ $conf->url }}/help-participant" class="list-group-item {{ $active == 'helpp' ? 'active' : null }}">
+              <i class="fa fa-question-circle" aria-hidden="true"></i> Participant Guidelines
+            </a>
           </div>
           <div class="panel panel-warning">
               <div class="panel-heading">

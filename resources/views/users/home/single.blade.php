@@ -209,6 +209,8 @@
                 </div>
             </div>
         </div>
+
+        @if(isset($edit) || count($authors) < 4)
         <div class="col-md-10">
             <div class="panel panel-default">
               @if (isset($edit))
@@ -300,6 +302,7 @@
                 </div>
               </div>
             </div>
+            @endif
         </div>
     </div>
 @endsection
